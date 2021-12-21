@@ -1,0 +1,285 @@
+
+
+.d-bottom-bar {
+  z-index: 2;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.25);
+}
+
+.d-btn {
+  font-weight: 600;
+  font-family: 'Montserrat';
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.d-card {
+  padding: 12px;
+  position: relative;
+  border: 2px solid #8eb0b950!important;
+  border-radius: 4px!important;
+}
+
+.d-checkbox .v-input__slot {
+  margin: 0;
+}
+
+.d-chip-group .d-chip {
+  margin-right: 12px;
+}
+
+.d-autocomplete.nopadding .v-input__slot {
+  padding: 0!important;
+}
+
+.d-select.nopadding .v-input__slot {
+  padding: 0!important;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.v-list--dense .d-list-item {
+  min-height: 40px;
+}
+
+.d-outlined-img {
+  position: relative;
+}
+
+.d-outlined-img .img-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.d-search-input {
+  max-width: 252px;
+  text-align: center;
+}
+
+.d-tile {
+  margin-top: 40px;
+}
+
+.d-tile-checkbox {
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 5px;
+}
+
+.d-tile-footer {
+  position: absolute;
+  bottom: 0px;
+  left: 0;
+  padding: 5px;
+  width: 100%;
+}
+
+.d-tile-image {
+  position: absolute;
+  top: -40px;
+  left: 10px;
+}
+
+.d-tile-status {
+  position: absolute;
+  top: 35px;
+  right: 0;
+  width: calc(100% - 180px);
+  padding: 5px;
+}
+
+.d-toggle {
+  border-radius: 4px;
+  user-select: none;
+}
+
+.d-cursor-drag:hover {
+  cursor: move;
+}
+
+.d-form-validate {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  margin: 0;
+  padding: 0;
+}
+
+.d-border-inset {
+  box-sizing: border-box;
+  border: 2px solid;
+  border-radius: 4px;
+}
+
+.d-btn-toggle .d-btn.d-btn-active:before {
+  background-color: transparent;
+}
+
+
+.d-btn-toggle .d-btn:not(.d-btn-active) {
+  color: var(--v-grey-2-base);
+}
+
+.v-messages {
+  min-height: 0px !important;
+}
+
+.d-expansion-panel.v-expansion-panel::before {
+  box-shadow: none !important;
+}
+
+.d-expansion-panel .v-expansion-panel-content__wrap {
+  padding: 0px !important;
+}
+
+.d-expansion-panel.v-expansion-panel > .v-expansion-panel-header {
+  min-height: unset;
+}
+
+.v-card__title {
+  word-break: normal !important;
+}
+
+
+.d-data-table-header {
+  height: 28px;
+  line-height: 48px;
+  text-align: left;
+  position: sticky;
+  transition: all 0.28s;
+  user-select: none;
+  color: var(--v-grey-2-base);
+  border-bottom: 1px solid var(--v-grey-1-base);
+}
+
+.d-data-table-header:hover {
+  color: var(--v-grey-3-base);
+  border-color: var(--v-grey-3-base);
+}
+
+.d-data-table-header:after {
+  content: "";
+  position: absolute;
+  bottom: 25%;
+  right: 0;
+  height: 50%;
+  border-right: 1px solid var(--v-grey-1-base);
+}
+
+.d-data-table-header:last-of-type:after {
+  border-right: none;
+}
+
+.d-text-field input::placeholder {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.d-text-field .v-label:not(.v-label--active) {
+  top: 0px;
+  margin-top: 4px;
+  line-height: 20px;
+  padding-left: 0px;
+  font-size: 14px;
+}
+
+.d-text-field .v-label--active {
+  top: 10px;
+  line-height: 20px;
+  /* font-size: 15px; */
+  left: 0px;
+}
+
+.d-text-field .v-text-field__details {
+  margin-top: 0px !important;
+}
+
+.d-text-field .v-text-field__slot {
+  padding-left: 0px !important;
+}
+
+.d-text-field .v-input__slot {
+  min-height: 28px!important;
+}
+
+.d-text-field.nopadding .v-input__slot {
+  padding: 0!important;
+}
+
+.d-text-field .v-input__prepend-inner {
+  padding: 0!important;
+  margin: 0!important;
+}
+
+.d-text-field .v-input__append-inner {
+  padding: 0!important;
+  margin: 0!important;
+}
+
+.d-textarea.nopadding .v-input__slot {
+  padding: 0!important;
+}
+
+.d-search-input .v-input__slot {
+  padding: 0!important;
+  margin: 0!important;
+}
+
+.d-search-input .v-label--active {
+  padding-left: 19px!important;
+}
+
+.theme--light .d-text-field .v-input__slot {
+  background-color: transparent!important;
+}
+
+.v-select__selection {
+  padding-left: 4px;
+}
+
+.d-simple-checkbox .v-input--selection-controls__input {
+  margin: 0;
+}
+
+.v-text-field {
+  margin-bottom: 0px!important;
+  margin-top: 0px !important;
+}
+
+.v-text-field .v-input__control {
+  min-height: 28px!important;
+}
+
+.v-text-field__details {
+  min-height: 0px !important;
+  margin-bottom: 0px !important;
+}
+
+/* No uppercase button */
+
+.v-btn {
+  text-transform: none;
+}
+
+/* No uppercase tab */
+
+.v-tab {
+  text-transform: none !important;
+}
+
+.v-textarea--auto-grow {
+  margin-top: 0px !important;
+  padding-top: 0px !important;
+}
+
+textarea {
+  margin-top: 0px !important;
+}

@@ -1,0 +1,107 @@
+import DDataTable from '@/components/DDataTable.vue';
+
+// More on default export: https://storybook.js.org/docs/vue/writing-stories/introduction#default-export
+export default {
+    title: "Components/DataTable",
+    component: DDataTable
+};
+
+// More on component templates: https://storybook.js.org/docs/vue/writing-stories/introduction#using-args
+const Template = (args, { argTypes }) => ({
+    components: { DDataTable },
+    props: Object.keys(argTypes),
+    template:
+        `<d-data-table v-bind="$props">
+            <template #item.localisation="{ configure, item }">
+                <d-chip-set :editable="configure" v-model="item.localisation" />
+            </template>
+        </d-data-table>`,
+});
+
+//👇 Each story then reuses that template
+export const Default = Template.bind({});
+Default.args = {
+    multiSort: true,
+    columnText: "text",
+    columnValue: "value",
+    columnPosition: "index",
+    configurationIcon: "$cog",
+    columns: [
+        {
+            text: 'Article',
+            sortable: false,
+            filterable: true,
+            value: 'name',
+            sortable: true,
+            hidden: false,
+            index: 0
+        },
+        {
+            text: 'Serial number', 
+            value: 'SerialNumbe',
+            align: 'end',
+            sortable: true,
+            hidden: false,
+            index: 1
+        },
+        {
+            text: 'Localisation', 
+            value: 'localisation',
+            hidden: false,
+            index: 6,
+            configurable: true
+        },
+        {
+            text: 'Etages', 
+            value: 'Etages',
+            hidden: false,
+            filterable: true,
+            index: 3
+        },
+        {
+            text: 'Numéro de sécurité', 
+            value: 'NumeroDeSecurité',
+            hidden: false,
+            index: 4
+        },
+    ],
+    items: [
+        {
+            id: 1,
+            name: 'Four à chariot rotatif',
+            SerialNumbe: 159,
+            localisation: ["Strasbourg"],
+            Etages: 1,
+            NumeroDeSecurité: 5,
+        },
+        {
+            id: 2,
+            name: 'Four spécial',
+            localisation: ["Strasbourg"],
+            Etages: 4,
+        },
+        {
+            id: 3,
+            name: 'Four à chariot rotatif',
+            SerialNumbe: 305,
+            Etages: 5,
+            NumeroDeSecurité: 3,
+        },
+        {
+            id: 8,
+            name: 'Four à chariot rotatif 2',
+            SerialNumbe: 305,
+            Etages: 5,
+            NumeroDeSecurité: 3,
+        },
+        {
+            id: 4,
+            name: 'Four à chariot rotatif',
+            SerialNumbe: 375,
+            localisation: ["Strasbourg"],
+            Etages: 25,
+        },
+    ],
+    itemKey: "id",
+};
+
