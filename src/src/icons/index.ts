@@ -20,9 +20,6 @@ export const Icons: IconsDictionary = {
   devicesWidget: {
     component: () => import("./DevicesWidget.vue")
   },
-  eco: {
-    component: () => import("./Eco.vue")
-  },
   locations: {
     component: () => import("./Locations.vue")
   },
@@ -38,14 +35,8 @@ export const Icons: IconsDictionary = {
   pastry: {
     component: () => import("./Pastry.vue")
   },
-  planning: {
-    component: () => import("./Planning.vue")
-  },
   production: {
     component: () => import("./Production.vue")
-  },
-  recipe: {
-    component: () => import("./Recipe.vue")
   },
   scenarios: {
     component: () => import("./Scenarios.vue")
@@ -53,20 +44,11 @@ export const Icons: IconsDictionary = {
   snacking: {
     component: () => import("./Snacking.vue")
   },
-  temperature: {
-    component: () => import("./Temperature.vue")
-  },
   tile: {
     component: () => import("./Tile.vue")
   },
-  toque: {
-    component: () => import("./Toque.vue")
-  },
   utilisation: {
     component: () => import("./Utilisation.vue")
-  },
-  week: {
-    component: () => import("./Week.vue")
   },
 }
 

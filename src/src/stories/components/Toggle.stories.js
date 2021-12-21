@@ -49,6 +49,6 @@ Default.args = {
   idleBackground: "blue-4",
   width: 150,
   height: 100,
-  icon: "$planning",
+  icon: "$production",
   text: "Planning"
 };

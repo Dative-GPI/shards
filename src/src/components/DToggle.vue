@@ -29,7 +29,7 @@ export default class DToggle extends Vue {
     @Prop({required: false, default: true})
     responsive!: boolean;
 
-    @Prop({ required: false, default: "$planning" })
+    @Prop({ required: false, default: "$production" })
     icon!: string;
 
     @Prop({ required: false, default: "Planning" })
