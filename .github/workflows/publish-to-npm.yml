@@ -2,7 +2,7 @@ name: Publish Package to npmjs
 on:
   push:
     tags: 
-      - "^v*" # On ne lance le workflow que sur les pushes de tags commencant par "v"
+      - "*"
 
 jobs:
   publish:
@@ -11,19 +11,15 @@ jobs:
       # Checking out repository
       - uses: actions/checkout@v2
 
-      # Getting tag name
-      - id: tag
-        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\/v/}
-
       # Setting .npmrc file up to publish to npm
-      # - uses: actions/setup-node@v2
-      #   with:
-      #     node-version: '16.x'
-      #     registry-url: 'https://registry.npmjs.org'
-      #     # User or organization
-      #     scope: '@dative-gpi'
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16.x'
+          registry-url: 'https://registry.npmjs.org'
+          # User or organization
+          scope: '@dative-gpi'
 
       # Publishing with tag name as version
-      - run: echo ${{steps.tag.outputs.VERSION}} # yarn publish --new-version ${{steps.tag.outputs.VERSION}}
-        # env:
-        #   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - run: yarn publish --new-version ${{ github.ref_name }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
