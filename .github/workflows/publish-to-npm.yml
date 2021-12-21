@@ -20,6 +20,8 @@ jobs:
           scope: '@dative-gpi'
 
       # Publishing with tag name as version
-      - run: yarn publish --new-version ${{ github.ref_name }}
-        env:
+      - env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          cd src
+          yarn publish --new-version ${{ github.ref_name }}
