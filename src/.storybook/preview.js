@@ -5,6 +5,7 @@ import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import '@mdi/font/css/materialdesignicons.css'
 import { Shards } from "../src/index.ts"
+import "./storybook.css"
 
 // configure Vue to use Vuetify
 Vue.use(Vuetify)
@@ -39,7 +40,7 @@ export const decorators = [
         },
       },
       template: `
-        <d-app>
+        <d-app class="storybook">
           <d-container fluid>
             <wrapped />
           </d-container>

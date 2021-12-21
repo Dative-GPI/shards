@@ -1,2 +1,5 @@
 .storybook
 src/stories
+.*
+tsconfig.json
+vue.config.js

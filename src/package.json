@@ -1,12 +1,9 @@
 {
-  "name": "shards",
+  "name": "@dative-gpi/shards",
   "version": "0.0.1",
-  "private": true,
+  "private": false,
   "main": "src/index.ts",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },

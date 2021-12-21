@@ -42,7 +42,7 @@ Default.args = {
     { id: "a", index: 3, text: "World", hidden: false },
     { id: "b", index: 3, text: "World", hidden: false }
   ],
-  itemText: "test",
+  itemText: "text",
   itemValue: "id",
   showAllText: 'Show All',
   label: "Colonnes",
