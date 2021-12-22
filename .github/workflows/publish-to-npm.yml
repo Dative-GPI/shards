@@ -27,6 +27,8 @@ jobs:
       - name: Publishing to npmjs 🚀
         run: |
           cd src
-          yarn publish --new-version ${{ github.ref_name }}
+          yarn
+          yarn version --new-version ${{ github.ref_name }} --no-git-tag-version
+          yarn publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
