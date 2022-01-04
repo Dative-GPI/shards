@@ -10,7 +10,7 @@ export default {
 const Template = (args, { argTypes }) => ({
   components: { DSimpleCheckbox },
   props: Object.keys(argTypes),
-  template: '<d-switch v-bind="$props"></d-switch>',
+  template: '<d-simple-checkbox v-bind="$props"></d-switch>',
 });
 
 //👇 Each story then reuses that template
