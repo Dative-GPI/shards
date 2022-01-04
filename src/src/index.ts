@@ -1,3 +1,4 @@
+import DAlert from "./components/DAlert.vue";
 import DApp from "./components/DApp.vue";
 import DAutocomplete from "./components/DAutocomplete.vue";
 import DBottomBar from "./components/DBottomBar.vue";
@@ -33,6 +34,7 @@ import DSimpleCheckbox from "./components/DSimpleCheckbox.vue";
 import DSheet from "./components/DSheet.vue"
 import DSpinner from "./components/DSpinner.vue";
 import DSubTitle from "./components/DSubTitle.vue";
+import DSwitch from "./components/DSwitch.vue";
 import DTextarea from "./components/DTextarea.vue";
 import DTextField from "./components/DTextField.vue";
 import DTile from "./components/DTile.vue";
@@ -68,6 +70,7 @@ const Shards = {
   install(vue: any, options: any) {
     console.log("Registering dat-components locally");
 
+    vue.component("d-alert", DAlert);
     vue.component("d-app", DApp);
     // Components
     vue.component("d-autocomplete", DAutocomplete);
@@ -104,6 +107,7 @@ const Shards = {
     vue.component("d-simple-checkbox", DSimpleCheckbox);
     vue.component("d-spinner", DSpinner);
     vue.component("d-sub-title", DSubTitle);
+    vue.component("d-switch", DSwitch);
     vue.component("d-textarea", DTextarea);
     vue.component("d-text-field", DTextField);
     vue.component("d-tile", DTile);

@@ -1,5 +1,11 @@
 <template>
-  <v-simple-checkbox v-bind="$attrs" v-on="$listeners" class="d-simple-checkbox" color="black-1">
+  <v-simple-checkbox
+    v-if="editable"
+    v-bind="$attrs"
+    v-on="$listeners"
+    class="d-simple-checkbox"
+    color="black-1"
+  >
     <slot></slot>
     <template v-for="(index, name) in $slots" v-slot:[name]>
       <slot :name="name" />
@@ -8,13 +14,21 @@
       <slot :name="name" v-bind="data"></slot>
     </template>
   </v-simple-checkbox>
+  <div v-else>
+    <d-icon v-if="$attrs.value" color="grey-3">mdi-check-circle</d-icon>
+    <d-icon v-else color="grey-3">mdi-cancel</d-icon>
+  </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import { Prop } from "vue-property-decorator/lib";
 
 @Component({
-  inheritAttrs: false
+  inheritAttrs: false,
 })
-export default class DSimpleCheckbox extends Vue { }
+export default class DSimpleCheckbox extends Vue {
+  @Prop({ required: false, default: true })
+  editable!: boolean;
+}
 </script>
