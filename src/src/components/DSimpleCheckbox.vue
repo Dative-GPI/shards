@@ -21,8 +21,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import { Prop } from "vue-property-decorator/lib";
+import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({
   inheritAttrs: false,
