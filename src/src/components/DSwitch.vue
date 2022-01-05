@@ -3,6 +3,7 @@
     v-bind="$attrs"
     v-on="$listeners"
     :input-value="$attrs.value"
+    @change="$emit('input', $event)"
     class="d-switch"
     inset
     dense
