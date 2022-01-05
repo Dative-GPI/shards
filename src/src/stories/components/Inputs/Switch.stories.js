@@ -10,8 +10,27 @@ export default {
 const Template = (args, { argTypes }) => ({
   components: { DSwitch },
   props: Object.keys(argTypes),
-  template: '<d-switch v-bind="$props"></d-switch>',
+  data: () => ({ valueClone: [] }),
+  watch: {
+    value(newVal) {
+      this.valueClone = newVal;
+    }
+  },
+  computed: {
+    oProps() {
+      const { value, ...others } = this.$props;
+      return others
+    }
+  },
+  mounted() {
+    this.valueClone = this.value;
+  },
+  template: '<d-switch v-model="valueClone" v-bind="oProps"></d-switch>',
 });
 
 //👇 Each story then reuses that template
 export const Default = Template.bind({});
+Default.args = {
+  value: false,
+  editable: true
+}

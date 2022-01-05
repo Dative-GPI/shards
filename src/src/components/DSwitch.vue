@@ -1,5 +1,14 @@
 <template>
-  <v-switch v-bind="$attrs" v-on="$listeners" class="d-switch" v-if="editable">
+  <v-switch
+    v-bind="$attrs"
+    v-on="$listeners"
+    :input-value="$attrs.value"
+    class="d-switch"
+    inset
+    dense
+    v-if="editable"
+    color="alert-green"
+  >
     <slot></slot>
     <template v-for="(index, name) in $slots" v-slot:[name]>
       <slot :name="name" />
@@ -24,13 +33,10 @@ export default class DSwitch extends Vue {
   @Prop({ required: false, default: true })
   editable!: boolean;
 
-  @Prop({required: false, default: "alert-green"})
+  @Prop({ required: false, default: "alert-green" })
   activeColor!: string;
 
-  @Prop({required: false, default: "alert-red"})
+  @Prop({ required: false, default: "alert-red" })
   inactiveColor!: string;
-
-  @Prop({ required: false, default: false })
-  disabled!: boolean;
 }
 </script>

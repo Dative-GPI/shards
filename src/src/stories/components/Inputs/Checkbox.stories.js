@@ -10,8 +10,27 @@ export default {
 const Template = (args, { argTypes }) => ({
   components: { DSimpleCheckbox },
   props: Object.keys(argTypes),
-  template: '<d-simple-checkbox v-bind="$props"></d-simple-checkbox>',
+  data: () => ({ valueClone: [] }),
+  watch: {
+    value(newVal) {
+      this.valueClone = newVal;
+    }
+  },
+  computed: {
+    oProps() {
+      const { value, ...others } = this.$props;
+      return others
+    }
+  },
+  mounted() {
+    this.valueClone = this.value;
+  },
+  template: '<d-simple-checkbox v-model="valueClone" v-bind="oProps"></d-simple-checkbox>',
 });
 
 //👇 Each story then reuses that template
 export const Default = Template.bind({});
+Default.args = {
+  value: false,
+  editable: true
+}

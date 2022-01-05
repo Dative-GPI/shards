@@ -9,7 +9,6 @@
     :hide-default-header="!$vuetify.breakpoint.xs"
     :headers="headers"
     :items="filtredItems"
-    :item-key="itemKey"
     :sort-by.sync="sortBy"
     :sort-desc.sync="sortDesc"
   >
@@ -111,9 +110,6 @@ export default class DDataTable extends Vue {
 
   @Prop({ required: true })
   items!: any[];
-
-  @Prop({ required: true })
-  itemKey!: string | Function
 
   sortBy = [];
   sortDesc = [];
