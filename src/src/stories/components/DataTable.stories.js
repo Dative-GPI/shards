@@ -29,6 +29,8 @@ Default.args = {
     columnValue: "value",
     columnPosition: "index",
     configurationIcon: "$cog",
+    showSelect: false,
+    singleSelect: true,
     columns: [
         {
             text: 'Article',

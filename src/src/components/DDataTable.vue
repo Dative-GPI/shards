@@ -13,8 +13,27 @@
     :sort-desc.sync="sortDesc"
   >
     <template v-slot:header="{ props, on }" v-if="!$vuetify.breakpoint.xs">
-      <th v-for="header in props.headers" :key="header.value" class="d-data-table-header">
+      <th
+        v-for="header in props.headers"
+        :key="header.value"
+        class="d-data-table-header"
+      >
         <v-row
+          no-gutters
+          class="justify-center"
+          v-if="header.value == 'data-table-select' && !$attrs.singleSelect"
+        >
+          <d-simple-checkbox
+            :value="props.everyItem"
+            :indeterminate="props.someItems && !props.everyItem"
+            class="d-toggle-select-all"
+            @click="
+              on['toggle-select-all'](!(props.everyItem || props.someItems))
+            "
+          />
+        </v-row>
+        <v-row
+          v-else
           no-gutters
           class="align-center px-5 text-body-1bold"
           :class="{ 'flex-row-reverse': header.align === 'end' }"
@@ -24,12 +43,17 @@
           <d-btn
             icon
             v-if="header.configurable"
-            @click="configured === header.value ? configured = null : configured = header.value"
+            @click="
+              configured === header.value
+                ? (configured = null)
+                : (configured = header.value)
+            "
           >
             <d-icon
               :color="configured === header.value ? 'alert-orange' : 'grey-1'"
               small
-            >{{ configurationIcon }}</d-icon>
+              >{{ configurationIcon }}</d-icon
+            >
           </d-btn>
 
           <slot :name="`header.${header.value}-left-append`" />
@@ -40,10 +64,13 @@
 
           <d-btn icon v-if="header.sortable" @click="on.sort(header.value)">
             <template v-if="props.options.sortBy.includes(header.value)">
-              <d-icon
-                color="blue-1"
-                small
-              >{{ props.options.sortDesc[props.options.sortBy.indexOf(header.value)] ? 'mdi-sort-ascending' : 'mdi-sort-descending' }}</d-icon>
+              <d-icon color="blue-1" small>{{
+                props.options.sortDesc[
+                  props.options.sortBy.indexOf(header.value)
+                ]
+                  ? "mdi-sort-ascending"
+                  : "mdi-sort-descending"
+              }}</d-icon>
             </template>
             <template v-else>
               <d-icon color="grey-1" small>mdi-sort-ascending</d-icon>
@@ -58,9 +85,14 @@
             <template #activator="{ on }">
               <d-btn icon v-on="on">
                 <d-icon
-                  :color="filters[header.value].every(c => !c.hidden) ? 'grey-1' : 'blue-1'"
+                  :color="
+                    filters[header.value].every((c) => !c.hidden)
+                      ? 'grey-1'
+                      : 'blue-1'
+                  "
                   small
-                >mdi-filter</d-icon>
+                  >mdi-filter</d-icon
+                >
               </d-btn>
             </template>
           </d-menu-btn>
@@ -68,6 +100,12 @@
           <slot :name="`header.${header.value}-right-append`" />
         </v-row>
       </th>
+    </template>
+
+    <template #item.data-table-select="{ isSelected, select }">
+      <v-row no-gutters class="align-bottom justify-center">
+        <d-simple-checkbox :value="isSelected" @click="select(!isSelected)" />
+      </v-row>
     </template>
 
     <slot></slot>
@@ -79,7 +117,10 @@
     </template>
 
     <template v-for="header in itemsSlots" v-slot:[header.slotName]="data">
-      <slot :name="header.slotName" v-bind="{ configure: header.value == configured, ...data }"></slot>
+      <slot
+        :name="header.slotName"
+        v-bind="{ configure: header.value == configured, ...data }"
+      ></slot>
     </template>
   </v-data-table>
 </template>
@@ -90,11 +131,11 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { Column } from "../models";
 
 @Component({
-  inheritAttrs: false
+  inheritAttrs: false,
 })
 export default class DDataTable extends Vue {
   @Prop({ required: true })
-  columns!: Column[]
+  columns!: Column[];
 
   @Prop({ required: false, default: "text" })
   columnText!: string;
@@ -113,38 +154,41 @@ export default class DDataTable extends Vue {
 
   sortBy = [];
   sortDesc = [];
-  filters: { [key: string]: Column[] } = {}
+  filters: { [key: string]: Column[] } = {};
 
   configured = null;
 
   get headers() {
     return this.columns
-      .filter(c => !c.hidden)
+      .filter((c) => !c.hidden)
       .sort((c1, c2) => c1[this.columnPosition] - c2[this.columnPosition])
-      .map(c => {
+      .map((c) => {
         const { text, value, ...others } = c;
         return {
           text: c[this.columnText] || text,
           value: c[this.columnValue] || value,
           slotName: `item.${c[this.columnValue] || value}`,
-          ...others
-        }
+          ...others,
+        };
       });
   }
 
   get itemsSlots() {
-    return this.headers.filter(h => this.$scopedSlots[h.slotName])
+    return this.headers.filter((h) => this.$scopedSlots[h.slotName]);
   }
 
   get filtredItems() {
-    return this.items.filter(i => {
+    return this.items.filter((i) => {
       let include = true;
       for (let key in this.filters) {
         var filter = this.filters[key];
 
-        include = include && !!filter
-          .filter(m => !m.hidden)
-          .map(m => m.value).includes(i[key].toString())
+        include =
+          include &&
+          !!filter
+            .filter((m) => !m.hidden)
+            .map((m) => m.value)
+            .includes(i[key].toString());
       }
       return include;
     });
@@ -155,16 +199,23 @@ export default class DDataTable extends Vue {
   }
 
   computeFilters() {
-    this.headers.filter(c => c.filterable)
-      .forEach(c => {
-        Vue.set(this.filters, c.value, [...new Set(this.items.flatMap(i => i[c.value]))]
-          .sort((a, b) => a.toString().localeCompare(b, undefined, { numeric: true }))
-          .map(v => ({
-            hidden: false,
-            text: v.toString(),
-            value: v.toString()
-          })))
-      })
+    this.headers
+      .filter((c) => c.filterable)
+      .forEach((c) => {
+        Vue.set(
+          this.filters,
+          c.value,
+          [...new Set(this.items.flatMap((i) => i[c.value]))]
+            .sort((a, b) =>
+              a.toString().localeCompare(b, undefined, { numeric: true })
+            )
+            .map((v) => ({
+              hidden: false,
+              text: v.toString(),
+              value: v.toString(),
+            }))
+        );
+      });
   }
 
   @Watch("items")
