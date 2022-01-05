@@ -15,6 +15,9 @@ const Template = (args, { argTypes }) => ({
             <template #item.localisation="{ configure, item }">
                 <d-chip-set :editable="configure" v-model="item.localisation" />
             </template>
+            <template #item.name="{configure, item}">
+                <d-text-field v-model="item.name" :editable="configure" />
+            </template>
         </d-data-table>`,
 });
 
@@ -29,12 +32,12 @@ Default.args = {
     columns: [
         {
             text: 'Article',
-            sortable: false,
             filterable: true,
             value: 'name',
             sortable: true,
             hidden: false,
-            index: 0
+            index: 0,
+            configurable: true
         },
         {
             text: 'Serial number', 

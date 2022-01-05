@@ -1,7 +1,7 @@
 <template>
-  <d-sheet class="pa-2 d-bottom-bar" :color="backgroundColor" elevation="3">
+  <v-footer app inset fixed class="d-bottom-bar" :color="backgroundColor" elevation="3">
     <slot></slot>
-  </d-sheet>
+  </v-footer>
 </template>
  
 <script lang="ts">

@@ -41,9 +41,9 @@ export const decorators = [
       },
       template: `
         <d-app class="storybook">
-          <d-container fluid>
+          <v-main>
             <wrapped />
-          </d-container>
+          </v-main>
         </d-app>
       `
     })

@@ -13,9 +13,20 @@ export default {
 const Template = (args, { argTypes }) => ({
   components: { DBottomBar },
   props: Object.keys(argTypes),
-  template: '<d-bottom-bar v-bind="$props">{{label}}</d-bottom-bar>',
+  template: `
+    <div>
+      <v-navigation-drawer
+        fixed
+        v-model="open"
+        app
+        color="grey-drawer"
+        dark
+      />
+      <d-bottom-bar v-bind="$props">{{label}}</d-bottom-bar>
+    </div>
+  `
 });
 
 //👇 Each story then reuses that template
 export const Default = Template.bind({});
-Default.args = {label: "BottomBar"};
+Default.args = { label: "BottomBar", open: false };
