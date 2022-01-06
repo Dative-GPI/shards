@@ -1,9 +1,9 @@
-import DBtn from '@/components/DBtn.vue';
+import DBtnRemove from '@/components/DBtnRemove.vue';
 
 // More on default export: https://storybook.js.org/docs/vue/writing-stories/introduction#default-export
 export default {
-  title: 'Components/Button',
-  component: DBtn,
+  title: 'Components/Buttons/Remove',
+  component: DBtnRemove,
   argTypes: {
     label: { control: 'text' },
   },
@@ -11,9 +11,9 @@ export default {
 
 // More on component templates: https://storybook.js.org/docs/vue/writing-stories/introduction#using-args
 const Template = (args, { argTypes }) => ({
-  components: { DBtn },
+  components: { DBtnRemove },
   props: Object.keys(argTypes),
-  template: '<d-btn v-bind="$props">{{label}}</d-btn>',
+  template: '<d-btn-remove v-bind="$props">{{label}}</d-btn-remove>',
 });
 
 //👇 Each story then reuses that template

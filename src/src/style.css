@@ -13,6 +13,15 @@ html {
   line-height: 20px;
 }
 
+.d-application.v-application .d-btn.d-btn-cancel {
+  border-color: #606060!important;
+}
+
+
+.d-application.v-application .d-btn.d-btn-checkbox:not(.active) {
+  border-color: #606060!important;
+}
+
 .d-card {
   padding: 12px;
   position: relative;
