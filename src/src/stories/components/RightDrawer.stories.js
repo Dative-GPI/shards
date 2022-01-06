@@ -9,40 +9,37 @@ export default {
 const Template = (args, { argTypes }) => ({
     components: { DRightDrawer },
     props: Object.keys(argTypes),
+    data: () => ({ drawer: false }),
     template:
         `
-        <v-container>
+        <div>
             <d-btn @click.stop="drawer = !drawer">
-            Toggle
+                Toggle
             </d-btn>
-            <d-right-drawer v-bind="$props" v-model="drawer">
-                <v-list>
-                        <v-list-item
-                        v-for="([icon, text], i) in items"
-                        :key="i"
-                        link
-                    >
-                        <v-list-item-icon>
-                            <v-icon>{{ icon }}</v-icon>
-                        </v-list-item-icon>
 
-                        <v-list-item-content>
-                            <v-list-item-title>{{ text }}</v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-list>
+            <d-right-drawer v-bind="$props" v-model="drawer" >
+                <template #title>
+                    {{ title }}
+                </template>
+                
+                <div>
+                    Body 
+                </div>
+
+                <template #actions>
+                    <v-row no-gutters>
+                        <v-spacer />
+                        <d-btn>Go</d-btn>
+                    </v-row>
+                </template>
             </d-right-drawer>
-        </v-container>
+        </div>
         `
 });
 
 //👇 Each story then reuses that template
 export const Default = Template.bind({});
 Default.args = {
-    drawer: null,
-    items: [
-        ['mdi-email', 'Inbox'],
-        ['mdi-account-supervisor-circle', 'Supervisors'],
-        ['mdi-clock-start', 'Clock-in'],
-      ],
+    title: "Titre",
+    hideOverlay: false
 };

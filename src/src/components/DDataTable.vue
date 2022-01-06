@@ -14,10 +14,14 @@
   >
     <template v-slot:header="{ props, on }" v-if="!$vuetify.breakpoint.xs">
       <th
+        scope="col"
         v-for="header in props.headers"
         :key="header.value"
         class="d-data-table-header"
       >
+        <!-- Th pour le sortable -->
+
+        <!-- Th pour le multi select -->
         <v-row
           no-gutters
           class="justify-center"
@@ -32,6 +36,7 @@
             "
           />
         </v-row>
+
         <v-row
           v-else
           no-gutters
@@ -150,7 +155,7 @@ export default class DDataTable extends Vue {
   configurationIcon!: string;
 
   @Prop({ required: true })
-  items!: any[];
+  items!: Array<any>;
 
   sortBy = [];
   sortDesc = [];
@@ -159,18 +164,35 @@ export default class DDataTable extends Vue {
   configured = null;
 
   get headers() {
-    return this.columns
-      .filter((c) => !c.hidden)
-      .sort((c1, c2) => c1[this.columnPosition] - c2[this.columnPosition])
-      .map((c) => {
-        const { text, value, ...others } = c;
-        return {
-          text: c[this.columnText] || text,
-          value: c[this.columnValue] || value,
-          slotName: `item.${c[this.columnValue] || value}`,
-          ...others,
-        };
-      });
+    var columns: Column[] = [];
+
+    // if (this.sortable) {
+    //   columns.push({
+    //     text: "",
+    //     value: "",
+    //     slotName: "item.data-table-sort",
+    //     filterable: false,
+    //     index: -1,
+    //     hidden: false
+    //   });
+    // }
+
+    columns = columns.concat(
+      this.columns
+        .filter((c) => !c.hidden)
+        .sort((c1, c2) => c1[this.columnPosition] - c2[this.columnPosition])
+        .map((c) => {
+          const { text, value, ...others } = c;
+          return {
+            text: c[this.columnText] || text,
+            value: c[this.columnValue] || value,
+            slotName: `item.${c[this.columnValue] || value}`,
+            ...others,
+          };
+        })
+    );
+
+    return columns;
   }
 
   get itemsSlots() {
@@ -204,10 +226,10 @@ export default class DDataTable extends Vue {
       .forEach((c) => {
         Vue.set(
           this.filters,
-          c.value,
-          [...new Set(this.items.flatMap((i) => i[c.value]))]
+          c.value!,
+          [...new Set(this.items.flatMap((i: any) => i[c.value!]))]
             .sort((a, b) =>
-              a.toString().localeCompare(b, undefined, { numeric: true })
+              a.toString().localeCompare(b.toString(), undefined, { numeric: true })
             )
             .map((v) => ({
               hidden: false,

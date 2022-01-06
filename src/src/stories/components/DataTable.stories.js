@@ -31,6 +31,7 @@ Default.args = {
     configurationIcon: "$cog",
     showSelect: false,
     singleSelect: true,
+    sortable: true,
     columns: [
         {
             text: 'Article',

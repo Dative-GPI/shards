@@ -1,5 +1,5 @@
 <template>
-  <v-app v-bind="$attrs" v-on="$listeners" class="d-app">
+  <v-app v-bind="$attrs" v-on="$listeners" class="d-application">
     <slot></slot>
     <template v-for="(index, name) in $slots" v-slot:[name]>
       <slot :name="name" />
