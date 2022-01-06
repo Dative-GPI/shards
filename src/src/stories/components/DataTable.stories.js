@@ -55,6 +55,7 @@ Default.args = {
             value: 'localisation',
             hidden: false,
             index: 6,
+            sortable: true,
             configurable: true
         },
         {
