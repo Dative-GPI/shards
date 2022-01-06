@@ -8,18 +8,24 @@ export default {
 
 
 const Template = (args, { argTypes }) => ({
-    components: { DValidationBar },
-    props: Object.keys(argTypes),
-    template: '<d-validation-bar v-bind="$props"></d-validation-bar>',
+  components: { DValidationBar },
+  props: Object.keys(argTypes),
+  data: () => ({ open: false }),
+  template: `
+      <div>
+        <d-btn-edit v-model="open" />
+        <d-validation-bar v-if="open" v-bind="$props" @cancel="open = false" @save="open = false" @remove="open = false"></d-validation-bar>
+      </div>
+    `,
 });
 
 export const Default = Template.bind({});
 Default.args = {
-  removable: false, 
-  saveable: true, 
+  removable: false,
+  saveable: true,
   responsive: true,
-  saveText: "Enregistrer les modifications", 
-  cancelText: 'Annuler', 
+  saveText: "Enregistrer les modifications",
+  cancelText: 'Annuler',
   removeText: "Supprimer",
   backgroundColor: "white"
 };

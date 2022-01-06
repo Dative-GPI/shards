@@ -1,9 +1,9 @@
-import DBtn from '@/components/DBtn.vue';
+import DBtnSave from '@/components/DBtnSave.vue';
 
 // More on default export: https://storybook.js.org/docs/vue/writing-stories/introduction#default-export
 export default {
-  title: 'Components/Button',
-  component: DBtn,
+  title: 'Components/Buttons/Save',
+  component: DBtnSave,
   argTypes: {
     label: { control: 'text' },
   },
@@ -11,14 +11,14 @@ export default {
 
 // More on component templates: https://storybook.js.org/docs/vue/writing-stories/introduction#using-args
 const Template = (args, { argTypes }) => ({
-  components: { DBtn },
+  components: { DBtnSave },
   props: Object.keys(argTypes),
-  template: '<d-btn v-bind="$props">{{label}}</d-btn>',
+  template: '<d-btn-save v-bind="$props">{{label}}</d-btn-save>',
 });
 
 //👇 Each story then reuses that template
 export const Default = Template.bind({});
-Default.args = {label: "Button"};
+Default.args = { label: "Button" };
 
 
 // export const Dangerous = Template.bind();

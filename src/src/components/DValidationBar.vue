@@ -4,10 +4,9 @@
       <slot name="left">
         <slot name="left-prepend"></slot>
         <slot name="left-actions">
-          <d-btn v-if="removable" class="red-4 mr-8" @click="$emit('remove')">
-            <d-icon :left="responsive && !$vuetify.breakpoint.mobile">mdi-trash-can-outline</d-icon>
-            <div v-if="!responsive || !$vuetify.breakpoint.mobile">{{ removeText }}</div>
-          </d-btn>
+          <d-btn-remove v-if="removable" :responsive="responsive" @click="$emit('remove')">
+            <slot name="remove">{{ removeText }}</slot>
+          </d-btn-remove>
         </slot>
         <slot name="left-append"></slot>
       </slot>
@@ -17,14 +16,17 @@
       <slot name="right">
         <slot name="right-prepend"></slot>
         <slot name="right-actions">
-          <d-btn class="grey-3--border d-border-inset grey-3--text mx-4" @click="$emit('edit')">
-            <d-icon :left="responsive && !$vuetify.breakpoint.mobile">mdi-cancel</d-icon>
-            <div v-if="!responsive || !$vuetify.breakpoint.mobile">{{ cancelText }}</div>
-          </d-btn>
-          <d-btn :disabled="!saveable" class="green-1 grey-3--text" @click="$emit('save')">
-            <d-icon :left="responsive && !$vuetify.breakpoint.mobile">mdi-content-save-outline</d-icon>
-            <div v-if="!responsive || !$vuetify.breakpoint.mobile">{{ saveText }}</div>
-          </d-btn>
+          <d-btn-cancel @click="$emit('cancel')" :responsive="responsive">
+            <slot name="cancel">{{ cancelText }}</slot>
+          </d-btn-cancel>
+          <d-btn-save
+            class="ml-3"
+            :disabled="!saveable"
+            @click="$emit('save')"
+            :responsive="responsive"
+          >
+            <slot name="save">{{ saveText }}</slot>
+          </d-btn-save>
         </slot>
         <slot name="right-append"></slot>
       </slot>
