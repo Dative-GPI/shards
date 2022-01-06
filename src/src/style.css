@@ -183,6 +183,23 @@ html {
   line-height: 20px;
 }
 
+.d-text-field {
+  font-size: 1rem;
+}
+
+.d-autocomplete {
+  font-size: 1rem;
+}
+
+.d-select {
+  font-size: 1rem;
+}
+
+.d-textarea {
+  font-size: 1rem;
+}
+
+
 .d-text-field .v-label:not(.v-label--active) {
   top: 0px;
   margin-top: 4px;
@@ -255,6 +272,10 @@ html {
 
 .v-select__selection {
   padding-left: 4px;
+}
+
+.d-simple-checkbox {
+  height: 24px;
 }
 
 .d-simple-checkbox .v-input--selection-controls__input {

@@ -9,11 +9,20 @@
   >
     <template #activator="{ on }">
       <slot name="activator" v-bind="{ on }">
-        <d-btn v-bind="$attrs" v-on="on" color="blue-3 white-1--text" class="d-columns-btn">
+        <d-btn
+          v-bind="$attrs"
+          v-on="on"
+          color="blue-3 white-1--text"
+          class="d-columns-btn"
+        >
           <template name="icon">
             <d-icon>mdi-view-week</d-icon>
           </template>
-          <span v-show="!$vuetify.breakpoint.mobile || !responsive" class="ml-2">{{ label }}</span>
+          <span
+            v-show="!$vuetify.breakpoint.mobile || !responsive"
+            class="ml-2"
+            >{{ label }}</span
+          >
         </d-btn>
       </slot>
     </template>
@@ -33,7 +42,11 @@
       </d-list-item>
     </d-list>
     <d-list dense style="max-height: 250px; overflow-y: auto" class="pt-0">
-      <draggable :value="sortedColumns" @input="dropColumn" :disabled="!sortable">
+      <draggable
+        :value="sortedColumns"
+        @input="dropColumn"
+        :disabled="!sortable"
+      >
         <d-list-item v-for="column in sortedColumns" :key="column[itemValue]">
           <d-icon v-if="sortable" class="d-cursor-drag pr-1">mdi-drag</d-icon>
           <d-simple-checkbox
@@ -73,11 +86,11 @@ export default class DMenuBtn extends Vue {
   @Prop({ required: true })
   value!: Column[];
 
-  @Prop({ required: false, default: 'text' })
-  itemText!: string
+  @Prop({ required: false, default: "text" })
+  itemText!: string;
 
   @Prop({ required: false, default: "value" })
-  itemValue!: string
+  itemValue!: string;
 
   @Prop({ required: false, default: "Search" })
   searchLabel!: string;
@@ -113,7 +126,11 @@ export default class DMenuBtn extends Vue {
 
   get sortedColumns() {
     return _(this.value)
-      .filter((c: Column) => c[this.itemText] && c[this.itemText].toLowerCase().includes(this.search.toLowerCase()))
+      .filter(
+        (c: Column) =>
+          c[this.itemText] &&
+          c[this.itemText].toLowerCase().includes(this.search.toLowerCase())
+      )
       .sortBy((c: Column) => c.index)
       .value();
   }
@@ -172,7 +189,8 @@ export default class DMenuBtn extends Vue {
         const { hidden, ...old } = c;
         return {
           ...old,
-          hidden: c[this.itemValue] == column[this.itemValue] ? !c.hidden : c.hidden,
+          hidden:
+            c[this.itemValue] == column[this.itemValue] ? !c.hidden : c.hidden,
         };
       })
     );

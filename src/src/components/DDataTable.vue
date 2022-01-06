@@ -4,8 +4,6 @@
     v-on="$listeners"
     class="d-data-table"
     fixed-header
-    disable-pagination
-    hide-default-footer
     :hide-default-header="!$vuetify.breakpoint.xs"
     :headers="headers"
     :items="filtredItems"
