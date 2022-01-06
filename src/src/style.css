@@ -13,6 +13,10 @@ html {
   line-height: 20px;
 }
 
+.d-btn-edit.active {
+  visibility: hidden;
+}
+
 .d-application.v-application .d-btn.d-btn-cancel {
   border-color: #606060!important;
 }

@@ -1,9 +1,9 @@
-import DBtnEdit from '@/components/DBtnEdit.vue';
+import DBtnLatch from '@/components/DBtnLatch.vue';
 
 // More on default export: https://storybook.js.org/docs/vue/writing-stories/introduction#default-export
 export default {
-  title: 'Components/Buttons/Edit',
-  component: DBtnEdit,
+  title: 'Components/Buttons/Latch',
+  component: DBtnLatch,
   argTypes: {
     label: { control: 'text' },
   },
@@ -11,29 +11,14 @@ export default {
 
 // More on component templates: https://storybook.js.org/docs/vue/writing-stories/introduction#using-args
 const Template = (args, { argTypes }) => ({
-  components: { DBtnEdit },
+  components: { DBtnLatch },
   props: Object.keys(argTypes),
-  data: () => ({ valueClone: [] }),
-  watch: {
-    value(newVal) {
-      this.valueClone = newVal;
-    }
-  },
-  computed: {
-    oProps() {
-      const { value, ...others } = this.$props;
-      return others
-    }
-  },
-  mounted() {
-    this.valueClone = this.value;
-  },
-  template: '<d-btn-edit v-model="valueClone" v-bind="oProps">{{label}}</d-btn-edit>',
+  template: '<d-btn-latch v-bind="$props">{{label}}</d-btn-latch>',
 });
 
 //👇 Each story then reuses that template
 export const Default = Template.bind({});
-Default.args = { label: "Button", value: false, responsive: true };
+Default.args = { label: "Button" };
 
 
 // export const Dangerous = Template.bind();

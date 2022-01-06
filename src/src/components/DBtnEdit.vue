@@ -1,24 +1,30 @@
 <template>
   <d-btn
     v-bind="$attrs"
-    v-on="$listeners"
-    class="d-btn-edit"
+    class="d-btn-edit blue-4"
+    :class="{ active: value }"
+    @click="$emit('input', !value)"
   >
-    <slot> </slot>
-    <template v-for="(index, name) in $slots" v-slot:[name]>
-      <slot :name="name" />
-    </template>
-    <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">
-      <slot :name="name" v-bind="data"></slot>
-    </template>
+    <slot name="body">
+      <v-icon small>mdi-pencil</v-icon>
+      <span v-if="!responsive || !$vuetify.breakpoint.mobile" class="ml-2 grey-3--text">
+        <slot>Edit</slot>
+      </span>
+    </slot>
   </d-btn>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component({
   inheritAttrs: false,
 })
-export default class DBtnEdit extends Vue {}
+export default class DBtnEdit extends Vue {
+  @Prop({ required: false, default: true, type: Boolean })
+  responsive!: boolean;
+
+  @Prop({ required: false, default: false })
+  value!: boolean;
+}
 </script>
