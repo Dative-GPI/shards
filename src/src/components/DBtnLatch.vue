@@ -3,6 +3,7 @@
     v-bind="$attrs"
     v-on="$listeners"
     class="d-btn-latch"
+    color="blue-3 white-1--text"
   >
     <slot> </slot>
     <template v-for="(index, name) in $slots" v-slot:[name]>

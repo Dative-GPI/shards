@@ -10,7 +10,9 @@
     <slot name="header">
       <v-row no-gutters align="center" justify="start" class="mb-3">
         <d-btn icon @click="$emit('input', false)">
-          <v-icon large class="">mdi-chevron-right</v-icon>
+          <template #body>
+            <v-icon large class="">mdi-chevron-right</v-icon>
+          </template>
         </d-btn>
         <slot name="title-outer">
           <d-title class="ml-2">

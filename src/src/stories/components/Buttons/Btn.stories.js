@@ -16,10 +16,21 @@ const Template = (args, { argTypes }) => ({
   template: '<d-btn v-bind="$props">{{label}}</d-btn>',
 });
 
+const Template2 = (args, { argTypes }) => ({
+  components: { DBtn },
+  props: Object.keys(argTypes),
+  template: `
+  <d-btn v-bind="$props">
+    <d-icon>mdi-delete</d-icon>
+  </d-btn>`,
+});
+
 //👇 Each story then reuses that template
 export const Default = Template.bind({});
-Default.args = {label: "Button"};
+Default.args = { label: "Button" };
 
+export const Body = Template2.bind({});
+Body.args = { label: "Button" };
 
 // export const Dangerous = Template.bind();
 // Dangerous.args = {

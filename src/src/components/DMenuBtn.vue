@@ -9,21 +9,13 @@
   >
     <template #activator="{ on }">
       <slot name="activator" v-bind="{ on }">
-        <d-btn
+        <d-btn-latch
           v-bind="$attrs"
           v-on="on"
-          color="blue-3 white-1--text"
           class="d-columns-btn"
-        >
-          <template name="icon">
-            <d-icon>mdi-view-week</d-icon>
-          </template>
-          <span
-            v-show="!$vuetify.breakpoint.mobile || !responsive"
-            class="ml-2"
-            >{{ label }}</span
-          >
-        </d-btn>
+          icon="mdi-view-week"
+          >{{ label }}
+        </d-btn-latch>
       </slot>
     </template>
     <d-list dense class="pb-0">
