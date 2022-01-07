@@ -18,7 +18,7 @@ const Template = (args, { argTypes }) => ({
 
 //👇 Each story then reuses that template
 export const Default = Template.bind({});
-Default.args = { label: "Button" };
+Default.args = { label: "Button", icon: "mdi-content-save-outline", responsive: true };
 
 
 // export const Dangerous = Template.bind();

@@ -2,7 +2,6 @@
   <d-btn
     v-bind="$attrs"
     v-on="$listeners"
-    :outlined="true"
     class="d-btn-checkbox"
   >
     <slot> </slot>
