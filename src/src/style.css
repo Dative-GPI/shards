@@ -381,19 +381,15 @@ textarea {
   font-family: 'Montserrat', sans-serif!important;
 }
 
-/* 'h6-button': (font-size: 1rem,
-  height': 1.14 rem,
-'weight': 600, //semi-bold
-),
-'body-1': ('size': 1rem,
-  'line-height': 1.43rem,
-  'weight': 400, //regular
-),
-'body-1bold': ('size': 1rem,
-  'line-height': 1.43rem,
-  'weight': 600, //semi-bold
-),
-'body-chiffre-big': ('size': 2.86rem,
-  'line-height': 2.29 rem,
-  'weight': 400, //regular
-), */
+.d-grid {
+  display: grid;
+  justify-items: start;
+  place-content: start;
+  row-gap: 4px;
+  column-gap: 10px;
+  grid-template-columns: 2fr 3fr 1fr;
+}
+
+.d-grid.edit .d-grid-key.editable.required::after {
+  content: "*"
+}
