@@ -18,7 +18,7 @@ const Template = (args, { argTypes }) => ({
 
 //👇 Each story then reuses that template
 export const Default = Template.bind({});
-Default.args = {label: "Cancel"};
+Default.args = { label: "Cancel", responsive: true };
 
 
 // export const Dangerous = Template.bind();
