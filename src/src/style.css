@@ -13,7 +13,7 @@ html {
   line-height: 20px;
 }
 
-.d-btn-edit.active {
+.d-btn.hidden {
   visibility: hidden;
 }
 

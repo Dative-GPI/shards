@@ -2,7 +2,7 @@
   <d-btn
     v-bind="$attrs"
     v-on="$listeners"
-    class="d-btn-cancel"
+    class="d-btn-drawer grey-3 white-2--text"
   >
     <slot> </slot>
     <template v-for="(index, name) in $slots" v-slot:[name]>

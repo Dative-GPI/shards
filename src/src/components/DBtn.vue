@@ -6,10 +6,13 @@
     elevation="0"
     small
     class="d-btn"
+    :class="{hidden}"
     active-class="d-btn-active"
   >
     <slot name="body" v-if="isIconString">
-      <slot name="icon"><v-icon small v-if="isIconString" v-text="icon" /></slot>
+      <slot name="icon">
+        <v-icon small v-if="isIconString" v-text="icon" />
+      </slot>
       <slot name="text">
         <span
           v-if="!responsive || !$vuetify.breakpoint.mobile || !isIconString"
@@ -36,7 +39,10 @@ export default class DBtn extends Vue {
   @Prop({ required: false, default: () => null })
   icon!: string | null;
 
-  get isIconString(){
+  @Prop({ required: false, default: false })
+  hidden!: boolean;
+
+  get isIconString() {
     return typeof this.icon === "string" && this.icon !== "";
   }
 }

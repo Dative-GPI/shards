@@ -1,3 +1,4 @@
+import DAccess from "./components/DAccess.vue";
 import DAlert from "./components/DAlert.vue";
 import DApp from "./components/DApp.vue";
 import DAutocomplete from "./components/DAutocomplete.vue";
@@ -79,6 +80,7 @@ const Shards = {
   install(vue: any, options: any) {
     console.log("Registering dat-components locally");
 
+    vue.component("d-access", DAccess);
     vue.component("d-alert", DAlert);
     vue.component("d-app", DApp);
     // Components
