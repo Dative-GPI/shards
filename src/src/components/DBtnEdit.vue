@@ -1,6 +1,7 @@
 <template>
   <d-btn
     v-bind="$attrs"
+    v-on="$listeners"
     class="d-btn-edit blue-4"
     :icon="$attrs.icon || 'mdi-pencil'"
   >
