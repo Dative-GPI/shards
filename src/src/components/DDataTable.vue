@@ -39,7 +39,7 @@
           v-else
           no-gutters
           class="align-center px-5 text-body-1bold"
-          :class="{ 'flex-row-reverse': header.align === 'end' }"
+          :class="{ 'flex-row-reverse': header.align === 'end', 'justify-center': header.align === 'center' }"
         >
           <slot :name="`header.${header.value}-left-prepend`" />
           <span class="d-data-table-header-text">{{ header.text }}</span>
@@ -55,52 +55,54 @@
             <d-icon
               :color="configured === header.value ? 'alert-orange' : 'grey-1'"
               small
-              >{{ configurationIcon }}</d-icon
-            >
+            >{{ configurationIcon }}</d-icon>
           </d-btn>
 
           <slot :name="`header.${header.value}-left-append`" />
 
-          <v-spacer />
+          <template v-if="header.sortable || header.filterable">
+            <v-spacer />
 
-          <slot :name="`header.${header.value}-right-prepend`" />
+            <slot :name="`header.${header.value}-right-prepend`" />
 
-          <d-btn icon v-if="header.sortable" @click="on.sort(header.value)">
-            <template v-if="props.options.sortBy.includes(header.value)">
-              <d-icon color="blue-1" small>{{
-                props.options.sortDesc[
-                  props.options.sortBy.indexOf(header.value)
-                ]
-                  ? "mdi-sort-ascending"
-                  : "mdi-sort-descending"
-              }}</d-icon>
-            </template>
-            <template v-else>
-              <d-icon color="grey-1" small>mdi-sort-ascending</d-icon>
-            </template>
-          </d-btn>
+            <d-btn icon v-if="header.sortable" @click="on.sort(header.value)">
+              <template v-if="props.options.sortBy.includes(header.value)">
+                <d-icon color="blue-1" small>
+                  {{
+                    props.options.sortDesc[
+                      props.options.sortBy.indexOf(header.value)
+                    ]
+                      ? "mdi-sort-ascending"
+                      : "mdi-sort-descending"
+                  }}
+                </d-icon>
+              </template>
+              <template v-else>
+                <d-icon color="grey-1" small>mdi-sort-ascending</d-icon>
+              </template>
+            </d-btn>
 
-          <d-menu-btn
-            v-if="header.filterable && filters[header.value]"
-            v-model="filters[header.value]"
-            :sortable="false"
-          >
-            <template #activator="{ on }">
-              <d-btn icon v-on="on">
-                <d-icon
-                  :color="
-                    filters[header.value].every((c) => !c.hidden)
-                      ? 'grey-1'
-                      : 'blue-1'
-                  "
-                  small
-                  >mdi-filter</d-icon
-                >
-              </d-btn>
-            </template>
-          </d-menu-btn>
+            <d-menu-btn
+              v-if="header.filterable && filters[header.value]"
+              v-model="filters[header.value]"
+              :sortable="false"
+            >
+              <template #activator="{ on }">
+                <d-btn icon v-on="on">
+                  <d-icon
+                    :color="
+                      filters[header.value].every((c) => !c.hidden)
+                        ? 'grey-1'
+                        : 'blue-1'
+                    "
+                    small
+                  >mdi-filter</d-icon>
+                </d-btn>
+              </template>
+            </d-menu-btn>
 
-          <slot :name="`header.${header.value}-right-append`" />
+            <slot :name="`header.${header.value}-right-append`" />
+          </template>
         </v-row>
       </th>
     </template>
@@ -120,10 +122,7 @@
     </template>
 
     <template v-for="header in itemsSlots" v-slot:[header.slotName]="data">
-      <slot
-        :name="header.slotName"
-        v-bind="{ configure: header.value == configured, ...data }"
-      ></slot>
+      <slot :name="header.slotName" v-bind="{ configure: header.value == configured, ...data }"></slot>
     </template>
   </v-data-table>
 </template>
