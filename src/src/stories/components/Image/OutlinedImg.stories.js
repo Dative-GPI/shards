@@ -17,7 +17,6 @@ export const Img1 = Template1.bind({});
 Img1.args = {
   size: 400,
   fill: 'transparent',
-  color: 'blue',
   src: "https://cdn.vuetifyjs.com/images/parallax/material.jpg",
   editable: false,
   circle: false

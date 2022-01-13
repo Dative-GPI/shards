@@ -1,6 +1,6 @@
 <template>
   <div class="d-outlined-img">
-    <d-circle :size="size" :fill="fill" :color="color">
+    <d-circle :size="size" :fill="fill" :color="$color(color)">
       <div class="img-center">
         <slot
           v-bind="{
@@ -32,7 +32,7 @@ export default class DOutlinedImg extends Vue {
   @Prop({ required: false, default: "white" })
   fill!: boolean;
 
-  @Prop({ required: false, default: "blue" })
+  @Prop({ required: false, default: "blue-2" })
   color!: string;
 
   @Prop({ required: false, default: false, type: Boolean })

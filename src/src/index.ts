@@ -80,7 +80,9 @@ import '@fontsource/montserrat'
 
 const Shards = {
   install(vue: any, options: any) {
-    console.log("Registering dat-components locally");
+    vue.prototype.$color = function (colorKey: string) {
+      return this.$vuetify.theme.currentTheme[colorKey]
+    };
 
     vue.component("d-access", DAccess);
     vue.component("d-alert", DAlert);
