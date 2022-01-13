@@ -10,7 +10,8 @@ export default {
 const Template = (args, { argTypes }) => ({
   components: { DImg },
   props: Object.keys(argTypes),
-  template: '<d-img v-bind="$props"/>',
+  data: () => ({ data: "" }),
+  template: '<d-img v-bind="$props" v-model="data"/>',
 });
 
 //👇 Each story then reuses that template

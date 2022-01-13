@@ -1,5 +1,5 @@
 <template>
-  <d-outlined-img v-bind="$attrs" :fullfill="fullfill" :size="size">
+  <d-outlined-img v-bind="$attrs" v-on="$listeners">
     <template #default="{ width, height }">
       <d-blur-img
         :width="width"
@@ -7,11 +7,8 @@
         :image-width="imageWidth"
         :image-height="imageHeight"
         :image-blur-hash="imageBlurHash"
-        :src="src"
-        :editable="editable"
         :fullfill="fullfill"
         v-bind="$attrs"
-        v-on="$listeners"
       />
     </template>
   </d-outlined-img>
@@ -36,14 +33,5 @@ export default class DOutlinedBlurImg extends Vue {
 
   @Prop({ required: true, type: Number })
   imageWidth!: number;
-
-  @Prop({ required: false, default: 100, type: Number })
-  size!: number;
-
-  @Prop({ required: false, default: false, type: Boolean })
-  editable!: boolean;
-
-  @Prop({ required: true, type: String })
-  src!: string;
 }
 </script>

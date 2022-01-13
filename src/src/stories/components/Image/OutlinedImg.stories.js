@@ -10,7 +10,8 @@ export default {
 const Template1 = (args, { argTypes }) => ({
   components: { DOutlinedImg },
   props: Object.keys(argTypes),
-  template: '<d-outlined-img v-bind="$props"/>',
+  data: () => ({ data: "" }),
+  template: '<d-outlined-img v-bind="$props" v-model="data" @remove="data = null" />',
 });
 
 export const Img1 = Template1.bind({});

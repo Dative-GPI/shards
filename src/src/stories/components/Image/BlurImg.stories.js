@@ -12,8 +12,9 @@ export default {
 const Template = (args, { argTypes }) => ({
     components: { DBlurImg },
     props: Object.keys(argTypes),
+    data: () => ({ data: "" }),
     template: `
-    <d-blur-img v-bind="$props" />
+    <d-blur-img v-bind="$props" v-model="data" />
   `
 });
 
@@ -26,7 +27,8 @@ Img1.args = {
     width: 200,
     height: 150,
     round: false,
-    src: "https://blurha.sh/assets/images/img2.jpg"
+    src: "https://blurha.sh/assets/images/img2.jpg",
+    editable: true
 };
 
 

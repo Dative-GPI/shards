@@ -1,6 +1,9 @@
 <template>
-  <div class="d-outlined-img">
-    <d-circle :size="size" :fill="fill" :color="$color(color)">
+  <div
+    class="d-outlined-img"
+    :style="{ height: size + 'px', width: size + 'px' }"
+  >
+    <d-circle :size="size" :fill="$color(fill)" :color="$color(color)">
       <div class="img-center">
         <slot
           v-bind="{
@@ -18,6 +21,18 @@
         </slot>
       </div>
     </d-circle>
+    <d-btn-file
+      v-if="editable"
+      class="d-btn-edit-outlined-img"
+      icon="mdi-pencil"
+      @input="$emit('input', $event)"
+      accept="image/*"
+    />
+    <d-btn-remove
+      v-if="editable"
+      class="d-btn-remove-outlined-img"
+      @click="$emit('remove')"
+    />
   </div>
 </template>
 
@@ -26,20 +41,16 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component({})
 export default class DOutlinedImg extends Vue {
+  @Prop({ required: false, default: false })
+  editable!: boolean;
+
   @Prop({ required: false, default: 160, type: Number })
   size!: number;
 
   @Prop({ required: false, default: "white" })
-  fill!: boolean;
+  fill!: string;
 
   @Prop({ required: false, default: "blue-2" })
   color!: string;
-
-  @Prop({ required: false, default: false, type: Boolean })
-  fullfill!: boolean;
-
-  get sizeFactor() {
-    return this.fullfill ? 0.93 : 0.65;
-  }
 }
 </script>

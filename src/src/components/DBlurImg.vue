@@ -14,14 +14,15 @@
       :value="imageBlurHash"
       :width="canvasWidth"
       :height="canvasHeight"
+      v-show="!$attrs.value"
     />
     <d-img
       :class="{ hidden: !loaded }"
       @load="loaded = true"
       v-bind="$attrs"
       v-on="$listeners"
-      :width="canvasWidth"
-      :height="canvasHeight"
+      :width="!$attrs.value ? canvasWidth : width"
+      :height="!$attrs.value ? canvasHeight : height"
     />
   </div>
 </template>
@@ -48,7 +49,7 @@ export default class BlurImage extends Vue {
   @Prop({ required: true, type: Number })
   width!: number;
 
-  @Prop({required: false, default: false, type: Boolean})
+  @Prop({ required: false, default: false, type: Boolean })
   fullfill!: boolean;
 
   @Prop({ required: false, default: false, type: Boolean })
@@ -58,13 +59,15 @@ export default class BlurImage extends Vue {
 
   get minRatio() {
     return Math.min(
-      this.height / this.imageHeight, this.width / this.imageWidth
+      this.height / this.imageHeight,
+      this.width / this.imageWidth
     );
   }
 
   get maxRatio() {
     return Math.max(
-      this.height / this.imageHeight, this.width / this.imageWidth
+      this.height / this.imageHeight,
+      this.width / this.imageWidth
     );
   }
 

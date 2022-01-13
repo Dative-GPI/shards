@@ -6,7 +6,7 @@
     elevation="0"
     small
     class="d-btn"
-    :class="{hidden}"
+    :class="{ hidden }"
     active-class="d-btn-active"
   >
     <slot name="body" v-if="isIconString">
@@ -14,12 +14,14 @@
         <v-icon small v-if="isIconString" v-text="icon" />
       </slot>
       <slot name="text">
-        <span
-          v-if="!responsive || !$vuetify.breakpoint.mobile || !isIconString"
-          :class="{ 'ml-2': isIconString }"
-        >
-          <slot></slot>
-        </span>
+        <template v-if="!!$scopedSlots.default">
+          <span
+            v-if="!responsive || !$vuetify.breakpoint.mobile || !isIconString"
+            :class="{ 'ml-2': isIconString }"
+          >
+            <slot></slot>
+          </span>
+        </template>
       </slot>
     </slot>
     <slot v-else></slot>
