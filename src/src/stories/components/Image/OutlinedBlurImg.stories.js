@@ -11,8 +11,9 @@ export default {
 const Template2 = (args, { argTypes }) => ({
     components: { DOutlinedBlurImg },
     props: Object.keys(argTypes),
+    data: () => ({ data: "" }),
     template: `
-    <d-outlined-blur-img v-bind="$props" />
+    <d-outlined-blur-img v-bind="$props" v-model="data" @remove="data = null"/>
     `,
 });
 

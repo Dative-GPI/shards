@@ -22,12 +22,12 @@ html {
 }
 
 .d-application.v-application .d-btn.d-btn-cancel {
-  border-color: #606060!important;
+  border-color: #606060 !important;
 }
 
 
 .d-application.v-application .d-btn.d-btn-checkbox:not(.active) {
-  border-color: #606060!important;
+  border-color: #606060 !important;
 }
 
 .d-card {
@@ -324,6 +324,28 @@ html {
   text-transform: none;
 }
 
+.d-btn-edit-img {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+
+.d-btn-edit-outlined-img {
+  position: absolute;
+  right: 16%;
+  top: 16%;
+  transform: translate(50%, -50%);
+}
+
+
+.d-btn-remove-outlined-img {
+  position: absolute;
+  left: 16%;
+  bottom: 16%;
+  transform: translate(-50%, 50%);
+}
+
 /* No uppercase tab */
 
 .d-tab {
@@ -347,42 +369,42 @@ textarea {
   font-size: 2.488rem !important;
   line-height: 2.86rem !important;
   font-weight: 400 !important;
-  font-family: 'Montserrat', sans-serif!important;
+  font-family: 'Montserrat', sans-serif !important;
 }
 
 .d-application.v-application .text-h2 {
   font-size: 2.074rem !important;
   line-height: 2.29rem !important;
   font-weight: 400 !important;
-  font-family: 'Montserrat', sans-serif!important;
+  font-family: 'Montserrat', sans-serif !important;
 }
 
 .d-application.v-application .text-h3 {
   font-size: 1.728rem !important;
   line-height: 2.29rem !important;
   font-weight: 400 !important;
-  font-family: 'Montserrat', sans-serif!important;
+  font-family: 'Montserrat', sans-serif !important;
 }
 
 .d-application.v-application .text-h4 {
   font-size: 1.44rem !important;
   line-height: 1.71rem !important;
   font-weight: 500 !important;
-  font-family: 'Montserrat', sans-serif!important;
+  font-family: 'Montserrat', sans-serif !important;
 }
 
 .d-application.v-application .text-h5 {
   font-size: 1.2rem !important;
   line-height: 1.71rem !important;
   font-weight: 400 !important;
-  font-family: 'Montserrat', sans-serif!important;
+  font-family: 'Montserrat', sans-serif !important;
 }
 
 .d-application.v-application .text-h6 {
   font-size: 1rem !important;
   line-height: 1.14rem !important;
   font-weight: 500 !important;
-  font-family: 'Montserrat', sans-serif!important;
+  font-family: 'Montserrat', sans-serif !important;
 }
 
 .d-grid {

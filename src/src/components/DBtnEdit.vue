@@ -6,7 +6,7 @@
     :icon="$attrs.icon || 'mdi-pencil'"
   >
     <span class="grey-3--text">
-      <slot>Edit</slot>
+      <slot></slot>
     </span>
   </d-btn>
 </template>

@@ -9,8 +9,9 @@ import DBreadcrumbs from "./components/DBreadcrumbs.vue";
 import DBtn from "./components/DBtn.vue";
 import DBtnCancel from "./components/DBtnCancel.vue";
 import DBtnCheckbox from "./components/DBtnCheckbox.vue";
-import DBtnEdit from "./components/DBtnEdit.vue";
 import DBtnDrawer from "./components/DBtnDrawer.vue";
+import DBtnEdit from "./components/DBtnEdit.vue";
+import DBtnFile from "./components/DBtnFile.vue";
 import DBtnLatch from "./components/DBtnLatch.vue";
 import DBtnLink from "./components/DBtnLink.vue";
 import DBtnSave from "./components/DBtnSave.vue";
@@ -98,6 +99,7 @@ const Shards = {
     vue.component("d-btn-checkbox", DBtnCheckbox);
     vue.component("d-btn-drawer", DBtnDrawer);
     vue.component("d-btn-edit", DBtnEdit);
+    vue.component("d-btn-file", DBtnFile);
     vue.component("d-btn-link", DBtnLink);
     vue.component("d-btn-latch", DBtnLatch);
     vue.component("d-btn-remove", DBtnRemove);

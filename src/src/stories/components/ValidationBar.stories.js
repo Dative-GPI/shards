@@ -13,7 +13,7 @@ const Template = (args, { argTypes }) => ({
   data: () => ({ open: false }),
   template: `
       <div>
-        <d-btn-edit v-model="open" />
+        <d-btn-edit :hidden="open" @click="open = true" />
         <d-validation-bar v-if="open" v-bind="$props" @cancel="open = false" @save="open = false" @remove="open = false"></d-validation-bar>
       </div>
     `,

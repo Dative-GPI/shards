@@ -4,9 +4,11 @@
     v-on="$listeners"
     class="d-btn-remove red-4 black-1--text"
   >
-    <span class="black-1--text">
-      <slot>Delete</slot>
-    </span>
+    <template v-if="!!$scopedSlots.default">
+      <span class="black-1--text">
+        <slot></slot>
+      </span>
+    </template>
   </d-btn>
 </template>
 
@@ -16,6 +18,5 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 @Component({
   inheritAttrs: false,
 })
-export default class DBtnRemove extends Vue {
-}
+export default class DBtnRemove extends Vue {}
 </script>

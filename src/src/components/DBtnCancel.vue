@@ -7,7 +7,7 @@
     :icon="$attrs.icon || 'mdi-cancel'"
   >
     <span class="grey-3--text">
-      <slot>Cancel</slot>
+      <slot></slot>
     </span>
   </d-btn>
 </template>
