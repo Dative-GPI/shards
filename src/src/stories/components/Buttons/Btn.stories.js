@@ -27,7 +27,7 @@ const Template2 = (args, { argTypes }) => ({
 
 //👇 Each story then reuses that template
 export const Default = Template.bind({});
-Default.args = { label: "Button" };
+Default.args = { label: "Button", hidden: false };
 
 export const Body = Template2.bind({});
 Body.args = { label: "Button" };

@@ -43,7 +43,7 @@ Default.args = {
             configurable: true
         },
         {
-            text: 'Serial number', 
+            text: 'Serial number',
             value: 'SerialNumbe',
             align: 'end',
             sortable: true,
@@ -51,7 +51,7 @@ Default.args = {
             index: 1
         },
         {
-            text: 'Localisation', 
+            text: 'Localisation',
             value: 'localisation',
             hidden: false,
             index: 6,
@@ -59,14 +59,15 @@ Default.args = {
             configurable: true
         },
         {
-            text: 'Etages', 
+            text: 'Etages',
             value: 'Etages',
+            align: "center",
             hidden: false,
             filterable: true,
             index: 3
         },
         {
-            text: 'Numéro de sécurité', 
+            text: 'Numéro de sécurité',
             value: 'NumeroDeSecurité',
             hidden: false,
             index: 4

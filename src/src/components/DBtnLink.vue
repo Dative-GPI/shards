@@ -1,5 +1,5 @@
 <template>
-  <d-btn v-bind="$attrs" v-on="$listeners" class="d-btn-link">
+  <d-btn v-bind="$attrs" v-on="$listeners" class="d-btn-link blue-1 white-1--text">
     <slot> </slot>
     <template v-for="(index, name) in $slots" v-slot:[name]>
       <slot :name="name" />
