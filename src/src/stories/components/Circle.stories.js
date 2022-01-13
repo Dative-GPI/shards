@@ -12,10 +12,13 @@ export default {
 
 
 const Template = (args, { argTypes }) => ({
-    components: { DCircle },
-    props: Object.keys(argTypes),
-    template: '<d-circle v-bind="$props"/>',
+  components: { DCircle },
+  props: Object.keys(argTypes),
+  template: `
+  <d-circle v-bind="$props">
+    <d-img :width="size" :height="size" src="https://cdn.vuetifyjs.com/images/parallax/material.jpg" />
+  </d-circle>`,
 });
 
 export const Default = Template.bind({});
-Default.args = {color: 'purple', fill: "white", };
+Default.args = { color: 'purple', fill: "white", size: 150 };

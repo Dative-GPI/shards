@@ -1,19 +1,23 @@
 <template>
-  <div :style="{ height: size + 'px', width: size + 'px' }" class="d-outlined-img">
-    <d-circle :height="size" :width="size" :fill="fill" :color="color" />
-    <div class="img-center">
-      <d-img
-        v-if="!editable"
-        :src="imgSrc"
-        :height="size * sizeFactor"
-        :width="size * sizeFactor"
-        v-bind="$attrs"
-        :class="classCircle"
-      />
-      <v-btn icon v-else>
-        <v-icon>add</v-icon>
-      </v-btn>
-    </div>
+  <div class="d-outlined-img">
+    <d-circle :size="size" :fill="fill" :color="color">
+      <div class="img-center">
+        <slot
+          v-bind="{
+            width: size,
+            height: size,
+            size: size,
+          }"
+        >
+          <d-img
+            :height="size"
+            :width="size"
+            v-bind="$attrs"
+            v-on="$listeners"
+          />
+        </slot>
+      </div>
+    </d-circle>
   </div>
 </template>
 
@@ -25,27 +29,17 @@ export default class DOutlinedImg extends Vue {
   @Prop({ required: false, default: 160, type: Number })
   size!: number;
 
-  @Prop({ required: true })
+  @Prop({ required: false, default: "white" })
   fill!: boolean;
 
-  @Prop({ required: true })
+  @Prop({ required: false, default: "blue" })
   color!: string;
 
-  @Prop({ required: false, default: "" })
-  imgSrc!: string;
-
   @Prop({ required: false, default: false, type: Boolean })
-  editable!: boolean;
-
-  @Prop({ required: false, default: false, type: Boolean })
-  circle!: boolean;
+  fullfill!: boolean;
 
   get sizeFactor() {
-    return this.circle ? 0.93 : 0.65;
-  }
-
-  get classCircle() {
-    return this.circle ? "rounded-circle" : "";
+    return this.fullfill ? 0.93 : 0.65;
   }
 }
 </script>

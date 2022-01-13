@@ -2,6 +2,10 @@ html {
   font-size: 14px;
 }
 
+.hidden {
+  visibility: hidden;
+}
+
 .h-100 {
   height: 100%;
 }
@@ -392,4 +396,18 @@ textarea {
 
 .d-grid.edit .d-grid-key.editable.required::after {
   content: "*"
+}
+
+.d-blur-img .d-img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.d-blur-img .d-blur-hash {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

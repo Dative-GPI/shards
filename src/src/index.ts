@@ -1,6 +1,8 @@
 import DAlert from "./components/DAlert.vue";
 import DApp from "./components/DApp.vue";
 import DAutocomplete from "./components/DAutocomplete.vue";
+import DBlurHash from "./components/DBlurHash.vue";
+import DBlurImg from "./components/DBlurImg.vue";
 import DBottomBar from "./components/DBottomBar.vue";
 import DBreadcrumbs from "./components/DBreadcrumbs.vue";
 import DBtn from "./components/DBtn.vue";
@@ -83,6 +85,8 @@ const Shards = {
     vue.component("d-app", DApp);
     // Components
     vue.component("d-autocomplete", DAutocomplete);
+    vue.component("d-blur-hash", DBlurHash);
+    vue.component("d-blur-img", DBlurImg);
     vue.component("d-bottom-bar", DBottomBar);
     vue.component("d-breadcrumbs", DBreadcrumbs);
     vue.component("d-btn", DBtn);

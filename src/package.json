@@ -18,7 +18,8 @@
     "vue-class-component": "^7.2.3",
     "vue-property-decorator": "^9.1.2",
     "vuedraggable": "^2.24.3",
-    "vuetify": "^2.4.0"
+    "vuetify": "^2.4.0",
+    "blurhash": "^1.1.4"
   },
   "devDependencies": {
     "@babel/core": "^7.15.8",
@@ -30,6 +31,7 @@
     "@storybook/addon-links": "^6.4.9",
     "@storybook/vue": "^6.4.9",
     "@types/lodash": "^4.14.175",
+    "blurhash": "^1.1.4",
     "@typescript-eslint/eslint-plugin": "^4.18.0",
     "@typescript-eslint/parser": "^4.18.0",
     "@vue/cli-plugin-babel": "~4.5.0",
