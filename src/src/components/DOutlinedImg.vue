@@ -21,18 +21,6 @@
         </slot>
       </div>
     </d-circle>
-    <d-btn-file
-      v-if="editable"
-      class="d-btn-edit-outlined-img"
-      icon="mdi-pencil"
-      @input="$emit('input', $event)"
-      accept="image/*"
-    />
-    <d-btn-remove
-      v-if="editable"
-      class="d-btn-remove-outlined-img"
-      @click="$emit('remove')"
-    />
   </div>
 </template>
 
@@ -41,9 +29,6 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component({})
 export default class DOutlinedImg extends Vue {
-  @Prop({ required: false, default: false })
-  editable!: boolean;
-
   @Prop({ required: false, default: 160, type: Number })
   size!: number;
 

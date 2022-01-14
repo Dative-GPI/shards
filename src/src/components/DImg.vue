@@ -1,6 +1,12 @@
 <template>
   <div :style="{ width: 'inherit', height: 'inherit' }">
-    <v-img v-bind="$attrs" v-on="$listeners" :src="realSource" :key="index" class="d-img">
+    <v-img
+      v-bind="$attrs"
+      v-on="$listeners"
+      :src="realSource"
+      :key="index"
+      class="d-img"
+    >
       <slot> </slot>
       <template v-for="(index, name) in $slots" v-slot:[name]>
         <slot :name="name" />
@@ -11,13 +17,17 @@
     </v-img>
     <slot name="actions">
       <d-btn-file
-        v-if="editable"
+        :class="{ hidden: !editable }"
         class="d-btn-edit-img"
         icon="mdi-pencil"
         @input="$emit('input', $event)"
         accept="image/*"
       />
-      <d-btn-remove v-if="editable" class="d-btn-remove-img" @click="$emit('remove')" />
+      <d-btn-remove
+        :class="{ hidden: !editable }"
+        class="d-btn-remove-img"
+        @click="$emit('remove')"
+      />
     </slot>
   </div>
 </template>
@@ -39,7 +49,9 @@ export default class DImg extends Vue {
   editable!: boolean;
 
   get realSource() {
-    return !!this.value ? this.value : this.src;
+    return !!this.value
+      ? this.value
+      : this.src || require("../assets/img-placeholder.svg");
   }
 
   index = 0;

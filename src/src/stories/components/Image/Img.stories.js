@@ -10,12 +10,11 @@ export default {
 const Template = (args, { argTypes }) => ({
   components: { DImg },
   props: Object.keys(argTypes),
-  data: () => ({ data: "" }),
-  template: '<d-img v-bind="$props" v-model="data"/>',
+  data: () => ({ data: "", srcData: "https://cdn.vuetifyjs.com/images/parallax/material.jpg" }),
+  template: '<d-img v-bind="$props" :src="srcData" v-model="data" @remove="data = null; srcData = null;"/>',
 });
 
 //👇 Each story then reuses that template
 export const Default = Template.bind({});
 Default.args = {
-  src: "https://cdn.vuetifyjs.com/images/parallax/material.jpg"
 };

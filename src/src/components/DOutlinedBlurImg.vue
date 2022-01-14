@@ -1,5 +1,5 @@
 <template>
-  <d-outlined-img v-bind="$attrs" v-on="$listeners">
+  <d-outlined-img v-bind="$attrs">
     <template #default="{ width, height }">
       <d-blur-img
         :width="width"
@@ -8,6 +8,7 @@
         :image-height="imageHeight"
         :image-blur-hash="imageBlurHash"
         :fullfill="fullfill"
+         v-on="$listeners"
         v-bind="$attrs"
       />
     </template>

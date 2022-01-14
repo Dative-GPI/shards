@@ -7,6 +7,7 @@
         :class="{
           required: item.required,
           'editable blue-3--text': item.editable,
+          'grey-2--text': !item.editable,
         }"
       >
         <slot :name="'item-key.' + item.code" v-bind="{ item }">
@@ -19,7 +20,7 @@
         :class="{ required: item.required, editable: item.editable }"
       >
         <slot :name="'item-value.' + item.code" v-bind="{ item, editMode }">
-          <d-text-field v-model="item.value" :editable="editMode" />
+          {{ item.value }}
         </slot>
       </div>
       <span :key="item.code" />

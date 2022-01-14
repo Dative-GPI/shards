@@ -42,7 +42,8 @@ Img2.args = {
     height: 200,
     round: true,
     fullfill: true,
-    src: "https://blurha.sh/assets/images/img4.jpg"
+    src: "https://blurha.sh/assets/images/img4.jpg",
+    editable: false
 };
 
 //👇 Each story then reuses that template

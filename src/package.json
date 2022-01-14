@@ -11,6 +11,7 @@
     "@fontsource/montserrat": "^4.5.1",
     "@fontsource/open-sans": "^4.5.2",
     "@types/lodash": "^4.14.175",
+    "blurhash": "^1.1.4",
     "core-js": "^3.6.5",
     "material-design-icons-iconfont": "6.1.0",
     "roboto-fontface": "*",
@@ -18,8 +19,7 @@
     "vue-class-component": "^7.2.3",
     "vue-property-decorator": "^9.1.2",
     "vuedraggable": "^2.24.3",
-    "vuetify": "^2.4.0",
-    "blurhash": "^1.1.4"
+    "vuetify": "^2.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.15.8",
@@ -31,7 +31,7 @@
     "@storybook/addon-links": "^6.4.9",
     "@storybook/vue": "^6.4.9",
     "@types/lodash": "^4.14.175",
-    "blurhash": "^1.1.4",
+    "@types/node": "^17.0.8",
     "@typescript-eslint/eslint-plugin": "^4.18.0",
     "@typescript-eslint/parser": "^4.18.0",
     "@vue/cli-plugin-babel": "~4.5.0",
@@ -40,6 +40,7 @@
     "@vue/cli-service": "~4.5.0",
     "@vue/eslint-config-typescript": "^7.0.0",
     "babel-loader": "^8.2.2",
+    "blurhash": "^1.1.4",
     "core-js": "^3.6.5",
     "eslint": "^6.7.2",
     "eslint-plugin-storybook": "^0.5.5",
