@@ -5,6 +5,7 @@
         <d-search-input v-if="searchable" v-model="searching" class="mr-3" />
         <d-menu-btn
           v-if="mode == 'table' && !$vuetify.breakpoint.xs"
+          :sortable="columnSortable"
           :value="columns"
           @input="$emit('update:columns', $event)"
         />
@@ -60,12 +61,16 @@
           :no-results-text="noResultsText"
           disable-pagination
           hide-default-footer
-          style="width: 100%;"
+          style="width: 100%"
           v-if="mode == 'tile'"
         >
           <template v-slot:default="props">
             <v-row no-gutters align="center">
-              <div v-for="(item, index) in props.items" :key="item[itemKey]" class="mr-2">
+              <div
+                v-for="(item, index) in props.items"
+                :key="item[itemKey]"
+                class="mr-2"
+              >
                 <slot name="tile-item" v-bind="{ index, item }" />
               </div>
             </v-row>
@@ -105,37 +110,41 @@ export default class DDataList extends Vue {
   @Prop({ required: false, default: "table" })
   initialMode!: "table" | "tile";
 
-  @Prop({ required: false, default: '' })
+  @Prop({ required: false, default: "" })
   noResultsText!: string;
 
-  @Prop({ required: false, default: '' })
+  @Prop({ required: false, default: "" })
   noDataText!: string;
 
-  @Prop({ required: false, default: 'Show all' })
+  @Prop({ required: false, default: "Show all" })
   showAllText!: string;
 
-  @Prop({ required: false, default: true })
+  @Prop({ required: false, default: true, type: Boolean })
   searchable!: boolean;
+
+  @Prop({ required: false, default: true, type: Boolean })
+  columnSortable!: boolean;
 
   mode: "table" | "tile" = "tile";
 
   searching: string = "";
 
   get scopedSlots() {
-    const scopedSlots = _.pickBy(this.$scopedSlots, (value: NormalizedScopedSlot, key: string) =>
-      _.startsWith(key, "table-")
+    const scopedSlots = _.pickBy(
+      this.$scopedSlots,
+      (value: NormalizedScopedSlot, key: string) => _.startsWith(key, "table-")
     );
-    return _.mapKeys(scopedSlots, (value: NormalizedScopedSlot, key: string) => key.replace("table-", ""));
+    return _.mapKeys(scopedSlots, (value: NormalizedScopedSlot, key: string) =>
+      key.replace("table-", "")
+    );
   }
 
   mounted() {
     if (this.disableTable) {
       this.mode = "tile";
-    }
-    else if (this.disableTiles) {
+    } else if (this.disableTiles) {
       this.mode = "table";
-    }
-    else {
+    } else {
       this.mode = this.initialMode;
     }
   }
