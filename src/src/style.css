@@ -345,7 +345,7 @@ html {
 .d-btn-remove-img {
   position: absolute;
   left: 50%;
-  bottom: 15px;
+  bottom: min(15px, 5%);
   transform: translateX(-50%);
   transition: opacity 0.3s, visibility 0.3s;
 }

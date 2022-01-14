@@ -96,10 +96,10 @@ export default class DDataList extends Vue {
   @Prop({ required: false, default: "id" })
   itemKey!: string;
 
-  @Prop({ required: false, default: false })
+  @Prop({ required: false, default: false, type: Boolean })
   disableTiles!: boolean;
 
-  @Prop({ required: false, default: false })
+  @Prop({ required: false, default: false, type: Boolean })
   disableTable!: boolean;
 
   @Prop({ required: false, default: "table" })
