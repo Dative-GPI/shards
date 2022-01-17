@@ -16,7 +16,7 @@
       </div>
       <div
         :key="'value.' + item.code"
-        class="d-grid-value"
+        class="d-grid-value grey-3--text"
         :class="{ required: item.required, editable: item.editable }"
       >
         <slot :name="'item-value.' + item.code" v-bind="{ item, editMode }">
