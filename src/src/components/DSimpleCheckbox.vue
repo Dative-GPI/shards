@@ -3,6 +3,7 @@
     v-if="editable"
     v-bind="$attrs"
     v-on="$listeners"
+    :ripple="false"
     class="d-simple-checkbox"
     color="black-1"
   >
