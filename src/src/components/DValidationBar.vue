@@ -4,7 +4,12 @@
       <slot name="left">
         <slot name="left-prepend"></slot>
         <slot name="left-actions">
-          <d-btn-remove v-if="removable" :responsive="responsive" @click="$emit('remove')">
+          <d-btn-remove
+            v-if="removable"
+            :responsive="responsive"
+            @click="$emit('remove')"
+            :loading="removing"
+          >
             <slot name="remove">{{ removeText }}</slot>
           </d-btn-remove>
         </slot>
@@ -24,6 +29,7 @@
             :disabled="!saveable"
             @click="$emit('save')"
             :responsive="responsive"
+            :loading="saving"
           >
             <slot name="save">{{ saveText }}</slot>
           </d-btn-save>
@@ -47,6 +53,12 @@ export default class DValidationBar extends Vue {
 
   @Prop({ required: false, default: true })
   saveable!: boolean;
+
+  @Prop({ required: false, default: false })
+  saving!: boolean;
+
+  @Prop({ required: false, default: false })
+  removing!: boolean;
 
   @Prop({ required: false, default: "Save" })
   saveText!: string;
