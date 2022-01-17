@@ -176,6 +176,7 @@ html {
   user-select: none;
   color: var(--v-grey-2-base);
   border-bottom: 1px solid var(--v-grey-1-base);
+  white-space: nowrap;
 }
 
 .d-data-table-header:hover {
