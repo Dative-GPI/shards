@@ -1,7 +1,7 @@
 <template>
   <v-navigation-drawer app right temporary v-on="$listeners" v-bind="$attrs" class="pa-3">
     <slot name="header">
-      <v-row no-gutters align="center" justify="start" class="mb-3">
+      <v-row no-gutters align="start" justify="start" class="mb-3" style="flex-wrap: nowrap">
         <d-btn icon @click="$emit('input', false)">
           <v-icon large>mdi-chevron-right</v-icon>
         </d-btn>
