@@ -5,28 +5,28 @@ A storybook presenting all the components is available [here](https://dative-gpi
 
 ## Installation
 
-To use this library, you first need a Vue.Js project :
+To use this library, you first need a Vue.Js project:
 
 ```sh
 vue create my-add
 cd my-app
 ```
 
-Shards depends on Vuetify, so you have to add it to the Vue dependencies :
+Shards depends on Vuetify, so you have to add it to the Vue dependencies:
 
 ```sh
 vue add vuetify
 ```
 
-The library has been published on [npm](https://www.npmjs.com/package/@dative-gpi/shards), so you can add it to your project simply by running :
+The library has been published on [npm](https://www.npmjs.com/package/@dative-gpi/shards), so you can add it to your project simply by running:
 
 ```sh
-npm install @dative/shards
+npm install @dative-gpi/shards
 ```
 
 ## Contributing
 
-Use the following commands to setup the project and run the storybook server :
+Use the following commands to setup the project and run the storybook server:
 
 ```sh
 cd src

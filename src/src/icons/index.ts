@@ -20,6 +20,9 @@ export const Icons: IconsDictionary = {
   devicesWidget: {
     component: () => import("./DevicesWidget.vue")
   },
+  google: {
+    component: () => import("./Google.vue")
+  },
   locations: {
     component: () => import("./Locations.vue")
   },
@@ -28,6 +31,9 @@ export const Icons: IconsDictionary = {
   },
   marker: {
     component: () => import("./Marker.vue")
+  },
+  microsoft: {
+    component: () => import("./Microsoft.vue")
   },
   pastries: {
     component: () => import("./Pastries.vue")
