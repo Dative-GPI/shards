@@ -18,6 +18,7 @@
       v-show="!$attrs.value"
     />
     <d-img
+      class="d-blur-img-centered"
       :class="{ hidden: !loaded }"
       @load="loaded = true"
       v-bind="$attrs"

@@ -1,11 +1,20 @@
 <template>
-  <div :style="{ width: 'inherit', height: 'inherit' }">
+  <div
+    :style="{
+      width: width + 'px',
+      height: height + 'px',
+      position: 'relative',
+    }"
+  >
     <v-img
       v-bind="$attrs"
       v-on="$listeners"
+      :width="width"
+      :height="height"
       :src="realSource"
       :key="index"
       class="d-img"
+      :contain="!value && !src"
     >
       <slot> </slot>
       <template v-for="(index, name) in $slots" v-slot:[name]>
@@ -47,6 +56,12 @@ export default class DImg extends Vue {
 
   @Prop({ required: false, default: false, type: Boolean })
   editable!: boolean;
+
+  @Prop({ required: false, default: 200 })
+  width!: number;
+
+  @Prop({ required: false, default: 200 })
+  height!: number;
 
   get realSource() {
     return !!this.value
