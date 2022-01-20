@@ -28,13 +28,6 @@ const customViewports = {
       height: '568px',
     },
   },
-  IphoneSEwithMargin: {
-    name: 'S | Iphone SE, avec marge',
-    styles: {
-      width: '296px',
-      height: '568px',
-    },
-  },
   IphoneSELandscape: {
     name: 'S | Iphone SE, paysage',
     styles: {
@@ -52,7 +45,7 @@ const customViewports = {
   IpadMiniLandscape: {
     name: 'L | Ipad mini, paysage',
     styles: {
-      width: '113px',
+      width: '1133px',
       height: '744px',
     },
   },
@@ -94,6 +87,13 @@ export const parameters = {
       ...customViewports,
       ...MINIMAL_VIEWPORTS,
     }
+  },
+  paddings: {
+    values: [
+      { name: "S & M | 12px", value: '12px' },
+      { name: "L | 24px", value: '24px' },
+    ],
+    default: "S & M | 12px",
   },
 }
 
