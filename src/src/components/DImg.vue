@@ -20,7 +20,7 @@
         :class="{ hidden: !editable }"
         class="d-btn-edit-img"
         icon="mdi-pencil"
-        @input="$emit('input', $event)"
+        @input="update"
         accept="image/*"
       />
       <d-btn-remove
@@ -50,15 +50,31 @@ export default class DImg extends Vue {
 
   get realSource() {
     return !!this.value
-      ? this.value
+      ? [this.valueType, this.value].join(",")
       : this.src || require("../assets/img-placeholder.svg");
   }
 
+  update(event: string) {
+    if (event) {
+      const parts = event.split(",");
+      this.valueType = parts[0];
+      this.$emit("input", parts[1]);
+    }
+  }
+
   index = 0;
+  valueType = "";
 
   @Watch("index")
   onSourceChanged() {
     this.index++;
+  }
+
+  @Watch("value")
+  onValueChanged() {
+    if (!this.value || this.value.includes(",")) {
+      this.valueType = "";
+    }
   }
 }
 </script>
