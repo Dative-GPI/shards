@@ -9,6 +9,7 @@
     :items="filtredItems"
     :sort-by.sync="sortBy"
     :sort-desc.sync="sortDesc"
+    :single-select="singleSelect"
   >
     <template v-slot:header="{ props, on }" v-if="!$vuetify.breakpoint.xs">
       <th
@@ -23,7 +24,7 @@
         <v-row
           no-gutters
           class="justify-center"
-          v-if="header.value == 'data-table-select' && !$attrs.singleSelect"
+          v-if="header.value == 'data-table-select' && !singleSelect"
         >
           <d-simple-checkbox
             :value="props.everyItem"
@@ -150,6 +151,9 @@ export default class DDataTable extends Vue {
 
   @Prop({ required: false, default: "$cog" })
   configurationIcon!: string;
+
+  @Prop({ required: false, default: false, type: Boolean })
+  singleSelect!: boolean;
 
   @Prop({ required: true })
   items!: Array<any>;
