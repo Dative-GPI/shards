@@ -8,7 +8,7 @@
     />
     <div class="ml-3">
       <slot name="label">
-        {{ label }}
+        <span class="grey-3--text">{{ label }}</span>
       </slot>
     </div>
   </v-row>
