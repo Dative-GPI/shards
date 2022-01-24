@@ -3,12 +3,12 @@
 		<div v-for="(item) in items" :key="item[itemValue]">
 			<d-toggle
 				v-bind="$attrs"
-				:class="innerClass"
 				class="mr-3 mb-3"
-				:value="value === item[itemValue]"
-				@input="$emit('input', value === item[itemValue] ? null : item[itemValue])"
+				:class="innerClass"
 				:text="item[itemText]"
 				:icon="item[itemIcon]"
+				:value="value === item[itemValue]"
+				@input="onInput(item)"
 			>
 				<template #default="props">
 					<slot v-bind="{ ...props, item }" />
@@ -35,10 +35,24 @@ export default class DToggleSet extends Vue {
 	@Prop({ required: false, default: "value" })
 	itemValue!: string;
 
+	@Prop({ required: false, default: false })
+	mandatory!: boolean;
+
 	@Prop({ required: true })
 	value!: string;
 
 	@Prop({ required: true })
 	items!: any[];
+
+	onInput(item: any): void {
+		if (this.value === item[this.itemValue]) {
+			if (!this.mandatory) {
+				this.$emit('input', null)
+			}
+		}
+		else {
+			this.$emit('input', item[this.itemValue]);
+		}
+	}
 }
 </script>
