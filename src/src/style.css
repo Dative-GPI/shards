@@ -462,3 +462,20 @@ textarea {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+@media screen and (max-width: 600px) {
+  .d-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .d-grid .d-grid-key:not(:first-child){
+    margin-top: 12px;
+  }
+}
+
+@media screen and (max-width: 1264px) and (min-width: 600px) {
+  .d-grid {
+    grid-template-columns: 1fr 1fr 0;
+  }
+
+}
