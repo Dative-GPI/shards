@@ -19,9 +19,13 @@
       <slot :name="name" v-bind="data"></slot>
     </template>
   </v-switch>
-  <div v-else>
-    <d-icon size="24" v-if="$attrs.value" :color="activeColor">mdi-check-circle</d-icon>
-    <d-icon size="24" v-else :color="inactiveColor">mdi-cancel</d-icon>
+  <div v-else style="height: 24px;">
+    <d-icon size="24" :dense="false" v-if="$attrs.value" :color="activeColor"
+      >mdi-check-circle</d-icon
+    >
+    <d-icon size="24" :dense="false" v-else :color="inactiveColor"
+      >mdi-cancel</d-icon
+    >
   </div>
 </template>
 
