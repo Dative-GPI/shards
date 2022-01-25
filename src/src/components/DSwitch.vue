@@ -7,6 +7,7 @@
     class="d-switch"
     inset
     dense
+    hide-details
     v-if="editable"
     color="alert-green"
   >
@@ -19,8 +20,8 @@
     </template>
   </v-switch>
   <div v-else>
-    <d-icon v-if="$attrs.value" :color="activeColor">mdi-check-circle</d-icon>
-    <d-icon v-else :color="inactiveColor">mdi-cancel</d-icon>
+    <d-icon size="24" v-if="$attrs.value" :color="activeColor">mdi-check-circle</d-icon>
+    <d-icon size="24" v-else :color="inactiveColor">mdi-cancel</d-icon>
   </div>
 </template>
 
