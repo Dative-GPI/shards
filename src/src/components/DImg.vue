@@ -14,7 +14,7 @@
       :src="realSource"
       :key="index"
       class="d-img"
-      :contain="!value && !src"
+      :contain="(!value && !src) || contain"
     >
       <slot> </slot>
       <template v-for="(index, name) in $slots" v-slot:[name]>
@@ -62,6 +62,9 @@ export default class DImg extends Vue {
 
   @Prop({ required: false, default: 200 })
   height!: number;
+
+  @Prop({ required: false, default: false })
+  contain!: boolean;
 
   get realSource() {
     return !!this.value
