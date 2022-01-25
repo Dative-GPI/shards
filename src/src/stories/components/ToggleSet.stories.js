@@ -80,6 +80,7 @@ Default.args = {
   itemText: "text",
   itemIcon: "icon",
   itemValue: "value",
+  mandatory: false,
   value: "1",
   responsive: false
 };

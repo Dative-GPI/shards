@@ -1,20 +1,27 @@
 <template>
-  <v-checkbox v-bind="$attrs" v-on="$listeners" class="d-checkbox" color="black-1">
-    <slot> </slot>
-    <template v-for="(index, name) in $slots" v-slot:[name]>
-      <slot :name="name" />
-    </template>
-    <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">
-      <slot :name="name" v-bind="data"></slot>
-    </template>
-  </v-checkbox>
+  <v-row no-gutters>
+    <d-simple-checkbox
+      v-bind="$attrs"
+      v-on="$listeners"
+      class="d-checkbox"
+      color="black-1"
+    />
+    <div class="ml-3">
+      <slot name="label">
+        <span class="grey-3--text">{{ label }}</span>
+      </slot>
+    </div>
+  </v-row>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component({
   inheritAttrs: false,
 })
-export default class DCheckbox extends Vue {}
+export default class DCheckbox extends Vue {
+  @Prop({ required: false, default: "" })
+  label!: string;
+}
 </script>
