@@ -6,7 +6,7 @@
     :class="{nopadding: !editable && !outlined}"
     :menu-props="{ offsetY: true }"
     dense
-    row-height="12"
+    :row-height="1"
     auto-grow
     :outlined="outlined"
     :solo="!editable && !outlined"

@@ -431,7 +431,7 @@ textarea {
 
 .d-grid {
   display: grid;
-  justify-items: start;
+  justify-items: stretch;
   place-content: start;
   row-gap: 4px;
   column-gap: 10px;
