@@ -1,6 +1,7 @@
 <template>
   <d-btn
     :icon="$attrs.icon || 'mdi-delete'"
+    v-bind="$attrs"
     v-on="$listeners"
     class="d-btn-remove red-4 black-1--text"
   >
