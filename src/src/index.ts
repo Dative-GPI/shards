@@ -32,6 +32,7 @@ import DExpansionPanel from "./components/DExpansionPanel.vue";
 import DExpansionPanels from "./components/DExpansionPanels.vue";
 import DGrid from "./components/DGrid.vue";
 import DIcon from "./components/DIcon.vue";
+import DIconBtn from "./components/DIconBtn.vue";
 import DImg from "./components/DImg.vue";
 import DLink from "./components/DLink.vue";
 import DList from "./components/DList.vue";
@@ -121,6 +122,7 @@ const Shards = {
     vue.component("d-expansion-panels", DExpansionPanels);
     vue.component("d-grid", DGrid);
     vue.component("d-icon", DIcon);
+    vue.component("d-icon-btn", DIconBtn);
     vue.component("d-img", DImg);
     vue.component("d-link", DLink);
     vue.component("d-list", DList);
