@@ -35,7 +35,7 @@ export const Default = Template.bind({});
 Default.args = {
   value: ["ChipSet", "Toto", "Hello", "World"],
   editable: true,
-  inputLabel: "Add New"
+  inputLabel: "Add New",
 };
 
 //👇 Each story then reuses that template

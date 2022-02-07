@@ -27,9 +27,11 @@
           solo
           :placeholder="inputLabel"
           @keypress.enter="add"
+          @blur="add"
           v-model="text"
           :style="`width: ${inputSize}ch;`"
           prefix="|"
+          :rules="[required ? !!value.length || requiredMessage : true]"
         />
       </slot>
     </div>
@@ -66,6 +68,12 @@ export default class DChipSet extends Vue {
   @Prop({ required: false, default: false, type: Boolean })
   column!: boolean;
 
+  @Prop({ required: false, default: false, type: Boolean })
+  required!: boolean
+
+  @Prop({ required: false, default: 'Required' })
+  requiredMessage!: string;
+
   get complex() {
     return (
       this.value &&
@@ -98,7 +106,7 @@ export default class DChipSet extends Vue {
 
   get inputSize() {
     return (
-      Math.max(this.inputLabel.length, (this.text && this.text.length) || 0) + 1
+      Math.max(this.inputLabel.length, (this.text && this.text.length) || 0) + 2 // Hack: inputLabel might be wider than {inputLabel.length} ch
     );
   }
 }
