@@ -1,6 +1,6 @@
 <template>
   <v-row no-gutters align="center">
-    <d-chip-group :style="{ 'max-width': maxWidth }">
+    <d-chip-group :column="column" :style="{ 'max-width': maxWidth }">
       <d-chip
         v-for="(item, index) in value"
         class="black-1--text"
@@ -62,6 +62,9 @@ export default class DChipSet extends Vue {
 
   @Prop({ required: false, default: "value" })
   itemValue!: string | Function;
+
+  @Prop({ required: false, default: false, type: Boolean })
+  column!: boolean;
 
   get complex() {
     return (
