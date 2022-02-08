@@ -479,3 +479,23 @@ textarea {
   }
 
 }
+
+.d-switch-grid-options, .d-switch-grid-category {
+  display: grid;
+  justify-items: left;
+  place-content: start;
+  row-gap: 4px;
+  -moz-column-gap: 10px;
+  column-gap: 10px;
+  grid-template-columns: 1fr 45px;
+}
+
+@media screen and (max-width: 600px) {
+  .d-switch-grid-options {
+    direction: rtl;
+  }
+  
+  .d-switch-grid-options > * {
+    direction: ltr;
+  }
+}

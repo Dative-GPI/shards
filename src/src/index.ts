@@ -50,6 +50,7 @@ import DSheet from "./components/DSheet.vue"
 import DSpinner from "./components/DSpinner.vue";
 import DSubTitle from "./components/DSubTitle.vue";
 import DSwitch from "./components/DSwitch.vue";
+import DSwitchGrid from "./components/DSwitchGrid.vue";
 import DTextarea from "./components/DTextarea.vue";
 import DTextField from "./components/DTextField.vue";
 import DTile from "./components/DTile.vue";
@@ -140,6 +141,7 @@ const Shards = {
     vue.component("d-spinner", DSpinner);
     vue.component("d-sub-title", DSubTitle);
     vue.component("d-switch", DSwitch);
+    vue.component("d-switch-grid", DSwitchGrid);
     vue.component("d-textarea", DTextarea);
     vue.component("d-text-field", DTextField);
     vue.component("d-tile", DTile);
