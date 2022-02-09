@@ -41,18 +41,16 @@
       <v-col
         cols="12"
         sm="6"
-        md="4"
-        lg="3"
         v-for="category in searchedCategories"
         :key="category.id"
       >
-        <div class="d-switch-grid-category">
+        <div class="d-switch-grid-category mb-4">
           <slot :name="`category-header.${category.id}`">
-            <div class="text-h5">{{ category.label }}</div>
+            <div class="text-h6">{{ category.label }}</div>
             <div></div>
             <div
               v-if="selectByCategoryBtns && editable && !search"
-              class="mb-4"
+              class="mt-2"
             >
               <slot :name="`category-header-actions.${category.id}`">
                 <d-btn-edit
@@ -73,7 +71,7 @@
           </slot>
         </div>
 
-        <div class="d-switch-grid-options">
+        <div class="d-switch-grid-options" :class="{ 'editable': editable }">
           <template v-for="opt in category.options">
             <div class="text-body-1" :key="opt.id + '.label'">
               <slot :name="`switch-option.${opt.id}`">{{ opt.label }}</slot>

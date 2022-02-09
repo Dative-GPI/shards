@@ -1,6 +1,6 @@
 <template>
   <v-tab
-    class="d-tab"
+    class="d-tab text-h6"
     :class="{ 'd-tab--error': error }"
     v-bind="$attrs"
     v-on="$listeners"

@@ -411,7 +411,7 @@ textarea {
 .d-application.v-application .text-h4 {
   font-size: 1.44rem !important;
   line-height: 1.71rem !important;
-  font-weight: 500 !important;
+  font-weight: 600 !important;
   font-family: 'Montserrat', sans-serif !important;
 }
 
@@ -425,7 +425,7 @@ textarea {
 .d-application.v-application .text-h6 {
   font-size: 1rem !important;
   line-height: 1.14rem !important;
-  font-weight: 500 !important;
+  font-weight: 600 !important;
   font-family: 'Montserrat', sans-serif !important;
 }
 
@@ -484,13 +484,28 @@ textarea {
   display: grid;
   justify-items: left;
   place-content: start;
-  row-gap: 4px;
-  -moz-column-gap: 10px;
-  column-gap: 10px;
-  grid-template-columns: 1fr 45px;
+  grid-template-columns: 4fr 2fr;
+}
+
+.d-switch-grid-options {
+  gap: 8px 12px;
+}
+
+.d-switch-grid-options.editable {
+  gap: 16px 12px;
+}
+
+@media screen and (max-width: 960px) {
+  .d-switch-grid-options, .d-switch-grid-category {
+    grid-template-columns: 8fr 2fr;
+  }
 }
 
 @media screen and (max-width: 600px) {
+  .d-switch-grid-options, .d-switch-grid-category {
+    grid-template-columns: 1fr 45px;
+  }
+
   .d-switch-grid-options {
     direction: rtl;
   }
@@ -506,17 +521,13 @@ textarea {
 
 .d-tab {
   font-family: Montserrat;
-  font-style: normal;
-  line-height: 20px;
-  font-size: 16px;
-  font-weight: 500;
   letter-spacing: unset;
-  align-items: flex-end;
 
   color: var(--v-grey-3-base) !important;
   border-bottom: solid 1px var(--v-grey-2-base);
 
   min-width: unset;
+  max-width: unset;
 }
 
 .d-tab.d-tab--active {
