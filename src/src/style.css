@@ -499,3 +499,36 @@ textarea {
     direction: ltr;
   }
 }
+
+.v-tabs-bar {
+  height: 30px;
+}
+
+.d-tab {
+  font-family: Montserrat;
+  font-style: normal;
+  line-height: 20px;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: unset;
+  align-items: flex-end;
+
+  color: var(--v-grey-3-base) !important;
+  border-bottom: solid 1px var(--v-grey-2-base);
+
+  min-width: unset;
+}
+
+.d-tab.d-tab--active {
+  color: var(--v-black-1-base) !important;
+  border-bottom: solid 2px var(--v-blue-1-base);
+}
+
+.d-tab.d-tab--error {
+  color: var(--v-alert-red-base) !important;
+  border-bottom: solid 1px var(--v-alert-red-base);
+}
+
+.d-tab.d-tab--error.d-tab--active {
+  border-bottom: solid 2px var(--v-alert-red-base);
+}
