@@ -35,7 +35,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
   inheritAttrs: false,
 })
 export default class DBtn extends Vue {
-  @Prop({ required: false, default: true, type: Boolean })
+  @Prop({ required: false, default: false, type: Boolean })
   responsive!: boolean;
 
   @Prop({ required: false, default: () => null })

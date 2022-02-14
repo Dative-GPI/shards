@@ -57,11 +57,12 @@ import DTabsItems from "./components/DTabsItems.vue";
 import DTabItem from "./components/DTabItem.vue";
 import DTextarea from "./components/DTextarea.vue";
 import DTextField from "./components/DTextField.vue";
+import DText from "./components/DText.vue";
 import DTile from "./components/DTile.vue";
 import DTitle from "./components/DTitle.vue";
 import DToggle from "./components/DToggle.vue";
 import DToggleSet from "./components/DToggleSet.vue";
-import DTwoOptionsDialog from "./components/DTwoOptionsDialog.vue";
+import DSimpleDialog from "./components/DSimpleDialog.vue";
 import DValidationBar from "./components/DValidationBar.vue";
 
 import AlertLoader from "./components/loaders/AlertLoader.vue";
@@ -152,11 +153,12 @@ const Shards = {
     vue.component("d-tab-item", DTabItem);
     vue.component("d-textarea", DTextarea);
     vue.component("d-text-field", DTextField);
+    vue.component("d-text", DText);
     vue.component("d-tile", DTile);
     vue.component("d-title", DTitle);
     vue.component("d-toggle", DToggle);
     vue.component("d-toggle-set", DToggleSet);
-    vue.component("d-two-options-dialog", DTwoOptionsDialog);
+    vue.component("d-simple-dialog", DSimpleDialog);
     vue.component("d-validation-bar", DValidationBar);
 
     // Loaders
