@@ -3,8 +3,9 @@
     class="d-autocomplete"
     v-bind="$attrs"
     v-on="$listeners"
+    :items="items.filter(filter)"
     dense
-    :class="{nopadding: !editable && !outlined}"
+    :class="{ nopadding: !editable && !outlined }"
     :menu-props="{ offsetY: true }"
     :outlined="outlined"
     :solo="!editable && !outlined"
@@ -30,10 +31,16 @@ import { Component, Prop, Vue } from "vue-property-decorator";
   inheritAttrs: false,
 })
 export default class DAutocomplete extends Vue {
-  @Prop({required: false, default: false, type: Boolean})
+  @Prop({ required: false, default: () => [], type: Array })
+  items!: any[];
+
+  @Prop({ required: false, default: false, type: Boolean })
   outlined!: boolean;
 
   @Prop({ required: false, default: true })
   editable!: boolean;
+
+  @Prop({ required: false, default: () => true, type: Function })
+  filter!: (item: any) => boolean;
 }
 </script>

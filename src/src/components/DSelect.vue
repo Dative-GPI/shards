@@ -2,6 +2,7 @@
   <v-select
     v-bind="$attrs"
     v-on="$listeners"
+    :items="items.filter(filter)"
     class="d-select"
     :class="{nopadding: !editable && !outlined}"
     :menu-props="{ offsetY: true }"
@@ -30,10 +31,16 @@ import { Component, Prop, Vue } from "vue-property-decorator";
   inheritAttrs: false,
 })
 export default class DSelect extends Vue { 
+  @Prop({ required: false, default: () => [], type: Array })
+  items!: any[];
+
   @Prop({required: false, default: false, type: Boolean})
   outlined!: boolean;
 
   @Prop({required: false, default: true, type: Boolean})
   editable!: boolean;
+
+  @Prop({ required: false, default: () => true, type: Function })
+  filter!: (item: any) => boolean;
 }
 </script>

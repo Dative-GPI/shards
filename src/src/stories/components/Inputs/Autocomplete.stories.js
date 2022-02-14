@@ -15,15 +15,16 @@ const Template = (args, { argTypes }) => ({
 
 //👇 Each story then reuses that template
 export const Default = Template.bind({});
-Default.args = { 
+Default.args = {
   items: [
-    { key: "T", value: "Toto" }, 
-    { key: "U", value: "UYhu" }, 
-    { key: "H", value: "Hello" }, 
+    { key: "T", value: "Toto" },
+    { key: "U", value: "UYhu" },
+    { key: "H", value: "Hello" },
     { key: "W", value: "World" }
   ],
-  value: "T",
+  value: "W",
   label: "Autocomplete",
+  filter: (item) => item.key !== "T",
   editable: true,
   outlined: false
 };
