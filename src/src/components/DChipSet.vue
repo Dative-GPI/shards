@@ -69,9 +69,9 @@ export default class DChipSet extends Vue {
   column!: boolean;
 
   @Prop({ required: false, default: false, type: Boolean })
-  required!: boolean
+  required!: boolean;
 
-  @Prop({ required: false, default: 'Required' })
+  @Prop({ required: false, default: "Required" })
   requiredMessage!: string;
 
   get complex() {
@@ -86,6 +86,7 @@ export default class DChipSet extends Vue {
   text = "";
 
   remove(group: string): void {
+    this.$emit("remove", group);
     this.$emit(
       "input",
       this.value.filter((g) => g !== group)
