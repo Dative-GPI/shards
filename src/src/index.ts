@@ -80,6 +80,7 @@ import StatisticsDeviceLoader from "./components/loaders/StatisticsDeviceLoader.
 import StatisticsLoader from "./components/loaders/StatisticsLoader.vue";
 import StatisticTemplateLoader from "./components/loaders/StatisticTemplateLoader.vue";
 
+import { Flags } from "./flags";
 import { Icons } from "./icons";
 import { Colors } from "./colors";
 
@@ -179,4 +180,4 @@ const Shards = {
   }
 };
 
-export { Shards, Icons, Colors };
+export { Shards, Flags, Icons, Colors };
