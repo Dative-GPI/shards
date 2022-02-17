@@ -1,23 +1,23 @@
 export const Flags: FlagsDictionary = {
-  alertsWidget: {
+  france: {
     component: () => import("./France.vue")
   },
-  bakery: {
+  germany: {
     component: () => import("./Germany.vue")
   },
-  caterer: {
+  greatBritain: {
     component: () => import("./GreatBritain.vue")
   },
-  cog: {
+  italy: {
     component: () => import("./Italy.vue")
   },
-  device: {
+  portugal: {
     component: () => import("./Portugal.vue")
   },
-  devices: {
+  spain: {
     component: () => import("./Spain.vue")
   },
-  devicesWidget: {
+  unitedStates: {
     component: () => import("./UnitedStates.vue")
   }
 }
