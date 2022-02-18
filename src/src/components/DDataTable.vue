@@ -12,100 +12,114 @@
     :single-select="singleSelect"
   >
     <template v-slot:header="{ props, on }" v-if="!$vuetify.breakpoint.xs">
-      <th
-        scope="col"
-        v-for="header in props.headers"
-        :key="header.value"
-        class="d-data-table-header"
-      >
-        <!-- Th pour le sortable -->
-
-        <!-- Th pour le multi select -->
-        <v-row
-          no-gutters
-          class="justify-center"
-          v-if="header.value == 'data-table-select' && !singleSelect"
-        >
-          <d-simple-checkbox
-            :value="props.everyItem"
-            :indeterminate="props.someItems && !props.everyItem"
-            class="d-toggle-select-all"
-            @click="
-              on['toggle-select-all'](!(props.everyItem || props.someItems))
-            "
-          />
-        </v-row>
-
-        <v-row
-          v-else
-          no-gutters
-          class="align-center px-5 text-body-1bold"
-          :class="{ 'flex-row-reverse': header.align === 'end', 'justify-center': header.align === 'center' }"
-        >
-          <slot :name="`header.${header.value}-left-prepend`" />
-          <span class="d-data-table-header-text">{{ header.text }}</span>
-          <d-btn
-            icon
-            v-if="header.configurable"
-            @click="
-              configured === header.value
-                ? (configured = null)
-                : (configured = header.value)
-            "
+      <thead>
+        <tr>
+          <th
+            v-for="header in props.headers"
+            :key="header.value"
+            class="d-data-table-header"
           >
-            <d-icon
-              :color="configured === header.value ? 'alert-orange' : 'grey-1'"
-              small
-            >{{ configurationIcon }}</d-icon>
-          </d-btn>
+            <!-- Th pour le sortable -->
 
-          <slot :name="`header.${header.value}-left-append`" />
-
-          <template v-if="header.sortable || header.filterable">
-            <v-spacer />
-
-            <slot :name="`header.${header.value}-right-prepend`" />
-
-            <d-btn icon v-if="header.sortable" @click="on.sort(header.value)">
-              <template v-if="props.options.sortBy.includes(header.value)">
-                <d-icon color="blue-1" small>
-                  {{
-                    props.options.sortDesc[
-                      props.options.sortBy.indexOf(header.value)
-                    ]
-                      ? "mdi-sort-ascending"
-                      : "mdi-sort-descending"
-                  }}
-                </d-icon>
-              </template>
-              <template v-else>
-                <d-icon color="grey-1" small>mdi-sort-ascending</d-icon>
-              </template>
-            </d-btn>
-
-            <d-menu-btn
-              v-if="header.filterable && filters[header.value]"
-              v-model="filters[header.value]"
-              :sortable="false"
+            <!-- Th pour le multi select -->
+            <v-row
+              no-gutters
+              class="justify-center"
+              v-if="header.value == 'data-table-select' && !singleSelect"
             >
-              <template #activator="{ on }">
-                <d-btn icon v-on="on">
-                  <d-icon
-                    :color="
-                      filters[header.value].every((c) => !c.hidden)
-                        ? 'grey-1'
-                        : 'blue-1'
-                    "
-                    small
-                  >mdi-filter</d-icon>
-                </d-btn>
-              </template>
-            </d-menu-btn>
+              <d-simple-checkbox
+                :value="props.everyItem"
+                :indeterminate="props.someItems && !props.everyItem"
+                class="d-toggle-select-all"
+                @click="
+                  on['toggle-select-all'](!(props.everyItem || props.someItems))
+                "
+              />
+            </v-row>
 
-            <slot :name="`header.${header.value}-right-append`" />
-          </template>
-        </v-row>
-      </th>
+            <v-row
+              v-else
+              no-gutters
+              class="align-center text-body-1 h-100"
+              :class="{
+                'flex-row-reverse': header.align === 'end',
+                'justify-center': header.align === 'center',
+              }"
+            >
+              <slot :name="`header.${header.value}-left-prepend`" />
+              <span class="d-data-table-header-text grey-3--text text-body-1">{{ header.text }}</span>
+              <d-btn
+                icon
+                v-if="header.configurable"
+                @click="
+                  configured === header.value
+                    ? (configured = null)
+                    : (configured = header.value)
+                "
+              >
+                <d-icon
+                  :color="
+                    configured === header.value ? 'alert-orange' : 'grey-1'
+                  "
+                  small
+                  >{{ configurationIcon }}</d-icon
+                >
+              </d-btn>
+
+              <slot :name="`header.${header.value}-left-append`" />
+
+              <template v-if="header.sortable || header.filterable">
+                <v-spacer />
+
+                <slot :name="`header.${header.value}-right-prepend`" />
+
+                <d-btn
+                  icon
+                  v-if="header.sortable"
+                  @click="on.sort(header.value)"
+                >
+                  <template v-if="props.options.sortBy.includes(header.value)">
+                    <d-icon color="blue-1" small>
+                      {{
+                        props.options.sortDesc[
+                          props.options.sortBy.indexOf(header.value)
+                        ]
+                          ? "mdi-sort-ascending"
+                          : "mdi-sort-descending"
+                      }}
+                    </d-icon>
+                  </template>
+                  <template v-else>
+                    <d-icon color="grey-1" small>mdi-sort-ascending</d-icon>
+                  </template>
+                </d-btn>
+
+                <d-menu-btn
+                  v-if="header.filterable && filters[header.value]"
+                  v-model="filters[header.value]"
+                  :sortable="false"
+                >
+                  <template #activator="{ on }">
+                    <d-btn icon v-on="on">
+                      <d-icon
+                        :color="
+                          filters[header.value].every((c) => !c.hidden)
+                            ? 'grey-1'
+                            : 'blue-1'
+                        "
+                        small
+                        >mdi-filter</d-icon
+                      >
+                    </d-btn>
+                  </template>
+                </d-menu-btn>
+
+                <slot :name="`header.${header.value}-right-append`" />
+              </template>
+            </v-row>
+          </th>
+        </tr>
+      </thead>
     </template>
 
     <template #item.data-table-select="{ isSelected, select }">
@@ -123,7 +137,10 @@
     </template>
 
     <template v-for="header in itemsSlots" v-slot:[header.slotName]="data">
-      <slot :name="header.slotName" v-bind="{ configure: header.value == configured, ...data }"></slot>
+      <slot
+        :name="header.slotName"
+        v-bind="{ configure: header.value == configured, ...data }"
+      ></slot>
     </template>
   </v-data-table>
 </template>
@@ -166,17 +183,6 @@ export default class DDataTable extends Vue {
 
   get headers() {
     var columns: Column[] = [];
-
-    // if (this.sortable) {
-    //   columns.push({
-    //     text: "",
-    //     value: "",
-    //     slotName: "item.data-table-sort",
-    //     filterable: false,
-    //     index: -1,
-    //     hidden: false
-    //   });
-    // }
 
     columns = columns.concat(
       this.columns
@@ -230,7 +236,9 @@ export default class DDataTable extends Vue {
           c.value!,
           [...new Set(this.items.flatMap((i: any) => i[c.value!]))]
             .sort((a, b) =>
-              a.toString().localeCompare(b.toString(), undefined, { numeric: true })
+              a
+                .toString()
+                .localeCompare(b.toString(), undefined, { numeric: true })
             )
             .map((v) => ({
               hidden: false,
