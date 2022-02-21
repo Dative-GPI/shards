@@ -52,7 +52,7 @@ export default class DCircle extends Vue {
   @Prop({ required: false, default: "white" })
   fill!: string;
 
-  clipPath = "svgPath";
+  clipPath = "" + Math.random();
 
   get scale() {
     return (this.size - (this.borderWidth * 2)) / 100;
