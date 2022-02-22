@@ -10,7 +10,7 @@
     }"
   >
     <d-blur-hash
-      v-if="imageBlurHash"
+      v-if="imageBlurHash && !loaded"
       v-bind="$attrs"
       :value="imageBlurHash"
       :width="canvasWidth"
@@ -19,7 +19,7 @@
     />
     <d-img
       class="d-blur-img-centered"
-      :class="{ hidden: !loaded }"
+      :class="{ hidden: !loaded && imageBlurHash }"
       @load="loaded = true"
       v-bind="$attrs"
       v-on="$listeners"

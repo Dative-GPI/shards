@@ -24,6 +24,7 @@ const Template = (args, { argTypes }) => ({
                 
                 <div>
                     Body 
+                    <div class="mt-12" v-for="n in 20" :key="n">Hello</div>
                 </div>
 
                 <template #actions>

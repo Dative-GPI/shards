@@ -10,8 +10,8 @@ import { decode, isBlurhashValid } from "blurhash";
   inheritAttrs: false,
 })
 export default class DBlurHash extends Vue {
-  @Prop({ required: false, default: "", type: String })
-  value!: string;
+  @Prop({ required: false, default: "" })
+  value!: string | null;
 
   @Prop({ required: false, default: 128 })
   width!: number;
