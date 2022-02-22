@@ -23,13 +23,13 @@ export default class DBlurHash extends Vue {
   punch!: number;
 
   get pixels() {
-    if (this.isValid)
+    if (this.value && this.isValid)
       return decode(this.value, this.width, this.height, this.punch);
     return [];
   }
 
   get isValid() {
-    return isBlurhashValid(this.value).result;
+    return this.value && isBlurhashValid(this.value).result;
   }
 
   mounted() {
