@@ -1,13 +1,12 @@
 <template>
-  <v-expansion-panel class="d-expansion-panel">
-    <v-expansion-panel-header class="ma-0 pa-0" expand-icon="mdi-menu-down">
-      <div class="after-icon ml-5">
-        <slot name="panel-header" />
-      </div>
-    </v-expansion-panel-header>
-    <v-expansion-panel-content>
-      <slot name="panel-content" />
-    </v-expansion-panel-content>
+  <v-expansion-panel class="d-expansion-panel" v-bind="$attrs" v-on="$listeners">
+    <slot> </slot>
+    <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">
+      <slot :name="name" v-bind="data"></slot>
+    </template>
+    <template v-for="(index, name) in $slots" v-slot:[name]>
+      <slot :name="name" />
+    </template>
   </v-expansion-panel>
 </template>
 
@@ -19,9 +18,3 @@ import { Component, Vue } from "vue-property-decorator";
 })
 export default class DExpansionPanel extends Vue {}
 </script>
-
-<style scoped>
-.after-icon {
-	order: 1;
-}
-</style>

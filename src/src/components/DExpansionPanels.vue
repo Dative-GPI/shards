@@ -1,9 +1,5 @@
 <template>
-  <v-expansion-panels
-    v-bind="$attrs"
-    v-on="$listeners"
-    class="d-expansion-panels"
-  >
+  <v-expansion-panels v-bind="$attrs" v-on="$listeners">
     <slot> </slot>
     <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">
       <slot :name="name" v-bind="data"></slot>
