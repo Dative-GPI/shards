@@ -3,6 +3,7 @@
     <template v-for="item in items">
       <div
         :key="'key.' + item.code"
+        align="center"
         class="d-grid-key"
         :class="{
           required: item.required,
