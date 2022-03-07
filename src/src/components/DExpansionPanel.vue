@@ -1,6 +1,6 @@
 <template>
   <v-expansion-panel class="d-expansion-panel">
-    <v-expansion-panel-header class="ma-0 pa-0 grey-3--text text-h5" expand-icon="mdi-menu-down">
+    <v-expansion-panel-header class="ma-0 pa-0" expand-icon="mdi-menu-down">
       <div class="after-icon ml-5">
         <slot name="panel-header" />
       </div>
