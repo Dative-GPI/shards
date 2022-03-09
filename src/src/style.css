@@ -289,10 +289,6 @@ html {
   background-color: transparent !important;
 }
 
-.v-select__selection {
-  padding-left: 4px;
-}
-
 .d-simple-checkbox {
   height: 24px;
 }
