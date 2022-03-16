@@ -36,8 +36,8 @@
     <slot name="widget" :editing="editing"></slot>
     <slot name="editing" :editing="editing">
       <v-row v-if="editing" no-gutters class="pa-0 ma-0 d-dashboard-widget-editing">
-        <d-btn-drawer icon="$cog" v-if="configurable" @click="$emit('configure')" />
-        <d-btn-remove @click="$emit('remove')" class="ml-3" />
+        <d-btn-drawer icon="$cog" v-if="configurable" @click.stop="$emit('configure')" />
+        <d-btn-remove @click.stop="$emit('remove')" class="ml-3" />
       </v-row>
     </slot>
   </v-row>
@@ -98,7 +98,7 @@ export default class DBaseWidget extends Vue {
   }
 
   click(event: MouseEvent): void {
-    if (this.clickable) {
+    if (this.clickable && !this.editing) {
       this.$emit("click", event);
     }
   }
