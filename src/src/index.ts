@@ -65,6 +65,10 @@ import DToggleSet from "./components/DToggleSet.vue";
 import DSimpleDialog from "./components/DSimpleDialog.vue";
 import DValidationBar from "./components/DValidationBar.vue";
 
+import DBaseWidget from "./components/dashboard/DBaseWidget.vue";
+import DDashboard from "./components/dashboard/DDashboard.vue";
+import DDashboardCase from "./components/dashboard/DDashboardCase.vue";
+
 import AlertLoader from "./components/loaders/AlertLoader.vue";
 import DashboardLoader from "./components/loaders/DashboardLoader.vue";
 import DeviceLoader from "./components/loaders/DeviceLoader.vue";
@@ -84,6 +88,8 @@ import { Flags } from "./flags";
 import { Icons } from "./icons";
 import { Colors } from "./colors";
 
+import * as Models from "./models";
+
 import "./style.css";
 import '@fontsource/open-sans'
 import '@fontsource/montserrat'
@@ -97,7 +103,6 @@ const Shards = {
     vue.component("d-access", DAccess);
     vue.component("d-alert", DAlert);
     vue.component("d-app", DApp);
-    // Components
     vue.component("d-autocomplete", DAutocomplete);
     vue.component("d-blur-hash", DBlurHash);
     vue.component("d-blur-img", DBlurImg);
@@ -162,7 +167,10 @@ const Shards = {
     vue.component("d-simple-dialog", DSimpleDialog);
     vue.component("d-validation-bar", DValidationBar);
 
-    // Loaders
+    vue.component("d-base-widget", DBaseWidget);
+    vue.component("d-dashboard", DDashboard);
+    vue.component("d-dashboard-case", DDashboardCase);
+
     vue.component("alert-loader", AlertLoader);
     vue.component("dashboard-loader", DashboardLoader);
     vue.component("device-loader", DeviceLoader);
@@ -180,4 +188,4 @@ const Shards = {
   }
 };
 
-export { Shards, Flags, Icons, Colors };
+export { Shards, Flags, Icons, Colors, Models };
