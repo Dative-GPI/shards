@@ -40,16 +40,16 @@ export const GuardTypeWidget = (arg: any): arg is Widget => {
   if (!arg.code || typeof(arg.code) !== "string") {
     return false;
   }
-  if (!arg.width || typeof(arg.width) !== "number") {
+  if (arg.width == null || typeof(arg.width) !== "number") {
     return false;
   }
-  if (!arg.height || typeof(arg.height) !== "number") {
+  if (arg.height == null || typeof(arg.height) !== "number") {
     return false;
   }
-  if (!arg.x || typeof(arg.x) !== "number") {
+  if (arg.x == null || typeof(arg.x) !== "number") {
     return false;
   }
-  if (!arg.y || typeof(arg.y) !== "number") {
+  if (arg.y == null || typeof(arg.y) !== "number") {
     return false;
   }
   return true;
@@ -68,10 +68,10 @@ export const GuardTypeWidgetTemplate = (arg: any): arg is WidgetTemplate => {
   if (!arg.code || typeof(arg.code) !== "string") {
     return false;
   }
-  if (!arg.width || typeof(arg.width) !== "number") {
+  if (arg.width == null || typeof(arg.width) !== "number") {
     return false;
   }
-  if (!arg.height || typeof(arg.height) !== "number") {
+  if (arg.height == null || typeof(arg.height) !== "number") {
     return false;
   }
   if (arg.x != null) {

@@ -6,7 +6,7 @@
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <g clip-path="url(#clip0)">
+    <g :clip-path="`url(#${clipPath})`">
       <path
         fill="currentColor"
         fill-rule="evenodd"
@@ -15,7 +15,7 @@
       />
     </g>
     <defs>
-      <clipPath id="clip0">
+      <clipPath :id="clipPath">
         <rect
           width="48"
           height="48"
@@ -30,5 +30,7 @@
 import { Component, Vue } from "vue-property-decorator";
 
 @Component({})
-export default class Snacking extends Vue{}
+export default class Snacking extends Vue {
+  clipPath: string = "" + Math.random();
+}
 </script>

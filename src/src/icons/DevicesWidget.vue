@@ -1,6 +1,6 @@
 <template>
   <svg width="97" height="97" viewBox="0 0 97 97" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <g clip-path="url(#clip0)">
+  <g :clip-path="`url(#${clipPath})`">
   <path d="M58.7224 45.4456L64.2087 41.8107L64.4418 46.8901L58.9603 50.5297L58.7224 45.4456Z" fill="#87CFE5"/>
   <path d="M58.9602 50.5297L64.4417 46.89L69.0809 48.1349L63.5995 51.7698L58.9602 50.5297Z" fill="#87CFE5"/>
   <path d="M65.5598 44.7661L71.046 41.1312L71.5171 51.2948L66.0356 54.9297L65.5598 44.7661Z" fill="#87CFE5"/>
@@ -69,7 +69,7 @@
   <path d="M78.7449 63.7295L84.2978 70.9233L79.2826 75.2995L73.7297 68.0962L78.7449 63.7295ZM76.3706 68.8089L79.1446 72.4105L81.6522 70.2248L78.8734 66.6232L76.3706 68.8089Z" fill="#2C2C2C"/>
   </g>
   <defs>
-  <clipPath id="clip0">
+  <clipPath :id="clipPath">
   <rect width="80" height="72" fill="white" transform="translate(8.71338 12.5649)"/>
   </clipPath>
   </defs>
@@ -80,5 +80,7 @@
 import { Vue, Component } from "vue-property-decorator";
 
 @Component({})
-export default class DevicesWidget extends Vue {}
+export default class DevicesWidget extends Vue {
+  clipPath: string = "" + Math.random();
+}
 </script>
