@@ -27,6 +27,7 @@
   <v-row no-gutters v-else
     :draggable="editing"
     :style="style"
+    @click="click"
     @dragstart="dragStart"
     @drag="drag"
     @dragend="dragEnd"
@@ -52,10 +53,10 @@ export default class DBaseWidget extends Vue {
   @Prop({ required: true })
   item!: Widget | WidgetTemplate;
 
-  @Prop({ required: true })
+  @Prop({ required: false, default: false })
   template!: boolean;
 
-  @Prop({ required: true })
+  @Prop({ required: false, default: false })
   mock!: boolean;
 
   @Prop({ required: false, default: false })
@@ -94,6 +95,12 @@ export default class DBaseWidget extends Vue {
     }
 
     return style;
+  }
+
+  click(event: MouseEvent): void {
+    if (this.clickable) {
+      this.$emit("click", event);
+    }
   }
 
   dragStart(event: DragEvent): void {

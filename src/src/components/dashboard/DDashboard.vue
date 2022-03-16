@@ -62,19 +62,16 @@ import DDashboardCase from "./DDashboardCase.vue";
   components: { DDashboardCase }
 })
 export default class DDashboard extends Vue {
-  @Prop({ required: false, default: false })
-  editing!: boolean;
-  
   @Prop({ required: true })
   widgets!: Widget[];
 
-  @Prop({ required: true })
-  templates!: WidgetTemplate[];
+  @Prop({ required: false, default: false })
+  editing!: boolean;
 
-  @Prop({ required: true })
+  @Prop({ required: false, default: 0 })
   width!: number;
 
-  @Prop({ required: true })
+  @Prop({ required: false, default: 0 })
   height!: number;
 
   @Prop({ required: false, default: 3 })
