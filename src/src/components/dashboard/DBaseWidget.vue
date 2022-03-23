@@ -22,7 +22,7 @@
     </slot>
   </v-row>
   <v-row no-gutters v-else-if="mock" :style="style">
-    <slot name="mock"></slot>
+    <slot name="widget" :editing="editing"></slot>
   </v-row>
   <v-row no-gutters v-else
     :draggable="editing"

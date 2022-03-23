@@ -7,7 +7,6 @@
     class="d-tile"
     v-bind="$attrs"
     v-on="$listeners"
-    @click.self="$emit('click')"
   >
     <div class="d-tile-image">
       <slot name="image">
