@@ -1,4 +1,5 @@
 import DExpansionPanels from '@/components/DExpansionPanels.vue';
+import DExpansionPanel from '@/components/DExpansionPanel.vue';
 
 // More on default export: https://storybook.js.org/docs/vue/writing-stories/introduction#default-export
 export default {
@@ -8,16 +9,20 @@ export default {
 
 // More on component templates: https://storybook.js.org/docs/vue/writing-stories/introduction#using-args
 const Template = (args, { argTypes }) => ({
-  components: { DExpansionPanels },
+  components: { DExpansionPanels, DExpansionPanel },
   props: Object.keys(argTypes),
   template:
     `<d-expansion-panels  v-bind="$props">
       <d-expansion-panel>
         <template #panel-header>
-          {{header}}
+          <v-expansion-panel-header>
+            <div>{{header}}</div>
+          </v-expansion-panel-header>
         </template>
         <template #panel-content>
-          {{content}}
+          <v-expansion-panel-content>
+            {{content}}
+          </v-expansion-panel-content>
         </template>
       </d-expansion-panel>
     </d-expansion-panels>`,
