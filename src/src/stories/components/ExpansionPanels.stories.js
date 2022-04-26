@@ -13,19 +13,15 @@ const Template = (args, { argTypes }) => ({
   props: Object.keys(argTypes),
   template:
     `<d-expansion-panels  v-bind="$props">
-      <d-expansion-panel>
-        <template #panel-header>
-          <v-expansion-panel-header>
-            <div>{{header}}</div>
-          </v-expansion-panel-header>
-        </template>
-        <template #panel-content>
-          <v-expansion-panel-content>
-            {{content}}
-          </v-expansion-panel-content>
-        </template>
-      </d-expansion-panel>
-    </d-expansion-panels>`,
+    <d-expansion-panel>
+      <v-expansion-panel-header class="ma-0 pa-0 mb-5" expand-icon="mdi-menu-down">
+        <span class="text-h5" :style="{ order: '1' }"> {{ header }} </span>
+      </v-expansion-panel-header>
+      <v-expansion-panel-content>
+        {{content}}
+      </v-expansion-panel-content>
+    </d-expansion-panel>
+  </d-expansion-panels>`,
 });
 
 //👇 Each story then reuses that template
