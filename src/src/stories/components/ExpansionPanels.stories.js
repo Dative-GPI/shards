@@ -12,14 +12,12 @@ const Template = (args, { argTypes }) => ({
   components: { DExpansionPanels, DExpansionPanel },
   props: Object.keys(argTypes),
   template:
-    `<d-expansion-panels  v-bind="$props">
+  `<d-expansion-panels  v-bind="$props">
     <d-expansion-panel>
-      <v-expansion-panel-header class="ma-0 pa-0 mb-5" expand-icon="mdi-menu-down">
-        <span class="text-h5" :style="{ order: '1' }"> {{ header }} </span>
-      </v-expansion-panel-header>
-      <v-expansion-panel-content>
+      <d-expansion-panel-header :header="header" />
+      <d-expansion-panel-content>
         {{content}}
-      </v-expansion-panel-content>
+      </d-expansion-panel-content>
     </d-expansion-panel>
   </d-expansion-panels>`,
 });

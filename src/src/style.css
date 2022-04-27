@@ -66,13 +66,6 @@ html {
   position: relative;
 }
 
-/* .d-outlined-img .img-center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-} */
-
 .d-search-input {
   max-width: 252px;
   text-align: center;
@@ -160,6 +153,10 @@ html {
 
 .d-expansion-panel.v-expansion-panel>.v-expansion-panel-header {
   min-height: unset;
+}
+
+.d-expansion-panel-header {
+  order: 1;
 }
 
 .v-card__title {
