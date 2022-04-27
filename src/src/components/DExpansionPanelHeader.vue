@@ -1,7 +1,7 @@
 <template>
   <v-expansion-panel-header :class="fit ? 'ma-0 pa-0 mb-5' : ''" expand-icon="mdi-menu-down" v-bind="$attrs" v-on="$listeners">
     <slot>
-      <span class="text-h5 d-expansion-panel-header">
+      <span class="text-h5 ml-5 d-expansion-panel-header">
         {{ header }}
       </span>
     </slot>

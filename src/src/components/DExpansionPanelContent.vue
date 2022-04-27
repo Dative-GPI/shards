@@ -1,5 +1,5 @@
 <template>
-  <v-expansion-panel-content v-bind="$attrs" v-on="$listeners">
+  <v-expansion-panel-content :class="fit ? 'ma-0 pa-0 mb-5' : ''" v-bind="$attrs" v-on="$listeners">
     <slot> </slot>
     <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">
       <slot :name="name" v-bind="data"></slot>
@@ -11,10 +11,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component({
   inheritAttrs: false,
 })
-export default class DExpansionPanelContent extends Vue {}
+export default class DExpansionPanelContent extends Vue {
+  @Prop({ required: false, default: true })
+  fit!: boolean;
+}
 </script>
