@@ -56,6 +56,9 @@ export const Icons: IconsDictionary = {
   production: {
     component: () => import("./Production.vue")
   },
+  profileWidget: {
+    component: () => import("./ProfileWidget.vue")
+  },
   scenarios: {
     component: () => import("./Scenarios.vue")
   },
