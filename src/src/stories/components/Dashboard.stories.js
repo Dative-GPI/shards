@@ -8,23 +8,27 @@ export default {
 };
 
 let widgetsClone = [];
+let configureClone = 0;
 
 const Template = (args, { argTypes }) => ({
   components: { DDashboard, DBaseWidget },
-  data: () => ({ widgetsClone }),
+  data: () => ({ widgetsClone, configureClone }),
   props: Object.keys(argTypes),
   template: `
   <d-dashboard
     :style="{ height: '95vh !important' }"
     :widgets.sync="widgetsClone"
+    :configure="configureClone"
     :editing="editing"
     :width="width"
     :height="height"
+    :dragOffsetX="10"
+    :dragOffsetY="10"
   >
     <template #widget="{ item, dragStart, drag, dragEnd, dragEnter }">
       <d-base-widget
         :clickable="false"
-        :configurable="item.configurable"
+        :configurable="true"
         :editing="true"
         :item="item"
         :meta="item.meta"
@@ -33,6 +37,7 @@ const Template = (args, { argTypes }) => ({
         @drag="(event) => drag(event)"
         @dragend="(event) => dragEnd()"
         @dragenter="(event) => dragEnter()"
+        @configure="configureClone++"
       >
         <template #widget>
           item {{ item }}

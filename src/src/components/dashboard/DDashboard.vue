@@ -43,7 +43,7 @@
             <d-tab :key="1">
               <span class="text-h6"> {{ propertiesTabLabel }} </span>
             </d-tab>
-            <d-tab :key="2" :disabled="!allowConfiguration">
+            <d-tab :key="2" :disabled="!configure">
               <span class="text-h6"> {{ configurationTabLabel }} </span>
             </d-tab>
           </d-tabs>
@@ -66,7 +66,7 @@
 
 <script lang="ts">
 import _ from "lodash";
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import { Widget, WidgetTemplate } from "../../models";
 import { GetOutOfMyWay, GuardTypeWidget, GuardTypeWidgetTemplate } from "./helper";
@@ -95,8 +95,8 @@ export default class DDashboard extends Vue {
   @Prop({ required: false, default: "min(40vw, 450px) !important" })
   drawerMinWidth!: string;
 
-  @Prop({ required: false, default: false })
-  allowConfiguration!: boolean;
+  @Prop({ required: false, default: 0 })
+  configure!: number;
 
   @Prop({ required: false, default: "Widgets" })
   templatesTabLabel!: string;
@@ -112,6 +112,16 @@ export default class DDashboard extends Vue {
 
   @Prop({ required: false, default: 0 })
   dragOffsetY!: number;
+
+  @Watch("configure")
+  onConfigureChange() {
+    if (this.configure > 0) {
+      this.tabs = 2;
+    }
+    else {
+      this.tabs = 0;
+    }
+  }
 
   tabs: number = 0;
 
@@ -136,8 +146,8 @@ export default class DDashboard extends Vue {
     (this.$refs.dashboard! as Element).append((this.$refs.realDragImage as Element));
     event.dataTransfer!.setDragImage((this.$refs.fakeDragImage as Element), 0, 0);
 
-    (this.$refs.realDragImage! as HTMLElement).style.left = (event.pageX + this.dragOffsetX) + 'px';
-    (this.$refs.realDragImage! as HTMLElement).style.top = (event.pageY + this.dragOffsetY) + 'px';
+    (this.$refs.realDragImage! as HTMLElement).style.left = (event.pageX + this.dragOffsetX).toString() + 'px';
+    (this.$refs.realDragImage! as HTMLElement).style.top = (event.pageY + this.dragOffsetY).toString() + 'px';
 
     this.draggingPosition = { x: this.width + 1, y: this.height + 1 };
     this.dragging = item;
