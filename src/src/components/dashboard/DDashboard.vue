@@ -107,6 +107,12 @@ export default class DDashboard extends Vue {
   @Prop({ required: false, default: "Widget configuration" })
   configurationTabLabel!: string;
 
+  @Prop({ required: false, default: 0 })
+  dragOffsetX!: number;
+
+  @Prop({ required: false, default: 0 })
+  dragOffsetY!: number;
+
   tabs: number = 0;
 
   dragging: WidgetTemplate | Widget | null = null;
@@ -130,8 +136,8 @@ export default class DDashboard extends Vue {
     (this.$refs.dashboard! as Element).append((this.$refs.realDragImage as Element));
     event.dataTransfer!.setDragImage((this.$refs.fakeDragImage as Element), 0, 0);
 
-    (this.$refs.realDragImage! as HTMLElement).style.left = event.pageX + 'px';
-    (this.$refs.realDragImage! as HTMLElement).style.top = event.pageY + 'px';
+    (this.$refs.realDragImage! as HTMLElement).style.left = (event.pageX + this.dragOffsetX) + 'px';
+    (this.$refs.realDragImage! as HTMLElement).style.top = (event.pageY + this.dragOffsetY) + 'px';
 
     this.draggingPosition = { x: this.width + 1, y: this.height + 1 };
     this.dragging = item;
@@ -139,10 +145,10 @@ export default class DDashboard extends Vue {
 
   drag(event: DragEvent): void {
     if (event.pageX !== 0) {
-      (this.$refs.realDragImage! as HTMLElement).style.left = `${event.pageX}px`;
+      (this.$refs.realDragImage! as HTMLElement).style.left = `${event.pageX + this.dragOffsetX}px`;
     }
     if (event.pageY !== 0) {
-      (this.$refs.realDragImage! as HTMLElement).style.top = `${event.pageY}px`;
+      (this.$refs.realDragImage! as HTMLElement).style.top = `${event.pageY + this.dragOffsetY}px`;
     }
   }
 
