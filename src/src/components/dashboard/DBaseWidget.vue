@@ -53,6 +53,12 @@ export default class DBaseWidget extends Vue {
   @Prop({ required: true })
   item!: Widget | WidgetTemplate;
 
+  @Prop({ required: false, default: null })
+  width!: number | null;
+
+  @Prop({ required: false, default: null })
+  height!: number | null;
+
   @Prop({ required: false, default: false })
   template!: boolean;
 
@@ -79,8 +85,8 @@ export default class DBaseWidget extends Vue {
 
   get style(): { [key: string]: string } {
     let style: { [key: string]: string } = {
-      width: `${this.item.width * this.caseSize - this.caseMargin}px`,
-      height: `${this.item.height * this.caseSize - this.caseMargin}px`
+      width: `${(this.width ?? this.item.width) * this.caseSize - this.caseMargin}px`,
+      height: `${(this.height ?? this.item.height) * this.caseSize - this.caseMargin}px`
     };
 
     if (!this.mock && !this.template) {
