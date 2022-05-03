@@ -35,14 +35,29 @@
         </v-container>
       </v-col>
       <v-col v-if="editing" :style="{ maxWidth: drawerMinWidth }" @dragenter.stop="dragLeave()">
-        <v-container fluid class="pa-0 ma-0 dashboard-drawer">
-          <slot name="properties" />
-          <slot
-            name="templates"
-            :dragStart="dragStart"
-            :drag="drag"
-            :dragEnd="dragEnd"
-          />
+        <v-container fluid class="ma-0 pa-0 mt-2 px-2 dashboard-drawer">
+          <d-tabs v-model="tabs">
+            <d-tab :key="0">
+              <span class="text-h6"> {{ templatesTabLabel }} </span>
+            </d-tab>
+            <d-tab :key="1">
+              <span class="text-h6"> {{ propertiesTabLabel }} </span>
+            </d-tab>
+            <d-tab :key="2" :disabled="!allowConfiguration">
+              <span class="text-h6"> {{ configurationTabLabel }} </span>
+            </d-tab>
+          </d-tabs>
+          <d-tabs-items :value="tabs">
+            <d-tab-item :value="0">
+              <slot name="templates" :dragStart="dragStart" :drag="drag" :dragEnd="dragEnd" />
+            </d-tab-item>
+            <d-tab-item :value="1">
+              <slot name="properties" />
+            </d-tab-item>
+            <d-tab-item :value="2">
+              <slot name="configuration" />
+            </d-tab-item>
+          </d-tabs-items>
         </v-container>
       </v-col>
     </v-row>
@@ -77,8 +92,22 @@ export default class DDashboard extends Vue {
   @Prop({ required: false, default: 3 })
   mockZIndex!: number;
 
-  @Prop({ required: false, default: "min(40vw, 500px) !important" })
+  @Prop({ required: false, default: "min(40vw, 450px) !important" })
   drawerMinWidth!: string;
+
+  @Prop({ required: false, default: false })
+  allowConfiguration!: boolean;
+
+  @Prop({ required: false, default: "Widgets" })
+  templatesTabLabel!: string;
+
+  @Prop({ required: false, default: "Properties" })
+  propertiesTabLabel!: string;
+
+  @Prop({ required: false, default: "Widget configuration" })
+  configurationTabLabel!: string;
+
+  tabs: number = 0;
 
   dragging: WidgetTemplate | Widget | null = null;
   draggingPosition: { x: number; y: number } = { x: -1, y: -1 };
@@ -110,10 +139,10 @@ export default class DDashboard extends Vue {
 
   drag(event: DragEvent): void {
     if (event.pageX !== 0) {
-      (this.$refs.realDragImage! as HTMLElement).style.left = `${event.pageX - this.width * 6}px`;
+      (this.$refs.realDragImage! as HTMLElement).style.left = `${event.pageX}px`;
     }
     if (event.pageY !== 0) {
-      (this.$refs.realDragImage! as HTMLElement).style.top = `${event.pageY - this.height * 10}px`;
+      (this.$refs.realDragImage! as HTMLElement).style.top = `${event.pageY}px`;
     }
   }
 
