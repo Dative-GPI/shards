@@ -3,20 +3,20 @@ import { Widget, WidgetTemplate } from "../../models";
 
 export const GetOutOfMyWay = (widget: Widget, widgets: Widget[]): Widget[] => {
   let movers = _.cloneDeep(widgets)
-    .filter(w => w.id !== widget.id && w.y + w.height > widget.y)
+    .filter(w => w.id !== widget.id && w.y + (w.meta.height != null ? parseInt(w.meta.height) : w.height) > widget.y)
     .sort((w1: Widget, w2: Widget) => w1.y - w2.y);
 
   let xMin = widget.x;
-  let xMax = widget.x + widget.width;
-  let yMax = widget.y + widget.height;
+  let xMax = widget.x + (widget.meta.width != null ? parseInt(widget.meta.width) : widget.width);
+  let yMax = widget.y + (widget.meta.height != null ? parseInt(widget.meta.height) : widget.height);
 
   movers.forEach((w: Widget) => {
     let toMove = false;
-    if (w.x + w.width > xMin && w.x < xMax) {
+    if (w.x + (w.meta.width != null ? parseInt(w.meta.width) : w.width) > xMin && w.x < xMax) {
       toMove = true;
     }
     if (toMove && w.y <= yMax) {
-      let yOffset = widget.y + widget.height - w.y;
+      let yOffset = widget.y + (widget.meta.height != null ? parseInt(widget.meta.height) : widget.height) - w.y;
       if (!(yOffset <= 0)) {
         w.y += yOffset;
         movers = GetOutOfMyWay(w, movers).concat(movers.filter(w1 => !movers.some(w2 => w2.id === w1.id)))

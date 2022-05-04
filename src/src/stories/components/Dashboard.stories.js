@@ -1,101 +1,30 @@
-import DDashboard from '@/components/dashboard/DDashboard.vue';
-import DBaseWidget from "@/components/dashboard/DBaseWidget.vue";
+import DashboardExample from './DashboardExample.vue';
 
 // More on default export: https://storybook.js.org/docs/vue/writing-stories/introduction#default-export
 export default {
   title: 'Components/Dashboard',
-  component: DDashboard
+  component: DashboardExample
 };
 
 let widgetsClone = [];
 let configureClone = 0;
 
 const Template = (args, { argTypes }) => ({
-  components: { DDashboard, DBaseWidget },
-  data: () => ({ widgetsClone, configureClone }),
+  components: { DashboardExample },
   props: Object.keys(argTypes),
   template: `
-  <d-dashboard
-    :style="{ height: '95vh !important' }"
-    :widgets.sync="widgetsClone"
-    :configure="configureClone"
-    :editing="editing"
-    :width="width"
-    :height="height"
-    :dragOffsetX="10"
-    :dragOffsetY="10"
-  >
-    <template #widget="{ item, dragStart, drag, dragEnd, dragEnter }">
-      <d-base-widget
-        :clickable="false"
-        :configurable="true"
-        :editing="true"
-        :item="item"
-        :meta="item.meta"
-        :style="{ backgroundColor: 'white', border: '2px solid red' }"
-        @dragstart="(event) => dragStart(item, event)"
-        @drag="(event) => drag(event)"
-        @dragend="(event) => dragEnd()"
-        @dragenter="(event) => dragEnter()"
-        @configure="configureClone++"
-      >
-        <template #widget>
-          item {{ item }}
-        </template>
-      </d-base-widget>
-    </template>
-    <template #mock="{ item }">
-      <d-base-widget
-        :clickable="false"
-        :configurable="item.configurable"
-        :mock="true"
-        :item="item"
-        :meta="item.meta"
-        :style="{ backgroundColor: 'white', border: '2px solid blue' }"
-      >
-        <template #widget>
-        item {{ item }}
-        </template>
-      </d-base-widget>
-    </template>
-    <template #templates="{ dragStart, drag, dragEnd }">
-      <v-row no-gutters class="mt-5 px-2">
-        <d-search-input v-model="search" />
-      </v-row>
-      <v-row no-gutters class="mt-5 px-2">
-        <v-container
-          fluid
-          class="ma-0 pa-0"
-          :style="{ flexGrow: '1 !important', overflowY: 'scroll', scrollbarWidth: 'none' }"
-        >
-          <d-base-widget
-            v-for="template in templates"
-            :key="template.id"
-            :clickable="false"
-            :configurable="template.configurable"
-            :template="true"
-            :item="template"
-            :meta="{}"
-            @dragstart="(event) => dragStart(template, event)"
-            @drag="(event) => drag(event)"
-            @dragend="(event) => dragEnd()"
-          >
-            <template #widget>
-              item {{ template }}
-            </template>
-          </d-base-widget>
-        </v-container>
-      </v-row>
-    </template>
-    <template #properties>
-      <v-row no-gutters class="mt-5 px-2">
-        <d-text-field
-          :label="'Label*'"
-          v-model="label"
-        />
-      </v-row>
-    </template>
-  </d-dashboard>`,
+    <dashboard-example
+      :templates="templates"
+      :editing="editing"
+      :mockZIndex="mockZIndex"
+      :drawerMinWidth="drawerMinWidth"
+      :templatesTabLabel="templatesTabLabel"
+      :propertiesTabLabel="propertiesTabLabel"
+      :configurationTabLabel="configurationTabLabel"
+      :dragOffsetX="dragOffsetX"
+      :dragOffsetY="dragOffsetY"
+    />
+  `,
 });
 
 export const Default = Template.bind({});
@@ -121,8 +50,11 @@ Default.args = {
     height: 2
   }],
   editing: true,
-  width: 16,
-  height: 9,
-  label: "My dashboard",
-  search: ""
+  mockZIndex: 3,
+  drawerMinWidth: "min(40vw, 450px) !important",
+  templatesTabLabel: "Widgets",
+  propertiesTabLabel: "Properties",
+  configurationTabLabel: "Widget configuration",
+  dragOffsetX: 10,
+  dragOffsetY: 10,
 };

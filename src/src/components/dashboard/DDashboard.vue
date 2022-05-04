@@ -68,7 +68,7 @@
 import _ from "lodash";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
-import { Widget, WidgetTemplate } from "../../models";
+import { instanceOfWidget, Widget, WidgetTemplate } from "../../models";
 import { GetOutOfMyWay, GuardTypeWidget, GuardTypeWidgetTemplate } from "./helper";
 
 import DDashboardCase from "./DDashboardCase.vue";
@@ -114,7 +114,7 @@ export default class DDashboard extends Vue {
   dragOffsetY!: number;
 
   @Watch("configure")
-  onConfigureChange() {
+  onConfigureChange(): void {
     if (this.configure > 0) {
       this.tabs = 2;
     }
@@ -151,6 +151,11 @@ export default class DDashboard extends Vue {
 
     this.draggingPosition = { x: this.width + 1, y: this.height + 1 };
     this.dragging = item;
+    
+    if (instanceOfWidget(item)) {
+      this.dragging.width = item.meta.width != null ? parseInt(item.meta.width) : item.width;
+      this.dragging.height = item.meta.height != null ? parseInt(item.meta.height) : item.height;
+    }
   }
 
   drag(event: DragEvent): void {
