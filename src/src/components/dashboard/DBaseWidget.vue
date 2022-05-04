@@ -84,9 +84,12 @@ export default class DBaseWidget extends Vue {
   zIndex!: number;
 
   get style(): { [key: string]: string } {
+    let trueWidth = this.width != null ? this.width : this.item.width;
+    let trueHeight = this.height != null ? this.height : this.item.height;
+
     let style: { [key: string]: string } = {
-      width: `${(this.width ?? this.item.width) * this.caseSize - this.caseMargin}px`,
-      height: `${(this.height ?? this.item.height) * this.caseSize - this.caseMargin}px`
+      width: `${trueWidth * this.caseSize - this.caseMargin}px`,
+      height: `${trueHeight * this.caseSize - this.caseMargin}px`
     };
 
     if (!this.mock && !this.template) {
