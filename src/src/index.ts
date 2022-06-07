@@ -53,6 +53,7 @@ import DSpinner from "./components/DSpinner.vue";
 import DSubTitle from "./components/DSubTitle.vue";
 import DSwitch from "./components/DSwitch.vue";
 import DSwitchGrid from "./components/DSwitchGrid.vue";
+import DModulableTabs from "./components/DModulableTabs.vue";
 import DTabs from "./components/DTabs.vue";
 import DTab from "./components/DTab.vue";
 import DTabsItems from "./components/DTabsItems.vue";
@@ -157,6 +158,7 @@ const Shards = {
     vue.component("d-sub-title", DSubTitle);
     vue.component("d-switch", DSwitch);
     vue.component("d-switch-grid", DSwitchGrid);
+    vue.component("d-modulable-tabs", DModulableTabs);
     vue.component("d-tabs", DTabs);
     vue.component("d-tab", DTab);
     vue.component("d-tabs-items", DTabsItems);
