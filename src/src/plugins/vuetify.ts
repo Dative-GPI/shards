@@ -18,7 +18,6 @@ export default new Vuetify({
     },
   },
   icons: {
-    iconfont: 'md',
     values: Icons
   },
 });

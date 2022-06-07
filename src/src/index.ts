@@ -18,6 +18,8 @@ import DBtnSave from "./components/DBtnSave.vue";
 import DBtnRemove from "./components/DBtnRemove.vue";
 import DBtnToggle from "./components/DBtnToggle.vue";
 import DCard from "./components/DCard.vue";
+import DCarousel from "./components/DCarousel.vue";
+import DCarouselItem from "./components/DCarouselItem.vue";
 import DCheckbox from "./components/DCheckbox.vue";
 import DChip from "./components/DChip.vue";
 import DChipGroup from "./components/DChipGroup.vue";
@@ -123,6 +125,8 @@ const Shards = {
     vue.component("d-btn-save", DBtnSave);
     vue.component("d-btn-toggle", DBtnToggle);
     vue.component("d-card", DCard);
+    vue.component("d-carousel", DCarousel);
+    vue.component("d-carousel-item", DCarouselItem);
     vue.component("d-checkbox", DCheckbox);
     vue.component("d-chip", DChip);
     vue.component("d-chip-set", DChipSet);

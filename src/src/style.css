@@ -163,6 +163,17 @@ html {
   word-break: normal !important;
 }
 
+.sb-main-padded .sb-show-main {
+  padding: 0 !important;
+}
+
+.v-carousel > .v-window__container > .v-window__next {
+  top: 0px !important;
+}
+
+.v-carousel > .v-window__container > .v-window__prev {
+  top: 0px !important;
+}
 
 .d-data-table-header {
   height: 28px;
