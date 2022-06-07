@@ -15,14 +15,14 @@ export default {
 const Template = (args, { argTypes }) => ({
   components: { DModulableTabs, DTabs, DTab, DTabsItems, DTabItem },
   props: Object.keys(argTypes),
-  data: () => ({ valueClone: 0, listClone: [] }),
+  data: () => ({ valueClone: 0, tabsClone: [] }),
   watch: {
     value(newVal) {
       this.valueClone = newVal;
     },
-    list(newVal) {
-      this.listClone = [...newVal];
-    },
+    tabs(newVal) {
+      this.tabsClone = [...newVal];
+    }
   },
   computed: {
     oProps() {
@@ -32,44 +32,37 @@ const Template = (args, { argTypes }) => ({
   },
   methods: {
     addItem() {
-      this.list.push(this.list.length);
+      this.tabs.push({ label: "item " + (this.tabs.length + 1), error: this.tabs.length % 2 == 0 });
     },
-    removeItem() {
-      this.list.splice(this.valueClone-this.prependItems, 1);
+    removeItem(index) {
+      this.tabs.splice(index, 1);
     },
   },
   mounted() {
     this.valueClone = this.value;
-    this.listClone = [];
+    this.tabsClone = [];
   },
   template: `
     <div>
       <d-modulable-tabs 
         v-model="valueClone" 
         v-bind="oProps"
-        :items-length="list.length"
+        :tabs="tabs"
+        :prepend-tabs="prependTabs"
+        :append-tabs="appendTabs"
         @add:item="addItem" 
-        @remove:item="removeItem">
-        <template #prepend>
-          <d-tab>
-            Before list
-          </d-tab>
-        </template>
-        <template #append>
-          <d-tab>
-            After list
-          </d-tab>
-        </template>
+        @remove:item="removeItem"
+      >
         <template #items>
-          <v-tab-item>
-          Before list selected !
-          </v-tab-item>
-          <v-tab-item v-for="item in listClone" :key="item">
-           item {{item}} selected
-          </v-tab-item>
-          <v-tab-item>
-          After list selected !
-          </v-tab-item>
+          <d-tab-item>
+            Before list selected !
+          </d-tab-item>
+          <d-tab-item v-for="(item, index) in tabs" :key="'item ' + index">
+           item {{index + 1}} selected
+          </d-tab-item>
+          <d-tab-item>
+            After list selected !
+          </d-tab-item>
         </template>
       </d-modulable-tabs>
     </div>
@@ -80,8 +73,8 @@ const Template = (args, { argTypes }) => ({
 export const Default = Template.bind({});
 Default.args = {
   maxItems: 10,
-  minItems: 1,
-  prependItems:1,
-  list: [],
-  itemsLabel: "item"
+  minItems: 0,
+  tabs: [],
+  prependTabs: [{ label: "Prepend", error: false }],
+  appendTabs: [{ label: "Append", error: false }],
 };

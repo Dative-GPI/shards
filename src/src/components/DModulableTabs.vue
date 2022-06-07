@@ -1,49 +1,65 @@
 <template>
-  <div>
-    <div style="display: flex; flex-flow: row">
+  <div class="d-modulable-tabs">
+    <div class="tabbar">
       <d-tabs
-        style="width: 1px"
+        :value="value"
         v-bind="$attrs"
         v-on="$listeners"
-        active-class="d-tab--active"
-        hide-slider
-        show-arrows
-        :key="itemsLength"
-        @change="$emit('input', $event)"
+        :key="tabNumber"
       >
-        <slot name="prepend"></slot>
-        <d-tab v-for="item in itemsLength" :key="item">
-          <span v-if="itemsLabel != null" class="mr-2">{{ itemsLabel }}</span>
-          {{ item }}
+        <d-tab
+          v-for="(pItem, pIndex) in prependTabs"
+          :error="pItem.error"
+          :key="'prepend-tab-' + pIndex"
+        >
+          {{ pItem.label }}
         </d-tab>
-        <slot name="append"></slot>
+
+        <d-tab
+          v-for="(item, index) in tabs"
+          :error="item.error"
+          :key="'tab-' + index"
+        >
+          {{ item.label }}
+        </d-tab>
+
+        <d-tab
+          v-for="(aItem, aIndex) in appendTabs"
+          :error="aItem.error"
+          :key="'append-tab-' + aIndex"
+        >
+          {{ aItem.label }}
+        </d-tab>
+
         <v-spacer />
-        <template v-for="(index, name) in $slots" v-slot:[name]>
-          <slot :name="name" />
+
+        <template v-for="(item, name) in $slots" v-slot:[name]>
+          <slot :name="name"></slot>
         </template>
-        <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">
+        <template v-for="(item, name) in $scopedSlots" v-slot:[name]="data">
           <slot :name="name" v-bind="data"></slot>
         </template>
       </d-tabs>
+
       <d-icon-btn
         v-if="
-          itemsLength > minItems &&
-          value >= prependItems &&
-          value < prependItems + itemsLength
+          tabs.length > minItems &&
+          value >= itemsStart &&
+          value < itemsEnd
         "
         class="action-icon"
         icon="mdi-minus-circle-outline"
-        @click="$emit('remove:item')"
+        @click="$emit('remove:item', value - itemsStart)"
       />
       <d-icon-btn
-        v-if="itemsLength < maxItems || maxItems == -1"
+        v-if="tabs.length < maxItems || maxItems == -1"
         class="action-icon"
         icon="mdi-plus-circle-outline"
-        @click="$emit('add:item')"
+        @click="$emit('add:item', value - itemsStart)"
       />
     </div>
-    <d-tabs-items v-bind="$attrs" :key="itemsLength">
-      <slot name="items"> </slot>
+    <d-tabs-items :value="value" v-bind="$attrs" :key="tabNumber">
+      <slot name="items"></slot>
     </d-tabs-items>
   </div>
 </template>
@@ -53,22 +69,64 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({})
 export default class DModulableTabs extends Vue {
+  // Properties
+
   @Prop({ required: true })
   value!: number;
-
-  @Prop({ required: false, default: null })
-  itemsLabel!: string;
-
-  @Prop({ required: false, default: -1 })
-  maxItems!: number;
 
   @Prop({ required: false, default: 0 })
   minItems!: number;
 
-  @Prop({ required: false, default: 0 })
-  prependItems!: number;
+  @Prop({ required: false, default: -1 })
+  maxItems!: number;
 
-  @Prop({ required: false, default: 0 })
-  itemsLength!: number;
+  @Prop({ required: false, default: [] })
+  prependTabs!: TabItem[];
+
+  @Prop({ required: true })
+  tabs!: TabItem[];
+
+  @Prop({ required: false, default: [] })
+  appendTabs!: TabItem[];
+
+  // Data
+  // Computed Properties
+
+  get itemsStart() {
+    return this.prependTabs.length;
+  }
+
+  get itemsEnd() {
+    return this.prependTabs.length + this.tabs.length;
+  }
+
+  get tabNumber() {
+    // Used for the keys in DTabs and DTabsItems. When this changes, the tabs are reindexed
+    // so we don't get weird tab values
+    return this.prependTabs.length + this.tabs.length + this.appendTabs.length;
+  }
+
+  // Methods
+}
+
+interface TabItem {
+  label: string;
+  error: boolean;
 }
 </script>
+
+<style>
+.d-modulable-tabs .tabbar {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.d-modulable-tabs .tabbar .d-tabs {
+  width: 150px;
+  flex: 1 1 auto;
+}
+
+.d-modulable-tabs .tabbar .action-btn {
+  flex: 1 0 auto;
+}
+</style>
