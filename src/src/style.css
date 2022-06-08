@@ -98,10 +98,9 @@ html {
 
 .d-tile-status {
   position: absolute;
-  top: 35px;
-  right: 0;
-  width: calc(100% - 180px);
-  padding: 5px;
+  top: 40px;
+  right: 16px;
+  width: 52px;
 }
 
 .d-toggle {
