@@ -13,18 +13,28 @@ const Template = (args, { argTypes }) => ({
   components: { DCarousel, DCarouselItem },
   props: Object.keys(argTypes),
   template: `
-  <d-carousel v-bind="$props">
-    <d-carousel-item :key="1">
+  <d-carousel v-bind="$props" :minKey="0" :maxKey="3">
+    <d-carousel-item :key="0">
         <v-row no-gutters justify="center" align="center">
           <d-icon> mdi-forest </d-icon>
         </v-row>
     </d-carousel-item>
+    <d-carousel-item :key="1">
+        <v-row no-gutters justify="center" align="center">
+          <d-icon> mdi-smoking </d-icon>
+        </v-row>
+    </d-carousel-item>
     <d-carousel-item :key="2">
+      <v-row no-gutters justify="center" align="center">
+        <d-icon> mdi-smoke </d-icon>
+      </v-row>
+    </d-carousel-item>
+    <d-carousel-item :key="3">
       <v-row no-gutters justify="center" align="center">
         <d-icon> mdi-fire </d-icon>
       </v-row>
     </d-carousel-item>
-  </d-card>`,
+  </d-carousel>`,
 });
 
 //👇 Each story then reuses that template
