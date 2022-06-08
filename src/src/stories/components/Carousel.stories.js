@@ -13,28 +13,37 @@ const Template = (args, { argTypes }) => ({
   components: { DCarousel, DCarouselItem },
   props: Object.keys(argTypes),
   template: `
-  <d-carousel v-bind="$props" :minKey="0" :maxKey="3">
-    <d-carousel-item :key="0">
+  <v-container fluid class="ma-0 pa-0">
+    <d-carousel v-bind="$props" :maxKey="3">
+      <d-carousel-item :key="0">
+          <v-row no-gutters justify="center" align="center">
+            <d-icon> mdi-forest </d-icon>
+          </v-row>
+      </d-carousel-item>
+      <d-carousel-item :key="1">
+          <v-row no-gutters justify="center" align="center">
+            <d-icon> mdi-smoking </d-icon>
+          </v-row>
+      </d-carousel-item>
+      <d-carousel-item :key="2">
         <v-row no-gutters justify="center" align="center">
-          <d-icon> mdi-forest </d-icon>
+          <d-icon> mdi-smoke </d-icon>
         </v-row>
-    </d-carousel-item>
-    <d-carousel-item :key="1">
+      </d-carousel-item>
+      <d-carousel-item :key="3">
         <v-row no-gutters justify="center" align="center">
-          <d-icon> mdi-smoking </d-icon>
+          <d-icon> mdi-fire </d-icon>
         </v-row>
-    </d-carousel-item>
-    <d-carousel-item :key="2">
-      <v-row no-gutters justify="center" align="center">
-        <d-icon> mdi-smoke </d-icon>
-      </v-row>
-    </d-carousel-item>
-    <d-carousel-item :key="3">
-      <v-row no-gutters justify="center" align="center">
-        <d-icon> mdi-fire </d-icon>
-      </v-row>
-    </d-carousel-item>
-  </d-carousel>`,
+      </d-carousel-item>
+    </d-carousel>
+    <d-carousel v-bind="$props" :maxKey="0">
+      <d-carousel-item :key="0">
+          <v-row no-gutters justify="center" align="center">
+            <d-icon> mdi-thermometer </d-icon>
+          </v-row>
+      </d-carousel-item>
+    </d-carousel>
+  </v-container>`,
 });
 
 //👇 Each story then reuses that template

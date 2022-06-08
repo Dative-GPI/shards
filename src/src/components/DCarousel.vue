@@ -1,13 +1,14 @@
 <template>
   <v-row no-gutters>
     <d-btn
+      v-if="sliders"
       icon 
       class="d-carousel-chevron"
       :ripple="false"
       :color="prevHovered ? 'grey-3' : 'grey-1'"
       @mouseenter="prevHovered = true"
       @mouseleave="prevHovered = false"
-      @click.stop.prevent="slide > minSize ? slide-- : slide = maxSize"
+      @click.stop.prevent="slide > minKey ? slide-- : slide = maxKey"
     >
       <d-icon> mdi-chevron-left </d-icon>
     </d-btn>
@@ -19,7 +20,7 @@
       :height="height"
       :prev-icon="''"
       :next-icon="''"
-      class="d-carousel"
+      :style="{ maxWidth: sliders ? 'calc(100% - 56px) !important' : '100%' }"
     >
       <slot> </slot>
       <template v-for="(index, name) in $slots" v-slot:[name]>
@@ -30,8 +31,9 @@
       </template>
     </v-carousel>
     <d-btn
+      v-if="sliders"
       icon
-      class="d-carousel-chevron pa-0 ma-0"
+      class="d-carousel-chevron"
       :ripple="false"
       :color="nextHovered ? 'grey-3' : 'grey-1'"
       @mouseenter="nextHovered = true"
@@ -59,25 +61,15 @@ export default class DCarousel extends Vue {
   @Prop({ required: false, default: 0 })
   minKey!: number;
 
-  @Prop({ required: false })
-  maxKey?: number;
+  @Prop({ required: true })
+  maxKey!: number;
 
   slide: number = 0;
   prevHovered: boolean = false;
   nextHovered: boolean = false;
 
-  get minSize(): number {
-    return this.minKey;
-  }
-
-  get maxSize(): number {
-    return this.maxKey != null ? this.maxKey : this.$children[1].$children.length;
+  get sliders(): boolean {
+    return this.maxKey - this.minKey > 0;
   }
 }
 </script>
-
-<style>
-.d-carousel {
-  max-width: calc(100% - 56px) !important;
-}
-</style>
