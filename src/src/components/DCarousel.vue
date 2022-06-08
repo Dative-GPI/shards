@@ -64,7 +64,7 @@ export default class DCarousel extends Vue {
 
   slide: number = 0;
   prevHovered: boolean = false;
-  nextHovered: boolean = true;
+  nextHovered: boolean = false;
 
   get minSize(): number {
     return this.minKey;
