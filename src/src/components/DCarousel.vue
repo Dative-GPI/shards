@@ -7,7 +7,7 @@
       :color="prevHovered ? 'grey-3' : 'grey-1'"
       @mouseenter="prevHovered = true"
       @mouseleave="prevHovered = false"
-      @click="slide > minSize ? slide-- : slide = maxSize"
+      @click.stop.prevent="slide > minSize ? slide-- : slide = maxSize"
     >
       <d-icon> mdi-chevron-left </d-icon>
     </d-btn>
@@ -36,7 +36,7 @@
       :color="nextHovered ? 'grey-3' : 'grey-1'"
       @mouseenter="nextHovered = true"
       @mouseleave="nextHovered = false"
-      @click="slide++"
+      @click.stop.prevent="slide++"
     >
       <d-icon> mdi-chevron-right </d-icon>
     </d-btn>
