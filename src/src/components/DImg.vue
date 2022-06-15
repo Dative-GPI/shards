@@ -48,6 +48,8 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
   inheritAttrs: false,
 })
 export default class DImg extends Vue {
+  // Properties
+
   @Prop({ required: false, default: "" })
   value!: string;
 
@@ -66,11 +68,20 @@ export default class DImg extends Vue {
   @Prop({ required: false, default: false })
   contain!: boolean;
 
+  // Data
+
+  index = 0;
+  valueType = "";
+
+  // Computed Properties
+
   get realSource() {
-    return !!this.value
-      ? [this.valueType, this.value].join(",")
-      : this.src || require("../assets/img-placeholder.svg");
+    if (!!this.value && !!this.valueType) return [this.valueType, this.value].join(",");
+    if (!!this.value) return this.value;
+    return this.src || require("../assets/img-placeholder.svg");
   }
+
+  // Methods
 
   update(event: string) {
     if (event) {
@@ -79,9 +90,6 @@ export default class DImg extends Vue {
       this.$emit("input", parts[1]);
     }
   }
-
-  index = 0;
-  valueType = "";
 
   @Watch("index")
   onSourceChanged() {
