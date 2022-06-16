@@ -54,6 +54,9 @@ export default class DImg extends Vue {
   value!: string;
 
   @Prop({ required: false, default: "" })
+  type!: string;
+
+  @Prop({ required: false, default: "" })
   src!: string;
 
   @Prop({ required: false, default: false, type: Boolean })
@@ -71,13 +74,14 @@ export default class DImg extends Vue {
   // Data
 
   index = 0;
+  valueData = "";
   valueType = "";
 
   // Computed Properties
 
   get realSource() {
-    if (!!this.value && !!this.valueType) return [this.valueType, this.value].join(",");
-    if (!!this.value) return this.value;
+    if (!!this.valueData && !!this.valueType)
+      return [this.valueType, this.valueData].join(",");
     return this.src || require("../assets/img-placeholder.svg");
   }
 
@@ -85,10 +89,16 @@ export default class DImg extends Vue {
 
   update(event: string) {
     if (event) {
-      const parts = event.split(",");
-      this.valueType = parts[0];
-      this.$emit("input", parts[1]);
+      this.syncValue(event);
+      this.$emit("input", this.valueData);
+      this.$emit("update:type", this.valueType);
     }
+  }
+
+  syncValue(value: string) {
+    const [type, data] = value.split(",");
+    this.valueType = type;
+    this.valueData = data;
   }
 
   @Watch("index")
@@ -98,9 +108,13 @@ export default class DImg extends Vue {
 
   @Watch("value")
   onValueChanged() {
-    if (!this.value || this.value.includes(",")) {
-      this.valueType = "";
-    }
+    if (this.value && this.value.includes(",")) this.syncValue(this.value);
+    else this.valueData = this.value ?? "";
+  }
+
+  @Watch("type")
+  onTypeChanged() {
+    this.valueType = this.type ?? "";
   }
 }
 </script>
