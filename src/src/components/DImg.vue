@@ -109,12 +109,12 @@ export default class DImg extends Vue {
   @Watch("value")
   onValueChanged() {
     if (this.value && this.value.includes(",")) this.syncValue(this.value);
-    else this.valueData = this.value ?? "";
+    else this.valueData = this.value;
   }
 
   @Watch("type")
   onTypeChanged() {
-    this.valueType = this.type ?? "";
+    this.valueType = this.type;
   }
 }
 </script>
