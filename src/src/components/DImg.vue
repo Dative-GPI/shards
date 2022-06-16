@@ -106,13 +106,13 @@ export default class DImg extends Vue {
     this.index++;
   }
 
-  @Watch("value")
+  @Watch("value", { immediate: true })
   onValueChanged() {
     if (this.value && this.value.includes(",")) this.syncValue(this.value);
     else this.valueData = this.value;
   }
 
-  @Watch("type")
+  @Watch("type", { immediate: true })
   onTypeChanged() {
     this.valueType = this.type;
   }
