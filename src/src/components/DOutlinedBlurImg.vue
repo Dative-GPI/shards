@@ -8,13 +8,12 @@
         :image-height="imageHeight"
         :image-blur-hash="imageBlurHash"
         :fullfill="fullfill"
-         v-on="$listeners"
+        v-on="$listeners"
         v-bind="$attrs"
       />
     </template>
   </d-outlined-img>
 </template>
-
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";

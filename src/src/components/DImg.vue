@@ -54,9 +54,6 @@ export default class DImg extends Vue {
   value!: string;
 
   @Prop({ required: false, default: "" })
-  type!: string;
-
-  @Prop({ required: false, default: "" })
   src!: string;
 
   @Prop({ required: false, default: false, type: Boolean })
@@ -74,14 +71,33 @@ export default class DImg extends Vue {
   // Data
 
   index = 0;
-  valueData = "";
-  valueType = "";
+
+  signatures: { [key: string]: string } = {
+    "JVBERi0": "application/pdf",
+    "R0lGODdh": "image/gif",
+    "R0lGODlh": "image/gif",
+    "iVBORw0KGgo": "image/png",
+    "/9j/": "image/jpg"
+  }
 
   // Computed Properties
 
+  get type() {
+    if (this.value && this.value.includes(",")) return this.value.split(",")[0];
+    if (this.value)
+      for (const s in this.signatures)
+        if (this.value.startsWith(s)) return `data:${this.signatures[s]};base64`;
+    return "";
+  }
+
+  get imageData() {
+    if (this.value && this.value.includes(",")) return this.value.split(",")[1];
+    return this.value;
+  }
+
   get realSource() {
-    if (!!this.valueData && !!this.valueType)
-      return [this.valueType, this.valueData].join(",");
+    if (!!this.imageData && !!this.type)
+      return [this.type, this.imageData].join(",");
     return this.src || require("../assets/img-placeholder.svg");
   }
 
@@ -89,32 +105,15 @@ export default class DImg extends Vue {
 
   update(event: string) {
     if (event) {
-      this.syncValue(event);
-      this.$emit("input", this.valueData);
-      this.$emit("update:type", this.valueType);
+      const [type, data] = event.split(",");
+      this.$emit("input", data);
+      this.$emit("update:type", type);
     }
-  }
-
-  syncValue(value: string) {
-    const [type, data] = value.split(",");
-    this.valueType = type;
-    this.valueData = data;
   }
 
   @Watch("index")
   onSourceChanged() {
     this.index++;
-  }
-
-  @Watch("value", { immediate: true })
-  onValueChanged() {
-    if (this.value && this.value.includes(",")) this.syncValue(this.value);
-    else this.valueData = this.value;
-  }
-
-  @Watch("type", { immediate: true })
-  onTypeChanged() {
-    this.valueType = this.type;
   }
 }
 </script>

@@ -9,22 +9,23 @@
       borderRadius: round ? '50%' : '',
     }"
   >
+    <d-img
+      class="d-blur-img-centered"
+      :class="{ hidden: !loaded && !error }"
+      @load="loaded = true"
+      @error="error = true"
+      v-bind="$attrs"
+      v-on="$listeners"
+      :width="!$attrs.value ? canvasWidth : width"
+      :height="!$attrs.value ? canvasHeight : height"
+    />
     <d-blur-hash
-      v-if="imageBlurHash && !loaded"
+      v-if="imageBlurHash"
       v-bind="$attrs"
       :value="imageBlurHash"
       :width="canvasWidth"
       :height="canvasHeight"
       v-show="!$attrs.value"
-    />
-    <d-img
-      class="d-blur-img-centered"
-      :class="{ hidden: !loaded && imageBlurHash }"
-      @load="loaded = true"
-      v-bind="$attrs"
-      v-on="$listeners"
-      :width="!$attrs.value ? canvasWidth : width"
-      :height="!$attrs.value ? canvasHeight : height"
     />
   </div>
 </template>
@@ -36,6 +37,8 @@ import { Component, Prop, Vue } from "vue-property-decorator";
   inheritAttrs: false,
 })
 export default class BlurImage extends Vue {
+  // Properties
+
   @Prop({ required: false, default: "" })
   imageBlurHash!: string | null;
 
@@ -57,7 +60,12 @@ export default class BlurImage extends Vue {
   @Prop({ required: false, default: false, type: Boolean })
   round!: boolean;
 
+  // Data
+
   loaded = false;
+  error = false;
+
+  // Computed Properties
 
   get minRatio() {
     if (!this.imageHeight || !this.imageWidth) return 1;
@@ -88,5 +96,7 @@ export default class BlurImage extends Vue {
     if (!this.imageHeight) return this.height;
     return Math.floor(this.imageHeight * this.ratio);
   }
+
+  // Methods
 }
 </script>
