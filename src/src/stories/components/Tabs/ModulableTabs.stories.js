@@ -6,7 +6,7 @@ import DTabItem from "@/components/DTabItem.vue";
 
 // More on default export: https://storybook.js.org/docs/vue/writing-stories/introduction#default-export
 export default {
-  title: "Components/ModulableTabs",
+  title: "Components/Tabs/ModulableTabs",
   component: DModulableTabs,
   subcomponents: { DTabs, DTab, DTabsItems, DTabItem },
 };

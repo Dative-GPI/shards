@@ -1,12 +1,7 @@
 <template>
   <div class="d-modulable-tabs">
     <div class="tabbar">
-      <d-tabs
-        :value="value"
-        v-bind="$attrs"
-        v-on="$listeners"
-        :key="tabNumber"
-      >
+      <d-tabs :value="value" v-bind="$attrs" v-on="$listeners" :key="tabNumber">
         <d-tab
           v-for="(pItem, pIndex) in prependTabs"
           :error="pItem.error"
@@ -42,15 +37,12 @@
       </d-tabs>
 
       <d-icon-btn
-        v-if="
-          tabs.length > minItems &&
-          value >= itemsStart &&
-          value < itemsEnd
-        "
+        v-if="tabs.length > minItems && value >= itemsStart && value < itemsEnd"
         class="action-icon"
         icon="mdi-minus-circle-outline"
         @click="$emit('remove:item', value - itemsStart)"
       />
+
       <d-icon-btn
         v-if="tabs.length < maxItems || maxItems == -1"
         class="action-icon"
@@ -119,11 +111,18 @@ interface TabItem {
 .d-modulable-tabs .tabbar {
   display: flex;
   flex-flow: row nowrap;
+  align-items: flex-end;
+
+  box-shadow: inset 0px -1px 0px var(--v-grey-2-base);
 }
 
 .d-modulable-tabs .tabbar .d-tabs {
   width: 150px;
   flex: 1 1 auto;
+}
+
+.d-modulable-tabs .tabbar .d-tabs * {
+  background-color: transparent;
 }
 
 .d-modulable-tabs .tabbar .action-btn {
