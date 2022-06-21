@@ -80,13 +80,13 @@ export default class DModulableTabs extends Vue {
   @Prop({ required: false, default: -1 })
   maxItems!: number;
 
-  @Prop({ required: false, default: [] })
+  @Prop({ required: false, default: () => [] })
   prependTabs!: TabItem[];
 
   @Prop({ required: true })
   tabs!: TabItem[];
 
-  @Prop({ required: false, default: [] })
+  @Prop({ required: false, default: () => [] })
   appendTabs!: TabItem[];
 
   // Data
