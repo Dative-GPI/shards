@@ -10,7 +10,22 @@ export default {
 const Template = (args, { argTypes }) => ({
   components: { DIconAutocomplete },
   props: Object.keys(argTypes),
-  template: '<d-icon-autocomplete v-bind="$props">{{icon}}</d-icon-autocomplete>',
+  data: () => ({ valueClone: [] }),
+  watch: {
+    value(newVal) {
+      this.valueClone = newVal;
+    }
+  },
+  computed: {
+    oProps() {
+      const { value, ...others } = this.$props;
+      return others
+    }
+  },
+  mounted() {
+    this.valueClone = this.value;
+  },
+  template: '<d-icon-autocomplete v-model="valueClone" v-bind="oProps" />',
 });
 
 //👇 Each story then reuses that template
