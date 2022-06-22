@@ -10,7 +10,7 @@ export default {
 const Template = (args, { argTypes }) => ({
   components: { DIconAutocomplete },
   props: Object.keys(argTypes),
-  data: () => ({ valueClone: [] }),
+  data: () => ({ valueClone: "mdi-wifi" }),
   watch: {
     value(newVal) {
       this.valueClone = newVal;
@@ -29,4 +29,7 @@ const Template = (args, { argTypes }) => ({
 });
 
 //👇 Each story then reuses that template
-export const Default = Template.bind({});
+export const Default = Template.bind({})
+Default.args = {
+  value: "mdi-wifi"
+}

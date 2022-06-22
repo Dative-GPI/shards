@@ -1,5 +1,6 @@
 <template>
-  <d-autocomplete v-bind="$attrs" v-on="$listeners" :items="items" :no-filter="true" :search-input.sync="search">
+  <d-autocomplete :value="value" @change="$emit('input', $event)" v-on="$listeners" :items="items" :no-filter="true"
+    :search-input.sync="search">
     <template #item="{ item }">
       <d-icon :size="24" style="width: 30px" class="mr-2">{{ item }}</d-icon> <span>{{ item.replace("mdi-", "")
       }}</span>
@@ -16,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import { IconsMeta } from "../icons-meta";
 
@@ -24,6 +25,9 @@ import { IconsMeta } from "../icons-meta";
   inheritAttrs: false,
 })
 export default class DIconAutocomplete extends Vue {
+  @Prop({ required: false })
+  value!: string;
+
   search = "";
 
   items: string[] = [];
@@ -35,21 +39,29 @@ export default class DIconAutocomplete extends Vue {
       || i.tags.some(t => t.includes(search))
       || i.aliases.some(a => a.includes(search)))
       .map(i => `mdi-${i.name}`)
-    
-    console.log([... new Set(IconsMeta.flatMap(i => i.tags))])
+  }
+
+  mounted() {
+    if (this.value) {
+      this.searchIcons(this.value.replace("mdi-", ""));
+    }
   }
 
   reset() {
     this.items = [];
   }
 
+  @Watch("value")
+  onValueChanged() {
+    if (this.value) {
+      this.searchIcons(this.value.replace("mdi-", ""));
+    }
+  }
+
   @Watch("search")
   onSearchChanged() {
     if (this.search && this.search.length) {
       this.searchIcons(this.search);
-    }
-    else {
-      this.reset();
     }
   }
 }
