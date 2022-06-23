@@ -1,5 +1,5 @@
 <template>
-  <d-autocomplete :value="value" @change="$emit('input', $event)" v-on="$listeners" :items="items" :no-filter="true"
+  <d-autocomplete :value="value" @change="$emit('input', $event)" v-bind="$attrs" v-on="$listeners" :items="items" :no-filter="true"
     :search-input.sync="search">
     <template #item="{ item }">
       <d-icon :size="24" style="width: 30px" class="mr-2">{{ item }}</d-icon> <span>{{ item.replace("mdi-", "")
