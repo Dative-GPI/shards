@@ -50,6 +50,8 @@ const Template = (args, { argTypes }) => ({
         :tabs="tabs"
         :prepend-tabs="prependTabs"
         :append-tabs="appendTabs"
+        :editable="editable"
+        :inset="inset"
         @add:item="addItem" 
         @remove:item="removeItem"
       >
@@ -77,4 +79,6 @@ Default.args = {
   tabs: [],
   prependTabs: [{ label: "Prepend", error: false }],
   appendTabs: [{ label: "Append", error: false }],
+  editable: true,
+  inset: true
 };

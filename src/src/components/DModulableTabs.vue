@@ -1,6 +1,6 @@
 <template>
   <div class="d-modulable-tabs">
-    <div class="tabbar">
+    <div :class="inset ? 'd-tabs-bar d-inset-bar' : 'd-tabs-bar'">
       <d-tabs :value="value" v-bind="$attrs" v-on="$listeners" :key="tabNumber">
         <d-tab
           v-for="(pItem, pIndex) in prependTabs"
@@ -36,19 +36,19 @@
         </template>
       </d-tabs>
 
-      <d-icon-btn
-        v-if="editing && (tabs.length > minItems && value >= itemsStart && value < itemsEnd)"
-        class="action-icon"
-        icon="mdi-minus-circle-outline"
-        @click="$emit('remove:item', value - itemsStart)"
-      />
+        <d-icon-btn
+          v-if="editable && (tabs.length > minItems && value >= itemsStart && value < itemsEnd)"
+          class="action-icon"
+          icon="mdi-minus-circle-outline"
+          @click="$emit('remove:item', value - itemsStart)"
+        />
 
-      <d-icon-btn
-        v-if="editing && (tabs.length < maxItems || maxItems == -1)"
-        class="action-icon"
-        icon="mdi-plus-circle-outline"
-        @click="$emit('add:item', value - itemsStart)"
-      />
+        <d-icon-btn
+          v-if="editable && (tabs.length < maxItems || maxItems == -1)"
+          class="action-icon"
+          icon="mdi-plus-circle-outline"
+          @click="$emit('add:item', value - itemsStart)"
+        />
     </div>
     <d-tabs-items :value="value" v-bind="$attrs" :key="tabNumber">
       <slot name="items"></slot>
@@ -80,7 +80,10 @@ export default class DModulableTabs extends Vue {
   appendTabs!: TabItem[];
 
   @Prop({ required: false, default: true })
-  editing!: boolean;
+  editable!: boolean;
+
+  @Prop({ required: false, default: true })
+  inset!: boolean;
 
   get itemsStart() {
     return this.prependTabs.length;
@@ -104,24 +107,27 @@ interface TabItem {
 </script>
 
 <style>
-.d-modulable-tabs .tabbar {
+.d-modulable-tabs .d-tabs-bar {
   display: flex;
   flex-flow: row nowrap;
   align-items: flex-end;
+  min-height: 36px;
+}
 
+.d-modulable-tabs .d-inset-bar {
   box-shadow: inset 0px -1px 0px var(--v-grey-2-base);
 }
 
-.d-modulable-tabs .tabbar .d-tabs {
+.d-modulable-tabs .d-tabs-bar .d-tabs {
   width: 150px;
   flex: 1 1 auto;
 }
 
-.d-modulable-tabs .tabbar .d-tabs * {
+.d-modulable-tabs .d-tabs-bar .d-tabs * {
   background-color: transparent;
 }
 
-.d-modulable-tabs .tabbar .action-btn {
+.d-modulable-tabs .d-tabs-bar .action-btn {
   flex: 1 0 auto;
 }
 </style>
