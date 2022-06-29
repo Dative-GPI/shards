@@ -37,14 +37,14 @@
       </d-tabs>
 
       <d-icon-btn
-        v-if="tabs.length > minItems && value >= itemsStart && value < itemsEnd"
+        v-if="editing && (tabs.length > minItems && value >= itemsStart && value < itemsEnd)"
         class="action-icon"
         icon="mdi-minus-circle-outline"
         @click="$emit('remove:item', value - itemsStart)"
       />
 
       <d-icon-btn
-        v-if="tabs.length < maxItems || maxItems == -1"
+        v-if="editing && (tabs.length < maxItems || maxItems == -1)"
         class="action-icon"
         icon="mdi-plus-circle-outline"
         @click="$emit('add:item', value - itemsStart)"
@@ -61,8 +61,6 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({})
 export default class DModulableTabs extends Vue {
-  // Properties
-
   @Prop({ required: true })
   value!: number;
 
@@ -81,8 +79,8 @@ export default class DModulableTabs extends Vue {
   @Prop({ required: false, default: () => [] })
   appendTabs!: TabItem[];
 
-  // Data
-  // Computed Properties
+  @Prop({ required: false, default: true })
+  editing!: boolean;
 
   get itemsStart() {
     return this.prependTabs.length;
@@ -97,8 +95,6 @@ export default class DModulableTabs extends Vue {
     // so we don't get weird tab values
     return this.prependTabs.length + this.tabs.length + this.appendTabs.length;
   }
-
-  // Methods
 }
 
 interface TabItem {
