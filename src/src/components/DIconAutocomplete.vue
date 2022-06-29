@@ -1,17 +1,27 @@
 <template>
-  <d-autocomplete :value="value" @change="$emit('input', $event)" v-bind="$attrs" v-on="$listeners" :items="items" :no-filter="true"
-    :search-input.sync="search">
+  <d-autocomplete
+    :value="value"
+    @change="$emit('input', $event)"
+    v-bind="$attrs"
+    v-on="$listeners"
+    :items="items"
+    :no-filter="true"
+    :search-input.sync="search"
+  >
     <template #item="{ item }">
-      <d-icon :size="24" style="width: 30px" class="mr-2">{{ item }}</d-icon> <span>{{ item.replace("mdi-", "")
-      }}</span>
+      <d-icon :size="24" style="width: 30px" class="mr-2">{{ item }}</d-icon>
+      <span>{{ item.replace("mdi-", "") }}</span>
     </template>
-    <template v-slot:selection="data">
-      <d-icon :size="24" style="width: 30px" class="mr-2">{{ data.item }}</d-icon> <span>{{ data.item.replace("mdi-",
-          "")
-      }}</span>
+    <template #selection="{ item }">
+      <d-icon :size="24" style="width: 30px" class="mr-2">{{
+        item
+      }}</d-icon>
+      <span>{{ item.replace("mdi-", "") }}</span>
     </template>
     <template #prepend-inner>
-      <d-icon v-if="$attrs.value" :size="24" style="width: 30px" class="mr-4">{{ $attrs.value }}</d-icon>
+      <d-icon v-if="$attrs.value" :size="24" style="width: 30px" class="mr-4">{{
+        $attrs.value
+      }}</d-icon>
     </template>
   </d-autocomplete>
 </template>
@@ -34,11 +44,12 @@ export default class DIconAutocomplete extends Vue {
 
   searchIcons(search: string) {
     search = search.toLowerCase().replace(" ", "_");
-    this.items = IconsMeta.filter(i =>
-      i.name.includes(search)
-      || i.tags.some(t => t.includes(search))
-      || i.aliases.some(a => a.includes(search)))
-      .map(i => `mdi-${i.name}`)
+    this.items = IconsMeta.filter(
+      (i) =>
+        i.name.includes(search) ||
+        i.tags.some((t) => t.includes(search)) ||
+        i.aliases.some((a) => a.includes(search))
+    ).map((i) => `mdi-${i.name}`);
   }
 
   mounted() {
