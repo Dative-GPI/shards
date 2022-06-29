@@ -9,6 +9,14 @@
       borderRadius: round ? '50%' : '',
     }"
   >
+    <d-blur-hash
+      v-if="imageBlurHash"
+      v-bind="$attrs"
+      :value="imageBlurHash"
+      :width="canvasWidth"
+      :height="canvasHeight"
+      v-show="!$attrs.value"
+    />
     <d-img
       class="d-blur-img-centered"
       :class="{ hidden: !loaded && !error }"
@@ -18,14 +26,6 @@
       v-on="$listeners"
       :width="!$attrs.value ? canvasWidth : width"
       :height="!$attrs.value ? canvasHeight : height"
-    />
-    <d-blur-hash
-      v-if="imageBlurHash"
-      v-bind="$attrs"
-      :value="imageBlurHash"
-      :width="canvasWidth"
-      :height="canvasHeight"
-      v-show="!$attrs.value"
     />
   </div>
 </template>
