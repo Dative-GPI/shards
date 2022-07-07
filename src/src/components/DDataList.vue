@@ -69,7 +69,7 @@
               <div
                 v-for="(item, index) in props.items"
                 :key="item[itemKey]"
-                class="mr-2"
+                :class="tileClass"
               >
                 <slot name="tile-item" v-bind="{ index, item }" />
               </div>
@@ -124,6 +124,9 @@ export default class DDataList extends Vue {
 
   @Prop({ required: false, default: true, type: Boolean })
   columnSortable!: boolean;
+
+  @Prop({ required: false, default: "mr-2" })
+  tileClass!: string;
 
   mode: "table" | "tile" = "tile";
 

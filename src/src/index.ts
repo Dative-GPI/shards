@@ -18,6 +18,8 @@ import DBtnSave from "./components/DBtnSave.vue";
 import DBtnRemove from "./components/DBtnRemove.vue";
 import DBtnToggle from "./components/DBtnToggle.vue";
 import DCard from "./components/DCard.vue";
+import DCarousel from "./components/DCarousel.vue";
+import DCarouselItem from "./components/DCarouselItem.vue";
 import DCheckbox from "./components/DCheckbox.vue";
 import DChip from "./components/DChip.vue";
 import DChipGroup from "./components/DChipGroup.vue";
@@ -28,12 +30,19 @@ import DCreateEntityBtn from "./components/DCreateEntityBtn.vue";
 import DCreateEntityForm from "./components/DCreateEntityForm.vue";
 import DDataList from "./components/DDataList.vue";
 import DDataTable from "./components/DDataTable.vue";
+import DDraggable from "./components/DDraggable.vue";
+import DDraggableList from "./components/DDraggableList.vue";
 import DExpansionPanel from "./components/DExpansionPanel.vue";
+import DExpansionPanelContent from "./components/DExpansionPanelContent.vue";
+import DExpansionPanelHeader from "./components/DExpansionPanelHeader.vue";
 import DExpansionPanels from "./components/DExpansionPanels.vue";
 import DGrid from "./components/DGrid.vue";
 import DIcon from "./components/DIcon.vue";
 import DIconBtn from "./components/DIconBtn.vue";
+import DIconAutocomplete from "./components/DIconAutocomplete.vue";
 import DImg from "./components/DImg.vue";
+import DInputAutocomplete from "./components/DInputAutocomplete.vue";
+import DLightTabs from "./components/DLightTabs.vue";
 import DLink from "./components/DLink.vue";
 import DList from "./components/DList.vue";
 import DListItem from "./components/DListItem.vue";
@@ -51,6 +60,7 @@ import DSpinner from "./components/DSpinner.vue";
 import DSubTitle from "./components/DSubTitle.vue";
 import DSwitch from "./components/DSwitch.vue";
 import DSwitchGrid from "./components/DSwitchGrid.vue";
+import DModulableTabs from "./components/DModulableTabs.vue";
 import DTabs from "./components/DTabs.vue";
 import DTab from "./components/DTab.vue";
 import DTabsItems from "./components/DTabsItems.vue";
@@ -64,6 +74,10 @@ import DToggle from "./components/DToggle.vue";
 import DToggleSet from "./components/DToggleSet.vue";
 import DSimpleDialog from "./components/DSimpleDialog.vue";
 import DValidationBar from "./components/DValidationBar.vue";
+
+import DBaseWidget from "./components/dashboard/DBaseWidget.vue";
+import DDashboard from "./components/dashboard/DDashboard.vue";
+import DDashboardCase from "./components/dashboard/DDashboardCase.vue";
 
 import AlertLoader from "./components/loaders/AlertLoader.vue";
 import DashboardLoader from "./components/loaders/DashboardLoader.vue";
@@ -84,6 +98,8 @@ import { Flags } from "./flags";
 import { Icons } from "./icons";
 import { Colors } from "./colors";
 
+import * as Models from "./models";
+
 import "./style.css";
 import '@fontsource/open-sans'
 import '@fontsource/montserrat'
@@ -97,7 +113,6 @@ const Shards = {
     vue.component("d-access", DAccess);
     vue.component("d-alert", DAlert);
     vue.component("d-app", DApp);
-    // Components
     vue.component("d-autocomplete", DAutocomplete);
     vue.component("d-blur-hash", DBlurHash);
     vue.component("d-blur-img", DBlurImg);
@@ -115,6 +130,8 @@ const Shards = {
     vue.component("d-btn-save", DBtnSave);
     vue.component("d-btn-toggle", DBtnToggle);
     vue.component("d-card", DCard);
+    vue.component("d-carousel", DCarousel);
+    vue.component("d-carousel-item", DCarouselItem);
     vue.component("d-checkbox", DCheckbox);
     vue.component("d-chip", DChip);
     vue.component("d-chip-set", DChipSet);
@@ -125,12 +142,19 @@ const Shards = {
     vue.component("d-create-entity-form", DCreateEntityForm);
     vue.component("d-data-list", DDataList);
     vue.component("d-data-table", DDataTable);
+    vue.component("d-draggable", DDraggable);
+    vue.component("d-draggable-list", DDraggableList);
     vue.component("d-expansion-panel", DExpansionPanel);
+    vue.component("d-expansion-panel-content", DExpansionPanelContent);
+    vue.component("d-expansion-panel-header", DExpansionPanelHeader);
     vue.component("d-expansion-panels", DExpansionPanels);
     vue.component("d-grid", DGrid);
     vue.component("d-icon", DIcon);
     vue.component("d-icon-btn", DIconBtn);
+    vue.component("d-icon-autocomplete", DIconAutocomplete);
     vue.component("d-img", DImg);
+    vue.component("d-input-autocomplete", DInputAutocomplete);
+    vue.component("d-light-tabs", DLightTabs);
     vue.component("d-link", DLink);
     vue.component("d-list", DList);
     vue.component("d-list-item", DListItem);
@@ -148,6 +172,7 @@ const Shards = {
     vue.component("d-sub-title", DSubTitle);
     vue.component("d-switch", DSwitch);
     vue.component("d-switch-grid", DSwitchGrid);
+    vue.component("d-modulable-tabs", DModulableTabs);
     vue.component("d-tabs", DTabs);
     vue.component("d-tab", DTab);
     vue.component("d-tabs-items", DTabsItems);
@@ -162,7 +187,10 @@ const Shards = {
     vue.component("d-simple-dialog", DSimpleDialog);
     vue.component("d-validation-bar", DValidationBar);
 
-    // Loaders
+    vue.component("d-base-widget", DBaseWidget);
+    vue.component("d-dashboard", DDashboard);
+    vue.component("d-dashboard-case", DDashboardCase);
+
     vue.component("alert-loader", AlertLoader);
     vue.component("dashboard-loader", DashboardLoader);
     vue.component("device-loader", DeviceLoader);
@@ -180,4 +208,4 @@ const Shards = {
   }
 };
 
-export { Shards, Flags, Icons, Colors };
+export { Shards, Flags, Icons, Colors, Models };

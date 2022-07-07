@@ -48,6 +48,8 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
   inheritAttrs: false,
 })
 export default class DImg extends Vue {
+  // Properties
+
   @Prop({ required: false, default: "" })
   value!: string;
 
@@ -66,33 +68,52 @@ export default class DImg extends Vue {
   @Prop({ required: false, default: false })
   contain!: boolean;
 
-  get realSource() {
-    return !!this.value
-      ? [this.valueType, this.value].join(",")
-      : this.src || require("../assets/img-placeholder.svg");
+  // Data
+
+  index = 0;
+
+  signatures: { [key: string]: string } = {
+    "JVBERi0": "application/pdf",
+    "R0lGODdh": "image/gif",
+    "R0lGODlh": "image/gif",
+    "iVBORw0KGgo": "image/png",
+    "/9j/": "image/jpg"
   }
+
+  // Computed Properties
+
+  get type() {
+    if (this.value && this.value.includes(",")) return this.value.split(",")[0];
+    if (this.value)
+      for (const s in this.signatures)
+        if (this.value.startsWith(s)) return `data:${this.signatures[s]};base64`;
+    return "";
+  }
+
+  get imageData() {
+    if (this.value && this.value.includes(",")) return this.value.split(",")[1];
+    return this.value;
+  }
+
+  get realSource() {
+    if (!!this.imageData && !!this.type)
+      return [this.type, this.imageData].join(",");
+    return this.src || require("../assets/img-placeholder.svg");
+  }
+
+  // Methods
 
   update(event: string) {
     if (event) {
-      const parts = event.split(",");
-      this.valueType = parts[0];
-      this.$emit("input", parts[1]);
+      const [type, data] = event.split(",");
+      this.$emit("input", data);
+      this.$emit("update:type", type);
     }
   }
-
-  index = 0;
-  valueType = "";
 
   @Watch("index")
   onSourceChanged() {
     this.index++;
-  }
-
-  @Watch("value")
-  onValueChanged() {
-    if (!this.value || this.value.includes(",")) {
-      this.valueType = "";
-    }
   }
 }
 </script>

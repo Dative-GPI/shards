@@ -8,6 +8,12 @@ export const Icons: IconsDictionary = {
   caterer: {
     component: () => import("./Caterer.vue")
   },
+  chartBookmarksWidget: {
+    component: () => import("./ChartBookmarksWidget.vue")
+  },
+  chartTemplatesWidget: {
+    component: () => import("./ChartTemplatesWidget.vue")
+  },
   cog: {
     component: () => import("./Cog.vue")
   },
@@ -23,6 +29,9 @@ export const Icons: IconsDictionary = {
   google: {
     component: () => import("./Google.vue")
   },
+  groupsWidget: {
+    component: () => import("./GroupsWidget.vue")
+  },
   locations: {
     component: () => import("./Locations.vue")
   },
@@ -35,6 +44,9 @@ export const Icons: IconsDictionary = {
   microsoft: {
     component: () => import("./Microsoft.vue")
   },
+  modelsWidget: {
+    component: () => import("./ModelsWidget.vue")
+  },
   pastries: {
     component: () => import("./Pastries.vue")
   },
@@ -43,6 +55,9 @@ export const Icons: IconsDictionary = {
   },
   production: {
     component: () => import("./Production.vue")
+  },
+  profileWidget: {
+    component: () => import("./ProfileWidget.vue")
   },
   scenarios: {
     component: () => import("./Scenarios.vue")

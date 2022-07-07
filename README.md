@@ -8,7 +8,7 @@ A storybook presenting all the components is available [here](https://dative-gpi
 To use this library, you first need a Vue.Js project:
 
 ```sh
-vue create my-add
+vue create my-app
 cd my-app
 ```
 

@@ -16,8 +16,8 @@
     </template>
   </v-simple-checkbox>
   <div v-else>
-    <d-icon v-if="$attrs.value" color="grey-3">mdi-check-circle</d-icon>
-    <d-icon v-else color="grey-3">mdi-cancel</d-icon>
+    <d-icon v-if="$attrs.value" size="24" color="grey-3">mdi-check-circle</d-icon>
+    <d-icon v-else size="24" color="grey-3">mdi-cancel</d-icon>
   </div>
 </template>
 

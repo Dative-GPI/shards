@@ -6,8 +6,8 @@
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <g clip-path="url(#clip0)">
-      <g clip-path="url(#clip1)">
+    <g :clip-path="`url(#${clipPath1})`">
+      <g :clip-path="`url(#${clipPath2})`">
         <path
           d="M17.9699 17.5004L17.9699 17.5004L17.9732 17.4992C19.4673 16.9593 21.7044 16.3293 23.9199 16.3293C26.1161 16.3293 28.3732 16.9598 29.8427 17.4978L29.8427 17.4978L29.8499 17.5004C30.4469 17.7137 30.7625 18.2719 30.6798 18.8072L30.679 18.8126L29.2175 28.6284L29.2171 28.6309C29.1328 29.2069 28.5976 29.6966 27.9041 29.6966H19.9357C19.2487 29.6966 18.7018 29.2111 18.6011 28.6197L17.142 18.8202C17.0687 18.2579 17.3909 17.7073 17.9699 17.5004Z"
           stroke="currentColor"
@@ -34,7 +34,7 @@
       </g>
     </g>
     <defs>
-      <clipPath id="clip0">
+      <clipPath :id="clipPath1">
         <rect
           width="48"
           height="48"
@@ -42,7 +42,7 @@
           transform="translate(0 0.329346)"
         />
       </clipPath>
-      <clipPath id="clip1">
+      <clipPath :id="clipPath2">
         <rect
           width="38" 
           height="17"
@@ -58,5 +58,8 @@
 import { Component, Vue } from "vue-property-decorator";
 
 @Component({})
-export default class Pastries extends Vue{}
+export default class Pastries extends Vue {
+  clipPath1: string = "" + Math.random();
+  clipPath2: string = "" + Math.random();
+}
 </script>

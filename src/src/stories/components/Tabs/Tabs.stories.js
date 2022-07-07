@@ -5,7 +5,7 @@ import DTabItem from "@/components/DTabItem.vue";
 
 // More on default export: https://storybook.js.org/docs/vue/writing-stories/introduction#default-export
 export default {
-  title: 'Components/Tabs',
+  title: 'Components/Tabs/SimpleTabs',
   component: DTabs,
   subcomponents: { DTab, DTabsItems, DTabItem }
 };

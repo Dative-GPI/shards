@@ -14,12 +14,12 @@
     :append-icon="editable ? 'mdi-menu-down' : ''"
     height="28px"
   >
-    <slot></slot>
-    <template v-for="(index, name) in $slots" v-slot:[name]>
-      <slot :name="name" />
-    </template>
     <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">
       <slot :name="name" v-bind="data"></slot>
+    </template>
+
+    <template #no-data>
+      <slot name="no-data"></slot>
     </template>
   </v-autocomplete>
 </template>

@@ -48,6 +48,7 @@ Default.args = {
             align: 'end',
             sortable: true,
             hidden: false,
+            width: 180,
             index: 1
         },
         {
@@ -64,6 +65,7 @@ Default.args = {
             align: "center",
             hidden: false,
             filterable: true,
+            width: 120,
             index: 3
         },
         {

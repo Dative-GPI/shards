@@ -6,7 +6,7 @@
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <g clip-path="url(#clip0)">
+    <g :clip-path="`url(#${clipPath})`">
       <path
         fill="currentColor"
         d="M18.6719 3.66946C19.1458 3.38581 19.7599 3.54002 20.0436 4.0139C20.502 4.77972 21.0217 6.0649 21.1745 7.54385C21.3286 9.03623 21.1131 10.789 20.008 12.3867C19.2555 13.4747 19.1597 14.6089 19.3588 15.6283C19.5629 16.673 20.0733 17.5577 20.4549 18.0231C20.8052 18.4501 20.7429 19.0802 20.3159 19.4305C19.8889 19.7807 19.2588 19.7185 18.9085 19.2914C18.345 18.6044 17.6715 17.4222 17.3959 16.0118C17.1154 14.576 17.2441 12.8668 18.3631 11.249C19.1295 10.141 19.3039 8.89997 19.185 7.74928C19.0648 6.58516 18.6489 5.57802 18.3275 5.04109C18.0438 4.56721 18.1981 3.95311 18.6719 3.66946Z"
@@ -27,7 +27,7 @@
       />
     </g>
     <defs>
-      <clipPath id="clip0">
+      <clipPath :id="clipPath">
         <rect
           width="48"
           height="48"
@@ -44,5 +44,7 @@ import { Component, Vue } from "vue-property-decorator";
 @Component({
   inheritAttrs: false,
 })
-export default class Caterer extends Vue {}
+export default class Caterer extends Vue {
+  clipPath: string = "" + Math.random();
+}
 </script>

@@ -12,9 +12,10 @@ export default {
 const Template = (args, { argTypes }) => ({
     components: { DBlurImg },
     props: Object.keys(argTypes),
-    data: () => ({ data: "" }),
+    data: () => ({ imageData: "" }),
+
     template: `
-    <d-blur-img v-bind="$props" v-model="data" />
+    <d-blur-img v-bind="$props" v-model="imageData" />
   `
 });
 
