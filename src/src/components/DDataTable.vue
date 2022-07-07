@@ -1,91 +1,53 @@
 <template>
-  <v-data-table
-    v-bind="$attrs"
-    v-on="$listeners"
-    class="d-data-table"
-    fixed-header
-    :hide-default-header="!$vuetify.breakpoint.xs"
-    :headers="headers"
-    :items="filtredItems"
-    :sort-by.sync="sortBy"
-    :sort-desc.sync="sortDesc"
-    :single-select="singleSelect"
-  >
+  <v-data-table v-bind="$attrs" v-on="$listeners" class="d-data-table" fixed-header
+    :hide-default-header="!$vuetify.breakpoint.xs" :headers="headers" :items="filtredItems" :sort-by.sync="sortBy"
+    :sort-desc.sync="sortDesc" :single-select="singleSelect">
     <template v-slot:header="{ props, on }" v-if="!$vuetify.breakpoint.xs">
       <thead>
         <tr>
-          <th
-            v-for="header in props.headers"
-            :key="header.value"
-            class="d-data-table-header"
-          >
+          <th v-for="header in props.headers" :key="header.value" class="d-data-table-header">
             <!-- Th pour le sortable -->
 
             <!-- Th pour le multi select -->
-            <v-row
-              no-gutters
-              class="justify-center"
-              v-if="header.value == 'data-table-select' && !singleSelect"
-            >
-              <d-simple-checkbox
-                :value="props.everyItem"
-                :indeterminate="props.someItems && !props.everyItem"
-                class="d-toggle-select-all"
-                @click="
+            <v-row no-gutters class="justify-center" v-if="header.value == 'data-table-select' && !singleSelect">
+              <d-simple-checkbox :value="props.everyItem" :indeterminate="props.someItems && !props.everyItem"
+                class="d-toggle-select-all" @click="
                   on['toggle-select-all'](!(props.everyItem || props.someItems))
-                "
-              />
+                " />
             </v-row>
 
-            <v-row
-              v-else
-              no-gutters
-              class="align-center text-body-1 h-100"
-              :class="{
-                'flex-row-reverse': header.align === 'end',
-                'justify-center': header.align === 'center',
-              }"
-            >
+            <v-row v-else no-gutters class="align-center text-body-1 h-100" :class="{
+              'flex-row-reverse': header.align === 'end',
+              'justify-center': header.align === 'center',
+            }">
               <slot :name="`header.${header.value}-left-prepend`" />
               <span class="d-data-table-header-text grey-3--text text-body-1">{{ header.text }}</span>
-              <d-btn
-                icon
-                v-if="header.configurable"
-                @click="
-                  configured === header.value
-                    ? (configured = null)
-                    : (configured = header.value)
-                "
-              >
-                <d-icon
-                  :color="
-                    configured === header.value ? 'alert-orange' : 'grey-1'
-                  "
-                  small
-                  >{{ configurationIcon }}</d-icon
-                >
+              <d-btn icon v-if="header.configurable" @click="
+                configured === header.value
+                  ? (configured = null)
+                  : (configured = header.value)
+              ">
+                <d-icon :color="
+                  configured === header.value ? 'alert-orange' : 'grey-1'
+                " small>{{ configurationIcon }}</d-icon>
               </d-btn>
 
               <slot :name="`header.${header.value}-left-append`" />
 
-              <template v-if="header.sortable || header.filterable">
+              <template v-if="header.sortable || header.canBeFiltered">
                 <v-spacer />
 
                 <slot :name="`header.${header.value}-right-prepend`" />
 
-                <d-btn
-                  icon
-                  v-if="header.sortable"
-                  @click="on.sort(header.value)"
-                >
+                <d-btn icon v-if="header.sortable" @click="on.sort(header.value)">
                   <template v-if="props.options.sortBy.includes(header.value)">
                     <d-icon color="blue-1" small>
                       {{
-                        props.options.sortDesc[
-                          props.options.sortBy.indexOf(header.value)
-                        ]
-                          ? "mdi-sort-ascending"
-                          : "mdi-sort-descending"
+                          props.options.sortDesc[
+                            props.options.sortBy.indexOf(header.value)
+                          ]
+                            ? "mdi-sort-ascending"
+                            : "mdi-sort-descending"
                       }}
                     </d-icon>
                   </template>
@@ -94,22 +56,15 @@
                   </template>
                 </d-btn>
 
-                <d-menu-btn
-                  v-if="header.filterable && filters[header.value]"
-                  v-model="filters[header.value]"
-                  :sortable="false"
-                >
+                <d-menu-btn v-if="header.canBeFiltered && filters[header.value]" v-model="filters[header.value]"
+                  :sortable="false">
                   <template #activator="{ on }">
                     <d-btn icon v-on="on">
-                      <d-icon
-                        :color="
-                          filters[header.value].every((c) => !c.hidden)
-                            ? 'grey-1'
-                            : 'blue-1'
-                        "
-                        small
-                        >mdi-filter</d-icon
-                      >
+                      <d-icon :color="
+                        filters[header.value].every((c) => !c.hidden)
+                          ? 'grey-1'
+                          : 'blue-1'
+                      " small>mdi-filter</d-icon>
                     </d-btn>
                   </template>
                 </d-menu-btn>
@@ -137,10 +92,7 @@
     </template>
 
     <template v-for="header in itemsSlots" v-slot:[header.slotName]="data">
-      <slot
-        :name="header.slotName"
-        v-bind="{ configure: header.value == configured, ...data }"
-      ></slot>
+      <slot :name="header.slotName" v-bind="{ configure: header.value == configured, ...data }"></slot>
     </template>
   </v-data-table>
 </template>
@@ -189,11 +141,13 @@ export default class DDataTable extends Vue {
         .filter((c) => !c.hidden)
         .sort((c1, c2) => c1[this.columnPosition] - c2[this.columnPosition])
         .map((c) => {
-          const { text, value, ...others } = c;
+          // on passe pas les infos de filterable car ça génère un effet de bord
+          const { text, value, filterable, ...others } = c;
           return {
             text: c[this.columnText] || text,
             value: c[this.columnValue] || value,
             slotName: `item.${c[this.columnValue] || value}`,
+            canBeFiltered: filterable,
             ...others,
           };
         })
@@ -212,12 +166,12 @@ export default class DDataTable extends Vue {
       for (let key in this.filters) {
         var filter = this.filters[key];
 
+        console.log(filter, i[key])
         include =
           include &&
           !!filter
             .filter((m) => !m.hidden)
-            .map((m) => m.value)
-            .includes(i[key].toString());
+            .some(m => Array.isArray(i[key]) ? i[key].includes(m.value) : m.value == i[key]);
       }
       return include;
     });
@@ -229,22 +183,20 @@ export default class DDataTable extends Vue {
 
   computeFilters() {
     this.headers
-      .filter((c) => c.filterable)
+      .filter((c) => c.canBeFiltered)
       .forEach((c) => {
         Vue.set(
           this.filters,
           c.value!,
           [...new Set(this.items.flatMap((i: any) => i[c.value!]))]
-            .sort((a, b) =>
-              a
-                .toString()
-                .localeCompare(b.toString(), undefined, { numeric: true })
-            )
             .map((v) => ({
               hidden: false,
-              text: v.toString(),
-              value: v.toString(),
+              text: v && v.toString() || "—",
+              value: v || null,
             }))
+            .sort((a, b) =>
+              a.text.localeCompare(b.text, undefined, { numeric: true })
+            )
         );
       });
   }

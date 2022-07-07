@@ -75,6 +75,7 @@ Default.args = {
     {
       text: 'Localisation',
       value: 'localisation',
+      filterable: true,
       hidden: false,
       index: 6,
       width: 50,
@@ -101,7 +102,7 @@ Default.args = {
       id: 1,
       name: 'Four à chariot rotatif',
       SerialNumbe: 159,
-      localisation: ["Strasbourg"],
+      localisation: ["Strasbourg", "Paris"],
       Etages: 1,
       NumeroDeSecurité: 5,
     },
