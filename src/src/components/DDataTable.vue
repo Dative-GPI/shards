@@ -18,6 +18,7 @@
             v-for="header in props.headers"
             :key="header.value"
             class="d-data-table-header"
+            :style="{ width: header.width && (header.width + 'px') || undefined }"
           >
             <!-- Th pour le sortable -->
 
