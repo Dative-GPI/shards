@@ -10,7 +10,7 @@
     }"
   >
     <d-blur-hash
-      v-if="imageBlurHash && !loaded && !error"
+      v-if="imageBlurHash && (!loaded || error)"
       v-bind="$attrs"
       :value="imageBlurHash"
       :width="canvasWidth"
