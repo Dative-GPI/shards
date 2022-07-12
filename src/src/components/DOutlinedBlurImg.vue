@@ -10,7 +10,16 @@
         :fullfill="fullfill"
         v-on="$listeners"
         v-bind="$attrs"
-      />
+      >
+
+      <slot> </slot>
+      <template v-for="(index, name) in $slots" v-slot:[name]>
+        <slot :name="name" />
+      </template>
+      <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">
+        <slot :name="name" v-bind="data"></slot>
+      </template>
+      </d-blur-img>
     </template>
   </d-outlined-img>
 </template>
