@@ -7,11 +7,8 @@
             :class="{ hidden: !editable }"
             class="d-img-btn-edit grey-3 white-2--text"
             @click="$emit('edit')"
-            :icon="editIcon"
           >
-            <template #icon>
-              <v-icon v-text="editIcon" />
-            </template>
+            <v-icon v-text="editIcon" />
           </d-btn>
         </slot>
 
@@ -26,11 +23,8 @@
                 :class="{ hidden: editable || !hover }"
                 class="grey-3 white-2--text"
                 @click="$emit('click')"
-                :icon="hoverIcon"
               >
-                <template #icon>
-                  <v-icon v-text="hoverIcon" />
-                </template>
+                <v-icon v-text="hoverIcon" />
               </d-btn>
             </div>
           </slot>
