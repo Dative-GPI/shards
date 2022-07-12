@@ -51,6 +51,7 @@ import DMenu from "./components/DMenu.vue";
 import DMenuBtn from "./components/DMenuBtn.vue";
 import DOutlinedImg from "./components/DOutlinedImg.vue";
 import DOutlinedBlurImg from "./components/DOutlinedBlurImg.vue";
+import DOutlinedBlurImgBtn from "./components/DOutlinedBlurImgBtn.vue";
 import DRightDrawer from "./components/DRightDrawer.vue";
 import DSearchInput from "./components/DSearchInput.vue";
 import DSelect from "./components/DSelect.vue";
@@ -163,6 +164,7 @@ const Shards = {
     vue.component("d-menu-btn", DMenuBtn);
     vue.component("d-outlined-img", DOutlinedImg);
     vue.component("d-outlined-blur-img", DOutlinedBlurImg);
+    vue.component("d-outlined-blur-img-btn", DOutlinedBlurImgBtn);
     vue.component("d-right-drawer", DRightDrawer);
     vue.component("d-search-input", DSearchInput);
     vue.component("d-select", DSelect);
