@@ -42,6 +42,7 @@ import DIconBtn from "./components/DIconBtn.vue";
 import DIconAutocomplete from "./components/DIconAutocomplete.vue";
 import DImg from "./components/DImg.vue";
 import DInputAutocomplete from "./components/DInputAutocomplete.vue";
+import DLightTabs from "./components/DLightTabs.vue";
 import DLink from "./components/DLink.vue";
 import DList from "./components/DList.vue";
 import DListItem from "./components/DListItem.vue";
@@ -153,6 +154,7 @@ const Shards = {
     vue.component("d-icon-autocomplete", DIconAutocomplete);
     vue.component("d-img", DImg);
     vue.component("d-input-autocomplete", DInputAutocomplete);
+    vue.component("d-light-tabs", DLightTabs);
     vue.component("d-link", DLink);
     vue.component("d-list", DList);
     vue.component("d-list-item", DListItem);

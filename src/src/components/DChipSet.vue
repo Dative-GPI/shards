@@ -94,7 +94,7 @@ export default class DChipSet extends Vue {
   }
 
   add(): void {
-    if (this.text && this.text.length > 1) {
+    if (this.text && this.text.length > 0) {
       if (!this.value) {
         this.$emit("input", [this.text]);
         this.text = "";
