@@ -1,5 +1,5 @@
 <template>
-  <v-row no-gutters>
+  <v-row no-gutters align="center">
     <d-btn
       v-if="sliders"
       icon 
