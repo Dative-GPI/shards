@@ -10,6 +10,7 @@
   "peerDependencies": {
     "@fontsource/montserrat": "^4.5.1",
     "@fontsource/open-sans": "^4.5.2",
+    "@lexical/clipboard": "^0.3.7",
     "@lexical/history": "^0.3.7",
     "@lexical/link": "^0.3.7",
     "@lexical/list": "^0.3.7",
@@ -32,6 +33,7 @@
     "@babel/core": "^7.15.8",
     "@fontsource/montserrat": "^4.5.1",
     "@fontsource/open-sans": "^4.5.2",
+    "@lexical/clipboard": "^0.3.7",
     "@lexical/history": "^0.3.7",
     "@lexical/link": "^0.3.7",
     "@lexical/list": "^0.3.7",
