@@ -32,6 +32,7 @@ import DDataList from "./components/DDataList.vue";
 import DDataTable from "./components/DDataTable.vue";
 import DDraggable from "./components/DDraggable.vue";
 import DDraggableList from "./components/DDraggableList.vue";
+import DEditor from "./components/DEditor.vue";
 import DExpansionPanel from "./components/DExpansionPanel.vue";
 import DExpansionPanelContent from "./components/DExpansionPanelContent.vue";
 import DExpansionPanelHeader from "./components/DExpansionPanelHeader.vue";
@@ -144,6 +145,7 @@ const Shards = {
     vue.component("d-data-table", DDataTable);
     vue.component("d-draggable", DDraggable);
     vue.component("d-draggable-list", DDraggableList);
+    vue.component("d-editor", DEditor);
     vue.component("d-expansion-panel", DExpansionPanel);
     vue.component("d-expansion-panel-content", DExpansionPanelContent);
     vue.component("d-expansion-panel-header", DExpansionPanelHeader);
