@@ -115,3 +115,97 @@ Default.args = {
     itemKey: "id",
 };
 
+export const NoHeader = Template.bind({});
+NoHeader.args = {
+    multiSort: true,
+    columnText: "text",
+    columnValue: "value",
+    columnPosition: "index",
+    configurationIcon: "$cog",
+    showSelect: false,
+    singleSelect: true,
+    sortable: true,
+    hideHeader: true,
+    columns: [
+        {
+            text: 'Article',
+            filterable: true,
+            value: 'name',
+            sortable: true,
+            hidden: false,
+            index: 0,
+            configurable: true
+        },
+        {
+            text: 'Serial number',
+            value: 'SerialNumbe',
+            align: 'end',
+            sortable: true,
+            hidden: false,
+            width: 180,
+            index: 1
+        },
+        {
+            text: 'Localisation',
+            value: 'localisation',
+            hidden: false,
+            index: 6,
+            sortable: true,
+            configurable: true
+        },
+        {
+            text: 'Etages',
+            value: 'Etages',
+            align: "center",
+            hidden: false,
+            filterable: true,
+            width: 120,
+            index: 3
+        },
+        {
+            text: 'Numéro de sécurité',
+            value: 'NumeroDeSecurité',
+            hidden: false,
+            index: 4
+        },
+    ],
+    items: [
+        {
+            id: 1,
+            name: 'Four à chariot rotatif',
+            SerialNumbe: 159,
+            localisation: ["Strasbourg"],
+            Etages: 1,
+            NumeroDeSecurité: 5,
+        },
+        {
+            id: 2,
+            name: 'Four spécial',
+            localisation: ["Strasbourg"],
+            Etages: 4,
+        },
+        {
+            id: 3,
+            name: 'Four à chariot rotatif',
+            SerialNumbe: 305,
+            Etages: 5,
+            NumeroDeSecurité: 3,
+        },
+        {
+            id: 8,
+            name: 'Four à chariot rotatif 2',
+            SerialNumbe: 305,
+            Etages: 5,
+            NumeroDeSecurité: 3,
+        },
+        {
+            id: 4,
+            name: 'Four à chariot rotatif',
+            SerialNumbe: 375,
+            localisation: ["Strasbourg"],
+            Etages: 25,
+        },
+    ],
+    itemKey: "id",
+};
+
