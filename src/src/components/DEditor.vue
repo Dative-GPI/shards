@@ -72,6 +72,7 @@ import {
   RangeSelection,
   $isRangeSelection,
   $createParagraphNode,
+TextFormatType,
 } from 'lexical';
 
 import {
@@ -207,7 +208,7 @@ export default class DEditor extends Vue {
                 ? parentList.getListType()
                 : element.getListType();
 
-              this.header = type;
+                if (isNumber(type)) this.header = type;
             }
             else {
               const type = $isHeadingNode(element)
@@ -256,7 +257,7 @@ export default class DEditor extends Vue {
     })
   }
 
-  formatText(type: string){
+  formatText(type: TextFormatType){
     if (!this.editor) return;
     this.editor.dispatchCommand(FORMAT_TEXT_COMMAND, type);
   }
