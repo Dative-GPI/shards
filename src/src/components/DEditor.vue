@@ -182,7 +182,7 @@ export default class DEditor extends Vue {
 
     this.editor.registerUpdateListener(({ editorState }) => {
       editorState.read(() => {
-        this.$emit("input", editorState.toJSON());
+        this.$emit("input", JSON.stringify(editorState.toJSON()));
 
         const selection = $getSelection() as RangeSelection;
 
