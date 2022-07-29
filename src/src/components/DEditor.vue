@@ -178,9 +178,9 @@ export default class DEditor extends Vue {
 
   @Watch("value")
   onValueChange() {
-    if (this.value !== this.innerValue) {
+    if (this.value !== this.innerValue && this.editor != null) {
       this.innerValue = this.value;
-      registerRichText(this.editor, !!this.value && this.value || null);
+      registerRichText(this.editor!, !!this.value && this.value || null);
     }
   }
 
