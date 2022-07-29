@@ -22,21 +22,19 @@
       <v-card-actions>
         <slot name="actions">
           <v-spacer />
-          <d-btn
-            :outlined="true"
-            class="white-1 grey-3--text d-btn-cancel"
+          <d-btn-cancel
             text
+            class="mr-2"
             :icon="leftIcon"
             @click="$emit('click:left')"
           >
             <slot name="left">
               {{ left }}
             </slot>
-          </d-btn>
+          </d-btn-cancel>
           <d-btn
-            :icon="rightIcon"
-            class="grey-3 white-2--text"
             text
+            :icon="rightIcon"
             @click="$emit('click:right')"
           >
             <slot name="right">
