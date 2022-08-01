@@ -19,6 +19,12 @@ const Template = (args, { argTypes }) => ({
         {{content}}
       </d-expansion-panel-content>
     </d-expansion-panel>
+    <d-expansion-panel>
+      <d-expansion-panel-header :header="header" />
+      <d-expansion-panel-content>
+        {{content}}
+      </d-expansion-panel-content>
+    </d-expansion-panel>
   </d-expansion-panels>`,
 });
 
