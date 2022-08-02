@@ -201,7 +201,7 @@ export default class DDashboard extends Vue {
           height: this.dragging.height,
           x: x,
           y: y,
-          meta: {}
+          meta: { ...this.dragging.meta }
         };
         widgets.push(widget);
       }

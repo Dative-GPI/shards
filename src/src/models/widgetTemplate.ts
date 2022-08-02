@@ -6,4 +6,5 @@ export interface WidgetTemplate {
   icon: string;
   width: number;
   height: number;
+  meta: { [key: string]: string }
 }
