@@ -74,6 +74,9 @@ export const GuardTypeWidgetTemplate = (arg: any): arg is WidgetTemplate => {
   if (arg.height == null || typeof(arg.height) !== "number") {
     return false;
   }
+  if (arg.meta == null) {
+    return false;
+  }
   if (arg.x != null) {
     return false;
   }

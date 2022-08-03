@@ -65,7 +65,7 @@ export default class DBaseConfiguration extends Vue {
   maxWidth!: number | undefined;
 
   @Prop({ required: true })
-  defaultWidth: number;
+  defaultWidth!: number;
 
   @Prop({ required: true })
   width!: string;
@@ -80,7 +80,7 @@ export default class DBaseConfiguration extends Vue {
   maxHeight!: number | undefined;
 
   @Prop({ required: true })
-  defaultHeight: number;
+  defaultHeight!: number;
 
   @Prop({ required: true })
   height!: string;
