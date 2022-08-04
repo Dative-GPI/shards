@@ -2,8 +2,8 @@
   <tr
     :class="trClasses"
     :draggable="true"
-    @dragstart="(value) => onStartDrag(value, item)"
-    @drop.prevent="(value) => onDrop(value, item)"
+    @dragstart="(value) => onStartDrag(value)"
+    @drop.prevent="(value) => onDrop(value)"
     @dragover.prevent
     @dragenter.prevent="(value) => onDragEnter(value)"
     @dragleave.prevent="(value) => onDragLeave(value)"
@@ -56,7 +56,6 @@ export default class DDraggableDataRow extends Vue {
   }
 
   alignment(header: Column): string {
-    console.log(header.text + ": " + (header.align ? header.align : "right"));
     return header.align ? header.align : "right";
   }
 
@@ -64,13 +63,15 @@ export default class DDraggableDataRow extends Vue {
     return (str == null || str.match(/^ *$/) != null);
   }
 
-  onStartDrag(event: DragEvent, item: any) {
+  onStartDrag(event: DragEvent) {
     if (!event.dataTransfer) {
       return;
     }
     event.dataTransfer.dropEffect = "move";
     event.dataTransfer.effectAllowed = "move";
-    this.$emit("drag", item);
+    event.dataTransfer.setData("text/plain", JSON.stringify(this.item));
+
+    this.$emit("drag", this.item);
   }
 
   onDragEnter(event: DragEvent) {
@@ -85,14 +86,15 @@ export default class DDraggableDataRow extends Vue {
     }
   }
 
-  onDrop(event: DragEvent, item: any) {
+  onDrop(event: DragEvent) {
     if (!event.dataTransfer) {
       return;
     }
     if (event.target) {
       this.dragCounter = 0;
     }
-    this.$emit("drop", item);
+
+    this.$emit("drop", JSON.parse(event.dataTransfer.getData("text/plain")), this.item);
   }
 }
 </script>

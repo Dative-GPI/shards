@@ -1,4 +1,5 @@
 import DDraggableDataList from '@/components/DDraggableDataList.vue';
+import DDraggableTile from '@/components/DDraggableTile.vue';
 
 // More on default export: https://storybook.js.org/docs/vue/writing-stories/introduction#default-export
 export default {
@@ -14,7 +15,7 @@ export default {
 
 // More on component templates: https://storybook.js.org/docs/vue/writing-stories/introduction#using-args
 const Template = (args, { argTypes }) => ({
-  components: { DDraggableDataList },
+  components: { DDraggableDataList, DDraggableTile },
   props: Object.keys(argTypes),
   data: () => ({ columnsClone: [] }),
   watch: {
@@ -40,7 +41,23 @@ const Template = (args, { argTypes }) => ({
       </template>
 
       <template #tile-item="{ item }">
-        <div />
+        <d-draggable-tile
+          imgSrc=""
+          :selectable="true"
+          :width="300"
+          :height="230"
+          :item="item"
+        >
+          <template #status>
+            <div style="height: 80px; background-color: whitesmoke;" />
+          </template>
+
+          <template #footer>
+            <div style="height: 90px; background-color: whitesmoke;"> 
+              <span class="text-body-1"> {{ item.label }} </span>
+            </div>
+          </template>
+        </d-draggable-tile>
       </template>
     </d-draggable-data-list>`,
 });
