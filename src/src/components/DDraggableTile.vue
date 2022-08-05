@@ -1,11 +1,28 @@
 <template>
-  <d-tile
+  <d-tile v-if="canDrop(item)"
     :draggable="true"
     @dragstart="(value) => onStartDrag(value)"
     @drop.prevent="(value) => onDrop(value)"
     @dragover.prevent
     @dragenter.prevent="(value) => onDragEnter(value)"
     @dragleave.prevent="(value) => onDragLeave(value)"
+    v-bind="$attrs"
+    v-on="$listeners"
+  >
+    <slot> </slot>
+    <template v-for="(index, name) in $slots" v-slot:[name]>
+      <slot :name="name" />
+    </template>
+    <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">
+      <slot :name="name" v-bind="data"></slot>
+    </template>
+  </d-tile>
+  <d-tile v-else
+    :draggable="true"
+    @dragstart="(value) => onStartDrag(value)"
+    @dragover.stop
+    @dragenter.stop="(value) => onDragEnter(value)"
+    @dragleave.stop="(value) => onDragLeave(value)"
     v-bind="$attrs"
     v-on="$listeners"
   >
@@ -24,21 +41,13 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({})
 export default class DDraggableTile extends Vue {
-  @Prop({ required: false, default: () => () => ("") })
-  dragOverClass!: (item: any) => string;
+  @Prop({ required: false, default: () => () => true })
+  canDrop!: (item: any) => boolean;
 
   @Prop({ required: true })
   item!: any;
 
   dragCounter: number = 0;
-
-  get tileClasses(): string {
-    let classes = "";
-    if (this.dragCounter > 0) {
-      classes += this.dragOverClass(this.item);
-    }
-    return classes;
-  }
 
   onStartDrag(event: DragEvent) {
     if (!event.dataTransfer) {

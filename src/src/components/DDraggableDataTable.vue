@@ -107,12 +107,12 @@
       <d-draggable-data-row
         :item="props.item"
         :headers="headers"
+        :can-drop="canDrop"
         :item-class="itemClass"
         :drag-over-class="dragOverClass"
+        @click:row="(item) => $emit('click:row', item)"
         @drag="(item) => $emit('drag', item)"
         @drop="(item, target) => $emit('drop', item, target)"
-        v-bind="$attrs"
-        v-on="$listeners"
       >
         <slot></slot>
         <template v-for="(index, name) in $slots" v-slot:[name]>
@@ -139,7 +139,7 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { Column } from "../models";
 
 @Component({
-  inheritAttrs: false
+  inheritAttrs: false,
 })
 export default class DDraggableDataTable extends Vue {
   @Prop({ required: true })
@@ -160,10 +160,13 @@ export default class DDraggableDataTable extends Vue {
   @Prop({ required: true })
   items!: any[];
 
-  @Prop({ required: false, default: () => () => ("") })
+  @Prop({ required: false, default: () => () => true })
+  canDrop!: (item: any) => boolean;
+
+  @Prop({ required: false, default: () => () => "" })
   itemClass!: (item: any) => string;
 
-  @Prop({ required: false, default: () => () => ("") })
+  @Prop({ required: false, default: () => () => "" })
   dragOverClass!: (item: any) => string;
 
   @Prop({ required: false, default: false })

@@ -1,5 +1,6 @@
 import DDraggableDataList from '@/components/DDraggableDataList.vue';
 import DDraggableTile from '@/components/DDraggableTile.vue';
+import DDroppableBreadcrumbs from '@/components/DDroppableBreadcrumbs.vue';
 
 // More on default export: https://storybook.js.org/docs/vue/writing-stories/introduction#default-export
 export default {
@@ -15,7 +16,7 @@ export default {
 
 // More on component templates: https://storybook.js.org/docs/vue/writing-stories/introduction#using-args
 const Template = (args, { argTypes }) => ({
-  components: { DDraggableDataList, DDraggableTile },
+  components: { DDraggableDataList, DDraggableTile, DDroppableBreadcrumbs },
   props: Object.keys(argTypes),
   data: () => ({ columnsClone: [] }),
   watch: {
@@ -33,33 +34,50 @@ const Template = (args, { argTypes }) => ({
     this.columnsClone = this.columns;
   },
   template:
-    `<d-draggable-data-list :columns.sync="columnsClone" v-bind="oProps" @click:row="itemClick">
-      <template #table-item.icon="{ item }">
-        <v-row no-gutters justify="center">
-          <d-icon> {{ item.icon }} </d-icon>
-        </v-row>
-      </template>
-
-      <template #tile-item="{ item }">
-        <d-draggable-tile
-          imgSrc=""
-          :selectable="true"
-          :width="300"
-          :height="230"
-          :item="item"
+    `<v-container fluid class="pa-0 ma-0">
+      <v-row no-gutters>
+        <d-droppable-breadcrumbs
+          :items="breadcrumbs"
+          :dragOverClass="dragOverBreadcrumbs"
+        />
+      </v-row>
+      <v-row no-gutters class="mt-5">
+        <d-draggable-data-list
+          v-bind="oProps"
+          :columns.sync="columnsClone"
+          :canDrop="canDrop"
+          :dragOverClass="dragOverClass"
+          @click:row="itemClick"
         >
-          <template #status>
-            <div style="height: 80px; background-color: whitesmoke;" />
+          <template #table-item.icon="{ item }">
+            <v-row no-gutters justify="center">
+              <d-icon> {{ item.icon }} </d-icon>
+            </v-row>
           </template>
 
-          <template #footer>
-            <div style="height: 90px; background-color: whitesmoke;"> 
-              <span class="text-body-1"> {{ item.label }} </span>
-            </div>
+          <template #tile-item="{ item }">
+            <d-draggable-tile
+              imgSrc=""
+              :selectable="true"
+              :width="300"
+              :height="230"
+              :item="item"
+              :canDrop="canDrop"
+            >
+              <template #status>
+                <div style="height: 80px; background-color: whitesmoke;" />
+              </template>
+
+              <template #footer>
+                <div style="height: 90px; background-color: whitesmoke;"> 
+                  <span class="text-body-1"> {{ item.label }} </span>
+                </div>
+              </template>
+            </d-draggable-tile>
           </template>
-        </d-draggable-tile>
-      </template>
-    </d-draggable-data-list>`,
+        </d-draggable-data-list>
+      </v-row>
+    </v-container>`,
 });
 
 //👇 Each story then reuses that template
@@ -131,12 +149,24 @@ Default.args = {
       }
   ],
   itemKey: "id",
+  canDrop: (item) => {
+    if (item.folder) { return true; }
+    return false;
+  },
   dragOverClass: (item) => {
-      if (item.folder) { return "f-test" }
-      return "";
+    if (item.folder) { return "f-slateblue-background" }
+    return "f-gainsboro-background";
   },
   itemClick: (item) => {
     alert(item.label);
+  },
+  breadcrumbs: [
+    { text: "Test 1", disabled: false },
+    { text: "Test 2", disabled: true }
+  ],
+  dragOverBreadcrumbs: (item) => {
+    if (item.text != "") { return "f-slateblue-background" }
+    return "f-";
   }
 };
 
