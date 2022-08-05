@@ -110,7 +110,7 @@
         :item-class="itemClass"
         :drag-over-class="dragOverClass"
         @drag="(item) => $emit('drag', item)"
-        @drop="(item) => $emit('drop', item)"
+        @drop="(item, target) => $emit('drop', item, target)"
       >
         <slot></slot>
         <template v-for="(index, name) in $slots" v-slot:[name]>

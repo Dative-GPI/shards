@@ -56,7 +56,7 @@ export default class DDraggableDataRow extends Vue {
   }
 
   alignment(header: Column): string {
-    return header.align ? header.align : "right";
+    return header.align != null ? header.align : "start";
   }
 
   isEmptyOrSpaces(str: string | null | undefined): boolean {
