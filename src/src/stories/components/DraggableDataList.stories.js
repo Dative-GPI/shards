@@ -33,7 +33,7 @@ const Template = (args, { argTypes }) => ({
     this.columnsClone = this.columns;
   },
   template:
-    `<d-draggable-data-list :columns.sync="columnsClone" v-bind="oProps">
+    `<d-draggable-data-list :columns.sync="columnsClone" v-bind="oProps" @click:row="itemClick">
       <template #table-item.icon="{ item }">
         <v-row no-gutters justify="center">
           <d-icon> {{ item.icon }} </d-icon>
@@ -134,6 +134,9 @@ Default.args = {
   dragOverClass: (item) => {
       if (item.folder) { return "f-test" }
       return "";
+  },
+  itemClick: (item) => {
+    alert(item.label);
   }
 };
 

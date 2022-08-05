@@ -7,6 +7,7 @@
     @dragover.prevent
     @dragenter.prevent="(value) => onDragEnter(value)"
     @dragleave.prevent="(value) => onDragLeave(value)"
+    @click="$emit('click:row', item)"
   >
     <td v-for="(header, index) in headers" :key="index">
       <slot :item="item" :name="slotName(header)">
