@@ -36,8 +36,13 @@ export default class DDroppableBreadcrumbs extends Vue {
   @Prop({ required: false, default: () => () => ("") })
   dragOverClass!: (item: Breadcrumb) => string;
 
-  dragOver: { [text: string]: number } = this.items.filter(i => !i.disabled)
-    .reduce((o: { [text: string]: number }, i: Breadcrumb) => ({ ...o, [i.text]: 0 }), {});
+  mounted(): void {
+    this.dragOver = this.items
+      .filter(i => !i.disabled)
+      .reduce((o: { [text: string]: number }, i: Breadcrumb) => ({ ...o, [i.text]: 0 }), {});
+  }
+
+  dragOver: { [text: string]: number } = {};
 
   divClasses(item: Breadcrumb): string {
     if (this.dragOver[item.text] > 0) {
