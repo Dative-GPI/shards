@@ -234,7 +234,7 @@ export default class DDataTable extends Vue {
     return this.items.filter((i) => {
       let include = true;
       for (let key in this.filters) {
-        var filter = this.filters[key];
+        let filter = this.filters[key];
 
         include =
           include &&
@@ -243,7 +243,7 @@ export default class DDataTable extends Vue {
             .some((m) =>
               Array.isArray(i[key])
                 ? i[key].includes(m.value)
-                : m.value == i[key]
+                : (!m.value && !i[key] || m.value == i[key])
             );
       }
       return include;

@@ -111,6 +111,20 @@ Default.args = {
             localisation: ["Strasbourg"],
             Etages: 25,
         },
+        {
+            id: 9,
+            name: '',
+            SerialNumbe: 375,
+            localisation: ["Strasbourg"],
+            Etages: 25,
+        },
+        {
+            id: 19,
+            name: '',
+            SerialNumbe: 375,
+            localisation: [],
+            Etages: 25,
+        },
     ],
     itemKey: "id",
 };
