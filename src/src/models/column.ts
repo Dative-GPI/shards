@@ -2,7 +2,6 @@ export interface Column {
     [key: string]: any,
     hidden: boolean;
     index: number;
-    configurable?: boolean
     
     text?: string;
     value?: string;

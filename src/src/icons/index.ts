@@ -8,11 +8,8 @@ export const Icons: IconsDictionary = {
   caterer: {
     component: () => import("./Caterer.vue")
   },
-  chartBookmarksWidget: {
-    component: () => import("./ChartBookmarksWidget.vue")
-  },
-  chartTemplatesWidget: {
-    component: () => import("./ChartTemplatesWidget.vue")
+  chartsWidget: {
+    component: () => import("./ChartsWidget.vue")
   },
   cog: {
     component: () => import("./Cog.vue")

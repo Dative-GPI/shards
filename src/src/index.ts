@@ -31,7 +31,12 @@ import DCreateEntityForm from "./components/DCreateEntityForm.vue";
 import DDataList from "./components/DDataList.vue";
 import DDataTable from "./components/DDataTable.vue";
 import DDraggable from "./components/DDraggable.vue";
+import DDraggableDataList from "./components/DDraggableDataList.vue";
+import DDraggableDataRow from "./components/DDraggableDataRow.vue";
+import DDraggableDataTable from "./components/DDraggableDataTable.vue";
 import DDraggableList from "./components/DDraggableList.vue";
+import DDraggableTile from "./components/DDraggableTile.vue";
+import DDroppableBreadcrumbs from "./components/DDroppableBreadcrumbs.vue";
 import DEditor from "./components/DEditor.vue";
 import DExpansionPanel from "./components/DExpansionPanel.vue";
 import DExpansionPanelContent from "./components/DExpansionPanelContent.vue";
@@ -77,6 +82,7 @@ import DToggleSet from "./components/DToggleSet.vue";
 import DSimpleDialog from "./components/DSimpleDialog.vue";
 import DValidationBar from "./components/DValidationBar.vue";
 
+import DBaseConfiguration from "./components/dashboard/DBaseConfiguration.vue";
 import DBaseWidget from "./components/dashboard/DBaseWidget.vue";
 import DDashboard from "./components/dashboard/DDashboard.vue";
 import DDashboardCase from "./components/dashboard/DDashboardCase.vue";
@@ -145,7 +151,12 @@ const Shards = {
     vue.component("d-data-list", DDataList);
     vue.component("d-data-table", DDataTable);
     vue.component("d-draggable", DDraggable);
+    vue.component("d-draggable-data-list", DDraggableDataList);
+    vue.component("d-draggable-data-row", DDraggableDataRow);
+    vue.component("d-draggable-data-table", DDraggableDataTable);
     vue.component("d-draggable-list", DDraggableList);
+    vue.component("d-draggable-tile", DDraggableTile);
+    vue.component("d-droppable-breadcrumbs", DDroppableBreadcrumbs);
     vue.component("d-editor", DEditor);
     vue.component("d-expansion-panel", DExpansionPanel);
     vue.component("d-expansion-panel-content", DExpansionPanelContent);
@@ -191,6 +202,7 @@ const Shards = {
     vue.component("d-simple-dialog", DSimpleDialog);
     vue.component("d-validation-bar", DValidationBar);
 
+    vue.component("d-base-configuration", DBaseConfiguration);
     vue.component("d-base-widget", DBaseWidget);
     vue.component("d-dashboard", DDashboard);
     vue.component("d-dashboard-case", DDashboardCase);

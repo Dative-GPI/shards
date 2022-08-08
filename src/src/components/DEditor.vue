@@ -174,7 +174,19 @@ export default class DEditor extends Vue {
   formatting: number[] = []
   header: number = 0
 
+  innerValue: string = "";
+
+  @Watch("value")
+  onValueChange() {
+    if (this.value !== this.innerValue && this.editor != null) {
+      this.innerValue = this.value;
+      registerRichText(this.editor!, !!this.value && this.value || null);
+    }
+  }
+
   mounted() {
+    this.innerValue = this.value;
+
     this.editor = createEditor(config);
     this.editor.setRootElement(this.$refs.editor as HTMLElement);
 
@@ -182,7 +194,8 @@ export default class DEditor extends Vue {
 
     this.editor.registerUpdateListener(({ editorState }) => {
       editorState.read(() => {
-        this.$emit("input", editorState.toJSON());
+        this.innerValue = JSON.stringify(editorState.toJSON());
+        this.$emit("input", this.innerValue);
 
         const selection = $getSelection() as RangeSelection;
 

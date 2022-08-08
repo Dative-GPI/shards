@@ -16,7 +16,7 @@
 import { Vue, Component } from "vue-property-decorator";
 
 @Component({})
-export default class ChartTemplatesWidget extends Vue {
+export default class ChartsWidget extends Vue {
   clipPath: string = "" + Math.random();
 }
 </script>

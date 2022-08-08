@@ -147,6 +147,10 @@ html {
   box-shadow: none !important;
 }
 
+.d-expansion-panel.v-expansion-panel::after {
+  border: none !important;
+}
+
 .d-expansion-panel .v-expansion-panel-content__wrap {
   padding: 0px !important;
 }

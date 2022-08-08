@@ -43,7 +43,7 @@ const Template = (args, { argTypes }) => ({
 //👇 Each story then reuses that template
 export const Default = Template.bind({});
 Default.args = {
-  selectable: false,
+  selectable: true,
   value: false,
   width: 300,
   height: 230,
