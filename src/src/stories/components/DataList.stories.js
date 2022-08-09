@@ -33,6 +33,9 @@ const Template = (args, { argTypes }) => ({
   },
   template:
     `<d-data-list :columns.sync="columnsClone" v-bind="oProps">
+      <template #table-header.localisation.filter.item="{item}">
+        <d-chip class="clickable">{{ item.text }}</d-chip>
+      </template>
       <template #table-item.localisation="{ configure, item }">
           <d-chip-set :editable="configure" v-model="item.localisation" />
       </template>

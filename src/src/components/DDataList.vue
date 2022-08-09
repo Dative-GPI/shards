@@ -3,8 +3,14 @@
     <slot name="header">
       <v-row no-gutters class="align-center mb-1">
         <d-search-input v-if="searchable" v-model="searching" class="mr-3" />
-        <d-menu-btn v-if="mode == 'table' && !$vuetify.breakpoint.xs &&!hideColumns" :sortable="columnSortable"
-          :value="columns" @input="$emit('update:columns', $event)" />
+        <d-menu-btn v-if="mode == 'table' && !$vuetify.breakpoint.xs && !hideColumns" :sortable="columnSortable"
+          :value="columns" @input="$emit('update:columns', $event)">
+          <template #item="{ defaultValue, item }">
+            <slot name="column.item" v-bind="item">
+              {{ defaultValue }}
+            </slot>
+          </template>
+        </d-menu-btn>
         <slot name="header-action" />
         <template v-if="!disableTable && !disableTiles">
           <v-spacer />

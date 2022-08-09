@@ -12,6 +12,9 @@ const Template = (args, { argTypes }) => ({
     props: Object.keys(argTypes),
     template:
         `<d-data-table v-bind="$props">
+            <template #header.Etages.filter.item="{ item }">
+                <d-chip-set :editable="false" :value="[item.text]" />
+            </template>
             <template #item.localisation="{ configure, item }">
                 <d-chip-set :editable="configure" v-model="item.localisation" />
             </template>

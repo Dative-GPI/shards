@@ -15,7 +15,7 @@
         @click:close="() => remove(item)"
       >
         <slot name="item" v-bind="{ item, index }">{{
-          itemText instanceof Function ? itemText(item) : item[itemText] || item
+          itemText && itemText instanceof Function ? itemText(item) : item && item[itemText] || item
         }}</slot>
       </d-chip>
     </d-chip-group>
