@@ -1,40 +1,32 @@
 <template>
-  <div
-    class="d-blur-img"
-    :style="{
-      height: height + 'px',
-      width: width + 'px',
-      overflow: 'hidden',
-      position: 'relative',
-      borderRadius: round ? '50%' : '',
-    }"
-  >
-    <d-blur-hash
-      v-if="imageBlurHash && (!loaded || error)"
-      v-bind="$attrs"
-      :value="imageBlurHash"
-      :width="canvasWidth"
-      :height="canvasHeight"
-      v-show="!$attrs.value"
-    />
-    <d-img
-      class="d-blur-img-centered"
-      :class="{ hidden: !loaded && !error }"
-      @load="loaded = true"
-      @error="error = true"
-      v-bind="$attrs"
-      v-on="$listeners"
-      :width="!$attrs.value ? canvasWidth : width"
-      :height="!$attrs.value ? canvasHeight : height"
-    >
-      <slot> </slot>
-      <template v-for="(index, name) in $slots" v-slot:[name]>
-        <slot :name="name" />
-      </template>
-      <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">
-        <slot :name="name" v-bind="data"></slot>
-      </template>
-    </d-img>
+  <div class="d-blur-img" :style="{
+    height: height + 'px',
+    width: width + 'px',
+    overflow: 'hidden',
+    position: 'relative',
+    borderRadius: round ? '50%' : '',
+  }">
+    <v-fade-transition>
+      <d-blur-hash v-if="error" v-bind="$attrs" :value="imageBlurHash" :width="canvasWidth" :height="canvasHeight"
+        v-show="!$attrs.value" />
+    </v-fade-transition>
+    <v-fade-transition>
+      <v-skeleton-loader v-if="!loaded && !error" class="d-blur-hash" type="image" :width="canvasWidth"
+        :height="canvasHeight" v-show="!$attrs.value" />
+    </v-fade-transition>
+    <v-fade-transition>
+      <d-img class="d-blur-img-centered" :class="{ hidden: !loaded && !error }" @load="loaded = true"
+        @error="error = true" v-bind="$attrs" v-on="$listeners" :width="!$attrs.value ? canvasWidth : width"
+        :height="!$attrs.value ? canvasHeight : height">
+        <slot> </slot>
+        <template v-for="(index, name) in $slots" v-slot:[name]>
+          <slot :name="name" />
+        </template>
+        <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">
+          <slot :name="name" v-bind="data"></slot>
+        </template>
+      </d-img>
+    </v-fade-transition>
   </div>
 </template>
 

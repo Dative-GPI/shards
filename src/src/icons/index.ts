@@ -14,6 +14,9 @@ export const Icons: IconsDictionary = {
   cog: {
     component: () => import("./Cog.vue")
   },
+  dashboardsWidget: {
+    component: () => import("./DashboardsWidget.vue")
+  },
   device: {
     component: () => import("./Device.vue")
   },
@@ -22,6 +25,9 @@ export const Icons: IconsDictionary = {
   },
   devicesWidget: {
     component: () => import("./DevicesWidget.vue")
+  },
+  editWidget: {
+    component: () => import("./EditWidget.vue")
   },
   google: {
     component: () => import("./Google.vue")
@@ -61,6 +67,9 @@ export const Icons: IconsDictionary = {
   },
   snacking: {
     component: () => import("./Snacking.vue")
+  },
+  textWidget: {
+    component: () => import("./TextWidget.vue")
   },
   tile: {
     component: () => import("./Tile.vue")
