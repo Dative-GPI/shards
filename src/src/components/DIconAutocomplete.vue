@@ -10,13 +10,13 @@
   >
     <template #item="{ item }">
       <d-icon :size="24" style="width: 30px" class="mr-2">{{ item }}</d-icon>
-      <span>{{ item.replace("mdi-", "") }}</span>
+      <span>{{ sanitize(item) }}</span>
     </template>
     <template #selection="{ item }">
       <d-icon :size="24" style="width: 30px" class="mr-2">{{
         item
       }}</d-icon>
-      <span>{{ item.replace("mdi-", "") }}</span>
+      <span>{{ sanitize(item) }}</span>
     </template>
     <template #prepend-inner>
       <d-icon v-if="$attrs.value" :size="24" style="width: 30px" class="mr-4">{{
@@ -29,7 +29,7 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
-import { IconsMeta } from "../icons-meta";
+import { Icons } from "../icons-meta";
 
 @Component({
   inheritAttrs: false,
@@ -43,18 +43,32 @@ export default class DIconAutocomplete extends Vue {
   items: string[] = [];
 
   searchIcons(search: string) {
-    search = search.toLowerCase().replace(" ", "_");
-    this.items = IconsMeta.filter(
+    search = this.sanitize(search);
+    this.items = Icons.filter(
       (i) =>
-        i.name.includes(search) ||
-        i.tags.some((t) => t.includes(search)) ||
-        i.aliases.some((a) => a.includes(search))
-    ).map((i) => `mdi-${i.name}`);
+        this.sanitize(i.n).includes(search) ||
+        i.t.some((t) => this.sanitize(t).includes(search))
+    ).map((i) => `mdi-${i.n}`)
+    .concat(
+      Object.keys(this.$vuetify.icons.values)
+      .map(i => `$${i}`).filter(
+        i => this.sanitize(i).includes(search)
+      )
+    ).sort((a,b) => this.sanitize(a).localeCompare(this.sanitize(b)));
+  }
+
+  sanitize(icon: string){
+    return icon.replace("mdi-", "")
+            .replace(" ", "-")
+            .replace("$", "")
+            .replace(/([A-Z])/, (a) => "-" + a)
+            .toLowerCase()
+            .trim()
   }
 
   mounted() {
     if (this.value) {
-      this.searchIcons(this.value.replace("mdi-", ""));
+      this.searchIcons(this.value);
     }
   }
 
@@ -65,7 +79,7 @@ export default class DIconAutocomplete extends Vue {
   @Watch("value")
   onValueChanged() {
     if (this.value) {
-      this.searchIcons(this.value.replace("mdi-", ""));
+      this.searchIcons(this.value)
     }
   }
 

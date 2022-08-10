@@ -17,5 +17,5 @@
 import { Component, Vue } from "vue-property-decorator";
 
 @Component({})
-export default class Marker extends Vue{}
+export default class GMarker extends Vue{}
 </script>
