@@ -55,6 +55,7 @@ Default.args = {
   columnValue: "value",
   columnPosition: "index",
   configurationIcon: "$cog",
+  search: "",
   columns: [
     {
       text: 'Article',

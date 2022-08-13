@@ -1,7 +1,6 @@
 <template>
   <v-data-table v-bind="$attrs" v-on="$listeners" class="d-data-table" fixed-header
-    :hide-default-header="!showDefaultHeader" :headers="headers" :items="filtredItems" :sort-by.sync="sortBy"
-    :sort-desc.sync="sortDesc" :single-select="singleSelect">
+    :hide-default-header="!showDefaultHeader" :headers="headers" :items="filtredItems" :single-select="singleSelect">
     <template v-slot:header="{ props, on }" v-if="showCustomHeader">
       <thead>
         <tr>
@@ -144,9 +143,6 @@ export default class DDataTable extends Vue {
   hideHeader!: boolean;
 
   // Data
-
-  sortBy = [];
-  sortDesc = [];
   filters: { [key: string]: Column[] } = {};
 
   configured = null;

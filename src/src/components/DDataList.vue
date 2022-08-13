@@ -2,7 +2,7 @@
   <div>
     <slot name="header">
       <v-row no-gutters class="align-center mb-1">
-        <d-search-input v-if="searchable" v-model="searching" class="mr-3" />
+        <d-search-input v-if="searchable" @input="onSearchingChanged" :value="searching" class="mr-3" />
         <d-menu-btn v-if="mode == 'table' && !$vuetify.breakpoint.xs && !hideColumns" :sortable="columnSortable"
           :value="columns" @input="$emit('update:columns', $event)">
           <template #item="{ defaultValue, item }">
@@ -54,7 +54,7 @@
 
 <script lang="ts">
 import _ from "lodash";
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 
 import { Column } from "../models";
 import { NormalizedScopedSlot } from "vue/types/vnode";
@@ -96,6 +96,9 @@ export default class DDataList extends Vue {
   @Prop({ required: false, default: true, type: Boolean })
   searchable!: boolean;
 
+  @Prop({ required: false, default: "" })
+  search!: string;
+
   @Prop({ required: false, default: true, type: Boolean })
   columnSortable!: boolean;
 
@@ -123,6 +126,18 @@ export default class DDataList extends Vue {
       this.mode = "table";
     } else {
       this.mode = this.initialMode;
+    }
+  }
+
+  onSearchingChanged(newVal: string) {
+    this.searching = newVal;
+    this.$emit("update:search", newVal);
+  }
+
+  @Watch("search")
+  onSearchChanged(newValue: string, oldValue: string) {
+    if (newValue !== oldValue) {
+      this.onSearchingChanged(this.search);
     }
   }
 }
