@@ -67,6 +67,9 @@ export default class DDroppableBreadcrumbs extends Vue {
     if (!event.dataTransfer) {
       return;
     }
+    if (JSON.parse(event.dataTransfer.getData("text/plain")).id === item.id) {
+      return;
+    }
     if (event.target) {
       this.dragOver[item.text] = 0;
     }

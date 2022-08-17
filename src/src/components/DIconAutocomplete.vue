@@ -9,19 +9,21 @@
     :search-input.sync="search"
   >
     <template #item="{ item }">
-      <d-icon :size="24" style="width: 30px" class="mr-2">{{ item }}</d-icon>
+      <d-icon :size="iconSize" style="width: 30px" class="mr-2">
+        {{ item }}
+      </d-icon>
       <span>{{ sanitize(item) }}</span>
     </template>
     <template #selection="{ item }">
-      <d-icon :size="24" style="width: 30px" class="mr-2">{{
-        item
-      }}</d-icon>
+      <d-icon :size="iconSize" style="width: 30px" class="mr-2">
+        {{ item }}
+      </d-icon>
       <span>{{ sanitize(item) }}</span>
     </template>
     <template #prepend-inner>
-      <d-icon v-if="$attrs.value" :size="24" style="width: 30px" class="mr-4">{{
-        $attrs.value
-      }}</d-icon>
+      <d-icon :size="iconSize" v-if="$attrs.value" style="width: 30px" class="mr-4">
+        {{ $attrs.value }}
+      </d-icon>
     </template>
   </d-autocomplete>
 </template>
@@ -38,7 +40,10 @@ export default class DIconAutocomplete extends Vue {
   @Prop({ required: false })
   value!: string;
 
-  search = "";
+  @Prop({ required: false, default: 20 })
+  iconSize!: number;
+
+  search: string = "";
 
   items: string[] = [];
 

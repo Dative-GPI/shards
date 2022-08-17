@@ -111,6 +111,9 @@ export default class DDraggableDataRow extends Vue {
     if (!event.dataTransfer) {
       return;
     }
+    if (JSON.parse(event.dataTransfer.getData("text/plain")).id === this.item.id) {
+      return;
+    }
     if (event.target) {
       this.dragCounter = 0;
     }
