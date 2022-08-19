@@ -9,7 +9,7 @@
     flat
     height="28px"
     :solo="solo || (!editable && !outlined)"
-    :readonly="!editable"
+    :readonly="!editable || $attrs.readonly"
   >
     <slot></slot>
     <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">

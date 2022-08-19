@@ -281,6 +281,10 @@ html {
   padding-left: 19px !important;
 }
 
+.d-text-field .v-input__append-outer, .d-text-field .v-input__prepend-outer {
+  margin-top: 4px!important;
+}
+
 .theme--light .d-text-field .v-input__slot {
   background-color: transparent !important;
 }

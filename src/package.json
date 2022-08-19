@@ -79,5 +79,9 @@
     "vuedraggable": "^2.24.3",
     "vuetify": "^2.4.0",
     "vuetify-loader": "^1.7.0"
+  },
+  "dependencies": {
+    "@types/date-fns": "^2.6.0",
+    "date-fns": "^2.29.2"
   }
 }

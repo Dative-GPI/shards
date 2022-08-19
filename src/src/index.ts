@@ -28,6 +28,7 @@ import DCircle from "./components/DCircle.vue";
 import DContainer from "./components/DContainer.vue";
 import DCreateEntityBtn from "./components/DCreateEntityBtn.vue";
 import DCreateEntityForm from "./components/DCreateEntityForm.vue";
+import DDatePicker from "./components/DDatePicker.vue";
 import DDataList from "./components/DDataList.vue";
 import DDataTable from "./components/DDataTable.vue";
 import DDraggable from "./components/DDraggable.vue";
@@ -150,6 +151,7 @@ const Shards = {
     vue.component("d-create-entity-form", DCreateEntityForm);
     vue.component("d-data-list", DDataList);
     vue.component("d-data-table", DDataTable);
+    vue.component("d-date-picker", DDatePicker);
     vue.component("d-draggable", DDraggable);
     vue.component("d-draggable-data-list", DDraggableDataList);
     vue.component("d-draggable-data-row", DDraggableDataRow);

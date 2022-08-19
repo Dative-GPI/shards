@@ -2,7 +2,7 @@ import DBtnToggle from '@/components/DBtnToggle.vue';
 
 // More on default export: https://storybook.js.org/docs/vue/writing-stories/introduction#default-export
 export default {
-  title: "Components/Button Toggle",
+  title: "Components/Buttons/Button Toggle",
   component: DBtnToggle,
 };
 

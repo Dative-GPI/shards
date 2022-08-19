@@ -2,7 +2,7 @@ import DInputAutocomplete from '@/components/DInputAutocomplete.vue';
 
 // More on default export: https://storybook.js.org/docs/vue/writing-stories/introduction#default-export
 export default {
-    title: "Components/InputAutocomplete",
+    title: "Components/Inputs/InputAutocomplete",
     component: DInputAutocomplete
 };
 

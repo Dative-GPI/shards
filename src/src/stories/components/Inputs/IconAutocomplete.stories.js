@@ -2,7 +2,7 @@ import DIconAutocomplete from '@/components/DIconAutocomplete.vue';
 
 // More on default export: https://storybook.js.org/docs/vue/writing-stories/introduction#default-export
 export default {
-  title: "Components/IconAutocomplete",
+  title: "Components/Inputs/IconAutocomplete",
   component: DIconAutocomplete,
 };
 
