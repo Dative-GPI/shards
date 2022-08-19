@@ -5,6 +5,7 @@
     :class="'d-search-input text-body-1'"
     outlined
     solo
+    :clearable="true"
   >
     <template slot="prepend-inner">
       <v-icon :size="20" class="mx-2 my-1">mdi-magnify</v-icon>

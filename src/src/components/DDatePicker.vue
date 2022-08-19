@@ -2,8 +2,8 @@
   <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
     min-width="auto" :disabled="!editable">
     <template v-slot:activator="{ on, attrs }">
-      <d-text-field :value="formattedDate" :label="label" :editable="editable" prepend-icon="mdi-calendar" :readonly="true" v-bind="attrs"
-        v-on="on">
+      <d-text-field :value="formattedDate" :label="label" :editable="editable" prepend-icon="mdi-calendar"
+        :readonly="true" :clearable="clearable" v-bind="attrs" v-on="on" @click:clear="$emit('input', null)">
       </d-text-field>
     </template>
     <v-date-picker v-bind="$attrs" v-on="$listeners" :value="value" @change="menu = false; $emit('input', $event)"
@@ -29,7 +29,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 })
 export default class DDatePicker extends Vue {
   @Prop({ required: false, default: "" })
-  value!: string;
+  value!: string | null;
 
   @Prop({ required: false })
   label!: string;
@@ -39,6 +39,9 @@ export default class DDatePicker extends Vue {
 
   @Prop({ required: false, default: true })
   editable!: boolean;
+
+  @Prop({ required: false, default: false })
+  clearable!: boolean;
 
   menu = false;
 
