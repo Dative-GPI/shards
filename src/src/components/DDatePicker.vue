@@ -1,13 +1,12 @@
 <template>
   <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
-    min-width="auto" :disabled="!editable">
+    min-width="auto" :disabled="!editable" v-bind="$attrs" v-on="$listeners">
     <template v-slot:activator="{ on, attrs }">
-      <d-text-field :value="formattedDate" :label="label" :editable="editable" prepend-icon="mdi-calendar"
+      <d-text-field :value="formattedDate" :class="contentClass" :label="label" :editable="editable" prepend-icon="mdi-calendar"
         :readonly="true" :clearable="clearable" v-bind="attrs" v-on="on" @click:clear="$emit('input', null)">
       </d-text-field>
     </template>
-    <v-date-picker v-bind="$attrs" v-on="$listeners" :value="stringCleanDate" @change="onDateChanged"
-      class="d-date-picker">
+    <v-date-picker :value="stringCleanDate" @change="onDateChanged" class="d-date-picker" v-bind="$attrs" v-on="$listeners">
       <slot> </slot>
       <template v-for="(index, name) in $slots" v-slot:[name]>
         <slot :name="name" />
@@ -43,6 +42,9 @@ export default class DDatePicker extends Vue {
   @Prop({ required: false, default: false })
   clearable!: boolean;
 
+  @Prop({required: false, default: ""})
+  contentClass!: string;
+
   menu = false;
 
   get cleanDate(): Date | null {
@@ -53,8 +55,8 @@ export default class DDatePicker extends Vue {
 
   // on add les minutes pour que le jour soit le bon 
 
-  get stringCleanDate(){
-    if(this.cleanDate) return addMinutes(this.cleanDate, - this.cleanDate.getTimezoneOffset())
+  get stringCleanDate() {
+    if (this.cleanDate) return addMinutes(this.cleanDate, - this.cleanDate.getTimezoneOffset())
       .toISOString().substring(0, 10)
     return ""
   }
@@ -65,8 +67,8 @@ export default class DDatePicker extends Vue {
     return format(addMinutes(this.cleanDate, - this.cleanDate.getTimezoneOffset()), this.format)
   }
 
-  onDateChanged(sdate: string){
-    this.menu = false; 
+  onDateChanged(sdate: string) {
+    this.menu = false;
     let date = parseISO(sdate);
     this.$emit('input', date)
   }
