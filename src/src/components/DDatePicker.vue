@@ -1,12 +1,14 @@
 <template>
   <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
-    min-width="auto" :disabled="!editable" v-bind="$attrs" v-on="$listeners">
+    min-width="auto" :disabled="!editable">
     <template v-slot:activator="{ on, attrs }">
-      <d-text-field :value="formattedDate" :class="contentClass" :label="label" :editable="editable" prepend-icon="mdi-calendar"
-        :readonly="true" :clearable="clearable" v-bind="attrs" v-on="on" @click:clear="$emit('input', null)">
+      <d-text-field :value="formattedDate" :class="contentClass" :label="label" :editable="editable"
+        prepend-icon="mdi-calendar" :readonly="true" :clearable="clearable" v-bind="attrs" v-on="on"
+        @click:clear="$emit('input', null)">
       </d-text-field>
     </template>
-    <v-date-picker :value="stringCleanDate" @change="onDateChanged" class="d-date-picker" v-bind="$attrs" v-on="$listeners">
+    <v-date-picker :value="stringCleanDate" @change="onDateChanged" class="d-date-picker" v-bind="$attrs"
+      v-on="$listeners">
       <slot> </slot>
       <template v-for="(index, name) in $slots" v-slot:[name]>
         <slot :name="name" />
@@ -42,23 +44,31 @@ export default class DDatePicker extends Vue {
   @Prop({ required: false, default: false })
   clearable!: boolean;
 
-  @Prop({required: false, default: ""})
+  @Prop({ required: false, default: "" })
   contentClass!: string;
 
   menu = false;
 
   get cleanDate(): Date | null {
-    if (!this.value) return null;
-    if (this.value instanceof Date) return this.value;
-    else return parseISO(this.value)
+    let result = null;
+
+    if (this.value) {
+      if (this.value instanceof Date) result = this.value;
+      else result = parseISO(this.value)
+
+      if (!isFinite(result.getTime())) result = null;
+    }
+
+    return result;
   }
 
   // on add les minutes pour que le jour soit le bon 
 
   get stringCleanDate() {
-    if (this.cleanDate) return addMinutes(this.cleanDate, - this.cleanDate.getTimezoneOffset())
+    if (!this.cleanDate) return null
+
+    return addMinutes(this.cleanDate, - this.cleanDate.getTimezoneOffset())
       .toISOString().substring(0, 10)
-    return ""
   }
 
   get formattedDate() {

@@ -25,8 +25,11 @@ const Template = (args, { argTypes }) => ({
   mounted() {
     this.valueClone = this.value;
   },
-  template: `<d-date-picker content-class="my-10" v-model="valueClone" v-bind="oProps" />`,
+  template: `<d-date-picker v-model="valueClone" v-bind="oProps" />`,
 });
 
 export const Default = Template.bind({});
-Default.args = { value: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 23, 0, 0)};
+Default.args = {
+  value: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 23, 0, 0),
+  contentClass: "my-5"
+};
