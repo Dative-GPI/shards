@@ -6,7 +6,7 @@
         :readonly="true" :clearable="clearable" v-bind="attrs" v-on="on" @click:clear="$emit('input', null)">
       </d-text-field>
     </template>
-    <v-date-picker v-bind="$attrs" v-on="$listeners" :value="value" @change="menu = false; $emit('input', $event)"
+    <v-date-picker v-bind="$attrs" v-on="$listeners" :value="stringCleanDate" @change="onDateChanged"
       class="d-date-picker">
       <slot> </slot>
       <template v-for="(index, name) in $slots" v-slot:[name]>
@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { format, parseISO } from 'date-fns'
+import { addMinutes, format, parseISO } from 'date-fns'
 
 import { Component, Prop, Vue } from "vue-property-decorator";
 
@@ -29,7 +29,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 })
 export default class DDatePicker extends Vue {
   @Prop({ required: false, default: "" })
-  value!: string | null;
+  value!: string | Date | null;
 
   @Prop({ required: false })
   label!: string;
@@ -45,10 +45,30 @@ export default class DDatePicker extends Vue {
 
   menu = false;
 
-  get formattedDate() {
-    if (!this.value) return "";
+  get cleanDate(): Date | null {
+    if (!this.value) return null;
+    if (this.value instanceof Date) return this.value;
+    else return parseISO(this.value)
+  }
 
-    return format(parseISO(this.value), this.format)
+  // on add les minutes pour que le jour soit le bon 
+
+  get stringCleanDate(){
+    if(this.cleanDate) return addMinutes(this.cleanDate, - this.cleanDate.getTimezoneOffset())
+      .toISOString().substring(0, 10)
+    return ""
+  }
+
+  get formattedDate() {
+    if (!this.cleanDate) return "";
+
+    return format(addMinutes(this.cleanDate, - this.cleanDate.getTimezoneOffset()), this.format)
+  }
+
+  onDateChanged(sdate: string){
+    this.menu = false; 
+    let date = parseISO(sdate);
+    this.$emit('input', date)
   }
 }
 </script>

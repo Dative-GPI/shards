@@ -29,4 +29,4 @@ const Template = (args, { argTypes }) => ({
 });
 
 export const Default = Template.bind({});
-Default.args = { value: new Date().toISOString().substring(0, 10) };
+Default.args = { value: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 23, 0, 0)};
