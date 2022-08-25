@@ -17,6 +17,8 @@ export interface Column {
     filter?: (value: any, search: string, item: any) => boolean,
     sort?: (a: any, b: any) => number
 
+    innerValue?: (value: any) => any;
+
     /** Equivalent to filterable. Should not be set directly ! */
     canBeFiltered?: boolean,
     /** Should not be set directly ! */

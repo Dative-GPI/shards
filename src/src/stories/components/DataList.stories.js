@@ -37,7 +37,7 @@ const Template = (args, { argTypes }) => ({
         <d-chip class="clickable">{{ item.text }}</d-chip>
       </template>
       <template #table-item.localisation="{ configure, item }">
-          <d-chip-set :editable="configure" v-model="item.localisation" />
+          <d-chip-set :editable="configure" v-model="item.localisation" item-text="name" />
       </template>
 
       <template #tile-item="{ item }">
@@ -135,6 +135,108 @@ Default.args = {
       name: 'Four à chariot rotatif',
       SerialNumbe: 375,
       localisation: ["Strasbourg"],
+      Etages: 25,
+    },
+  ],
+  itemKey: "id",
+};
+
+
+export const WithObjectArray = Template.bind({});
+WithObjectArray.args = {
+  multiSort: true,
+  columnText: "text",
+  columnValue: "value",
+  columnPosition: "index",
+  configurationIcon: "$cog",
+  search: "",
+  columns: [
+    {
+      text: 'Article',
+      sortable: false,
+      filterable: true,
+      value: 'name',
+      sortable: true,
+      hidden: false,
+      width: 50,
+      index: 0
+    },
+    {
+      text: 'Serial number',
+      value: 'SerialNumbe',
+      align: 'end',
+      sortable: true,
+      hidden: false,
+      width: 50,
+      index: 1
+    },
+    {
+      text: 'Localisation',
+      value: 'localisation',
+      filterable: true,
+      hidden: false,
+      index: 6,
+      width: 50,
+      configurable: true,
+      innerValue: (v) => v?.name ?? undefined
+    },
+    {
+      text: 'Etages',
+      value: 'Etages',
+      hidden: false,
+      filterable: true,
+      width: 50,
+      index: 3
+    },
+    {
+      text: 'Numéro de sécurité',
+      value: 'NumeroDeSecurité',
+      hidden: false,
+      width: 100,
+      index: 4
+    },
+  ],
+  items: [
+    {
+      id: 1,
+      name: 'Four à chariot rotatif',
+      SerialNumbe: 159,
+      localisation: [
+        { name: "Strasbourg" }, { name: "Paris" }
+      ],
+      Etages: 1,
+      NumeroDeSecurité: 5,
+    },
+    {
+      id: 2,
+      name: 'Four spécial',
+      localisation: [
+        { name: "Strasbourg" }
+      ],
+      Etages: 4,
+    },
+    {
+      id: 3,
+      name: 'Four à chariot rotatif',
+      SerialNumbe: 305,
+      Etages: 5,
+      NumeroDeSecurité: 3,
+    },
+    {
+      id: 8,
+      name: 'Four à chariot rotatif 2',
+      SerialNumbe: 305,
+      Etages: 5,
+      NumeroDeSecurité: 3,
+      localisation: []
+    },
+    {
+      id: 4,
+      name: 'Four à chariot rotatif',
+      SerialNumbe: 375,
+      localisation: [
+        { name: "Strasbourg" }
+      ],
       Etages: 25,
     },
   ],

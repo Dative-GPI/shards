@@ -261,9 +261,11 @@ export default class DDataTable extends Vue {
     for (const col of filterableHeaders) {
       const key = col.value!;
 
+      const mapToInnerValue = col.innerValue ? col.innerValue : ((i: any) => i);
+
       const itemValues = this.items.flatMap((item) =>
         item[key] == [] ? undefined : item[key]
-      ); // Undefined trick to get a value for empty arrays
+      ).map(mapToInnerValue); // Undefined trick to get a value for empty arrays
 
       const distinctItemValues = [...new Set(itemValues)];
 
@@ -273,10 +275,13 @@ export default class DDataTable extends Vue {
           text: (v && v.toString()) || "—",
           value: v || null,
 
-          filter: (value) =>
-            Array.isArray(value)
-              ? value.includes(v)
-              : (!v && !value) || v == value,
+          filter: (value) => {
+            value = [value].flat().map(mapToInnerValue); // We put the value in an array then flatten it to handle cases where value is an array and where it is not
+
+            return Array.isArray(value)
+              ? value.includes(v) || (!v && value.length == 0)
+              : (!v && !value) || v == value
+          },
         })
       );
 
