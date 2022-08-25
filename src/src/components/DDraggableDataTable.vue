@@ -207,7 +207,7 @@ export default class DDraggableDataTable extends Vue {
   }
 
   get itemsSlots() {
-    return this.headers.filter((h) => this.$scopedSlots[h.slotName]);
+    return this.headers.filter((h) => this.$scopedSlots[h.slotName!]);
   }
 
   get filteredItems() {

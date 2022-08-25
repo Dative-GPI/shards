@@ -13,6 +13,12 @@ export interface Column {
     class?: string | string[],
     cellClass?: string | string[],
     width?: string | number,
+
     filter?: (value: any, search: string, item: any) => boolean,
     sort?: (a: any, b: any) => number
+
+    /** Equivalent to filterable. Should not be set directly ! */
+    canBeFiltered?: boolean,
+    /** Should not be set directly ! */
+    slotName?: string,
 }

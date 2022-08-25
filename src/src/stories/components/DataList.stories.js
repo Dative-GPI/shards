@@ -41,7 +41,7 @@ const Template = (args, { argTypes }) => ({
       </template>
 
       <template #tile-item="{ item }">
-        <d-tile>
+        <d-tile img-src="">
         </d-tile>
       </template>
     </d-data-list>`,
