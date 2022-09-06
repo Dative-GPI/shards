@@ -24,7 +24,11 @@
       <slot name="status" />
     </div>
 
-    <div v-if="selectable" class="d-tile-checkbox">
+    <div class="d-tile-actions">
+      <slot name="actions" />
+    </div>
+
+    <div class="d-tile-checkbox" v-if="selectable">
       <d-simple-checkbox
         :ripple="false"
         :value="value"

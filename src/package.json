@@ -1,6 +1,6 @@
 {
   "name": "@dative-gpi/shards",
-  "version": "0.1.4",
+  "version": "0.1.13",
   "private": false,
   "main": "src/index.ts",
   "scripts": {
