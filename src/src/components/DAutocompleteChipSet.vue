@@ -1,6 +1,6 @@
 <template>
-  <v-row no-gutters align="center">
-    <d-chip-group :column="column" :style="{ 'max-width': maxWidth }">
+  <div :style="{ display: 'inline-flex', alignItems: 'center', height: height }">
+    <d-chip-group>
       <d-chip
         v-for="(item, index) in value"
         :key="index"
@@ -25,7 +25,7 @@
           :itemText="itemLabel"
           :outlined="outlined"
           :rules="[required ? !!value.length : true]"
-          :style="`height: 40px; alignItems: center; padding-top: 4px !important;`"
+          :style="{ maxWidth: maxWidth, height: height, alignItems: 'center', paddingTop: '4px !important' }"
           :placeholder="inputLabel"
           @keydown.enter="(event) => !!event.target.value.length ? null : add(event.target.value)"
           @change="(value) => add(value)"
@@ -39,13 +39,13 @@
           :outlined="outlined"
           :returnObject="true"
           :rules="[required ? !!value.length : true]"
-          :style="`height: 40px; alignItems: center; padding-top: 4px !important;`"
+          :style="{ maxWidth: maxWidth, height: height, alignItems: 'center', paddingTop: '4px !important' }"
           :placeholder="inputLabel"
           @change="(value) => add(value)"
         />
       </slot>
     </div>
-  </v-row>
+  </div>
 </template>
 
 <script lang="ts">
@@ -68,11 +68,14 @@ export default class DAutocompleteChipSet extends Vue {
   @Prop({ required: false, default: true })
   editable!: boolean;
 
-  @Prop({ required: false, default: true })
+  @Prop({ required: false, default: false })
   outlined!: boolean;
 
   @Prop({ required: false, default: false })
   itemsOnly!: boolean;
+
+  @Prop({ required: false, default: false })
+  required!: boolean;
 
   @Prop({ required: false, default: "mdi-link" })
   itemsIcon!: string;
@@ -83,14 +86,11 @@ export default class DAutocompleteChipSet extends Vue {
   @Prop({ required: false, default: "100%" })
   maxWidth!: string;
 
+  @Prop({ required: false, default: "40px" })
+  height!: string;
+
   @Prop({ required: false, default: 0 })
   minLength!: number;
-
-  @Prop({ required: false, default: false })
-  column!: boolean;
-
-  @Prop({ required: false, default: false })
-  required!: boolean;
 
   text: string = "";
 
