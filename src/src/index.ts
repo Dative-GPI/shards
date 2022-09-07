@@ -2,6 +2,7 @@ import DAccess from "./components/DAccess.vue";
 import DAlert from "./components/DAlert.vue";
 import DApp from "./components/DApp.vue";
 import DAutocomplete from "./components/DAutocomplete.vue";
+import DAutocompleteChipSet from "./components/DAutocompleteChipSet.vue";
 import DBlurHash from "./components/DBlurHash.vue";
 import DBlurImg from "./components/DBlurImg.vue";
 import DBottomBar from "./components/DBottomBar.vue";
@@ -124,6 +125,7 @@ const Shards = {
     vue.component("d-alert", DAlert);
     vue.component("d-app", DApp);
     vue.component("d-autocomplete", DAutocomplete);
+    vue.component("d-autocomplete-chip-set", DAutocompleteChipSet)
     vue.component("d-blur-hash", DBlurHash);
     vue.component("d-blur-img", DBlurImg);
     vue.component("d-bottom-bar", DBottomBar);

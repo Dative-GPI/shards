@@ -28,6 +28,10 @@ const Template = (args, { argTypes }) => ({
   template: 
     `
     <d-tile v-model="valueClone" v-bind="oProps">
+      <template #actions>
+        <div style="margin-right: 4px; width: 50px; height: 28px; background-color: aliceblue;" />
+        <div style="width: 50px; height: 28px; background-color: lavenderblush;" />
+      </template>
 
       <template #status>
         <div style="height: 80px; background-color: whitesmoke;" />
@@ -45,7 +49,7 @@ export const Default = Template.bind({});
 Default.args = {
   selectable: true,
   value: false,
-  width: 300,
+  width: 310,
   height: 230,
   imgSrc: "https://cdn.vuetifyjs.com/images/parallax/material.jpg",
 };

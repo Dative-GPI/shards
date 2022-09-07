@@ -14,9 +14,9 @@
         :close="editable"
         @click:close="() => remove(item)"
       >
-        <slot name="item" v-bind="{ item, index }">{{
-          itemText && itemText instanceof Function ? itemText(item) : item && item[itemText] || item
-        }}</slot>
+        <slot name="item" v-bind="{ item, index }">
+          {{ itemText && itemText instanceof Function ? itemText(item) : item && item[itemText] || item }}
+        </slot>
       </d-chip>
     </d-chip-group>
     <div v-if="editable">
@@ -29,7 +29,7 @@
           @keypress.enter="add"
           @blur="add"
           v-model="text"
-          :style="`width: ${inputSize}ch;`"
+          :style="`width: ${inputSize}ch; height: 40px; alignItems: center;`"
           prefix="|"
           :rules="[required ? !!value.length || requiredMessage : true]"
         />
@@ -39,7 +39,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({
   data: () => ({
@@ -65,6 +65,9 @@ export default class DChipSet extends Vue {
   @Prop({ required: false, default: "value" })
   itemValue!: string | Function;
 
+  @Prop({ required: false, default: 1 })
+  minLength!: number;
+
   @Prop({ required: false, default: false, type: Boolean })
   column!: boolean;
 
@@ -83,7 +86,7 @@ export default class DChipSet extends Vue {
     );
   }
 
-  text = "";
+  text: string = "";
 
   remove(group: string): void {
     this.$emit("remove", group);
@@ -94,7 +97,7 @@ export default class DChipSet extends Vue {
   }
 
   add(): void {
-    if (this.text && this.text.length > 0) {
+    if (this.text.length >= this.minLength) {
       if (!this.value) {
         this.$emit("input", [this.text]);
         this.text = "";
@@ -107,7 +110,8 @@ export default class DChipSet extends Vue {
 
   get inputSize() {
     return (
-      Math.max(this.inputLabel.length, (this.text && this.text.length) || 0) + 2 // Hack: inputLabel might be wider than {inputLabel.length} ch
+      // Hack: inputLabel might be wider than {inputLabel.length} ch
+      Math.max(this.inputLabel.length, (this.text && this.text.length) || 0) + 2
     );
   }
 }
