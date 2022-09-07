@@ -29,7 +29,7 @@
           @keypress.enter="add"
           @blur="add"
           v-model="text"
-          :style="`width: ${inputSize}ch;`"
+          :style="`width: ${inputSize}ch; height: 40px; alignItems: center;`"
           prefix="|"
           :rules="[required ? !!value.length || requiredMessage : true]"
         />
@@ -99,11 +99,9 @@ export default class DChipSet extends Vue {
   add(): void {
     if (this.text.length >= this.minLength) {
       if (!this.value) {
-        console.log("Aqui");
         this.$emit("input", [this.text]);
         this.text = "";
       } else if (!this.value.some((t) => t == this.text)) {
-        console.log("Here");
         this.$emit("input", [...this.value, this.text]);
         this.text = "";
       }
