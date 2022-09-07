@@ -8,13 +8,17 @@
         @click:close="() => remove(item)"
       >
         <slot name="item" v-bind="{ item, index }">
-          <span class="text-body-1"> {{ item[itemLabel] }} </span>
+          <v-row no-gutters align="center">
+            <span class="text-body-1"> {{ item[itemLabel] }} </span>
+            <d-icon class="ml-2" v-if="!itemsOnly && !item.isCustom" :size="20"> {{ itemsIcon }} </d-icon>
+          </v-row>
         </slot>
       </d-chip>
     </d-chip-group>
     <div v-if="editable">
       <slot name="input">
         <v-combobox
+          v-if="!itemsOnly"
           v-model="text"
           :items="items"
           :itemValue="itemKey"
@@ -24,6 +28,19 @@
           :style="`height: 40px; alignItems: center; padding-top: 4px !important;`"
           :placeholder="inputLabel"
           @keydown.enter="(event) => !!event.target.value.length ? null : add(event.target.value)"
+          @change="(value) => add(value)"
+        />
+        <d-autocomplete
+          v-else
+          v-model="text"
+          :items="items"
+          :itemValue="itemKey"
+          :itemText="itemLabel"
+          :outlined="outlined"
+          :returnObject="true"
+          :rules="[required ? !!value.length : true]"
+          :style="`height: 40px; alignItems: center; padding-top: 4px !important;`"
+          :placeholder="inputLabel"
           @change="(value) => add(value)"
         />
       </slot>
@@ -57,6 +74,9 @@ export default class DAutocompleteChipSet extends Vue {
   @Prop({ required: false, default: false })
   itemsOnly!: boolean;
 
+  @Prop({ required: false, default: "mdi-link" })
+  itemsIcon!: string;
+
   @Prop({ required: false, default: "Add new" })
   inputLabel!: string;
 
@@ -80,6 +100,7 @@ export default class DAutocompleteChipSet extends Vue {
   }
 
   add(value: any): void {
+    console.log(value);
     if (typeof(value) !== "string") {
       if (value != null) {
         if (!this.value.some((t: any) => t[this.itemKey] == value[this.itemKey])) {
@@ -94,7 +115,8 @@ export default class DAutocompleteChipSet extends Vue {
         }
       }
     }
-    else if (this.text.length >= this.minLength && !this.value.some((t: any) => t[this.itemLabel] == this.text)) {
+    else if (this.text.length >= this.minLength) {
+      if (!this.value.some((t: any) => t.isCustom && t[this.itemLabel] == this.text))
       this.$emit("input", [...this.value, {
         isCustom: true,
         [this.itemLabel]: this.text
