@@ -63,7 +63,8 @@ import DRightDrawer from "./components/DRightDrawer.vue";
 import DSearchInput from "./components/DSearchInput.vue";
 import DSelect from "./components/DSelect.vue";
 import DSimpleCheckbox from "./components/DSimpleCheckbox.vue";
-import DSheet from "./components/DSheet.vue"
+import DSheet from "./components/DSheet.vue";
+import DSlider from "./components/DSlider.vue";
 import DSpinner from "./components/DSpinner.vue";
 import DSubTitle from "./components/DSubTitle.vue";
 import DSwitch from "./components/DSwitch.vue";
@@ -185,6 +186,7 @@ const Shards = {
     vue.component("d-select", DSelect);
     vue.component("d-sheet", DSheet);
     vue.component("d-simple-checkbox", DSimpleCheckbox);
+    vue.component("d-slider", DSlider);
     vue.component("d-spinner", DSpinner);
     vue.component("d-sub-title", DSubTitle);
     vue.component("d-switch", DSwitch);
