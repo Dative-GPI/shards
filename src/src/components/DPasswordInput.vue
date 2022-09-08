@@ -34,7 +34,7 @@ export default class DPasswordInput extends Vue {
 
   // Data
 
-  internalAppendIcon = this.appendIconShow;
+  internalAppendIcon = "";
   internalType = "password";
 
   // Computed Properties
@@ -60,6 +60,10 @@ export default class DPasswordInput extends Vue {
   }
 
   // Lifecycle
+
+  mounted() {
+    this.internalAppendIcon = this.appendIconShow;
+  }
 }
 </script>
 
