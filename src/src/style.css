@@ -472,6 +472,11 @@ textarea {
   content: "*"
 }
 
+.d-grid-key, .d-grid-value {
+  display: flex;
+  justify-content: flex-start;
+}
+
 .d-blur-img .d-img {
   position: absolute;
   top: 50%;
