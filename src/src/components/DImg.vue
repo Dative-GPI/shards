@@ -42,6 +42,7 @@
 </template>
 
 <script lang="ts">
+import { ImageResizerInstance } from "@/tools";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 @Component({
@@ -65,20 +66,26 @@ export default class DImg extends Vue {
   @Prop({ required: false, default: 200 })
   height!: number;
 
-  @Prop({ required: false, default: false })
+  @Prop({ required: false, default: false, type: Boolean })
   contain!: boolean;
+
+  @Prop({ required: false, default: false, type: Boolean })
+  resize!: boolean;
+
+  @Prop({ required: false, default: 0 })
+  resizeSize!: number;
 
   // Data
 
   index = 0;
 
   signatures: { [key: string]: string } = {
-    "JVBERi0": "application/pdf",
-    "R0lGODdh": "image/gif",
-    "R0lGODlh": "image/gif",
-    "iVBORw0KGgo": "image/png",
-    "/9j/": "image/jpg"
-  }
+    JVBERi0: "application/pdf",
+    R0lGODdh: "image/gif",
+    R0lGODlh: "image/gif",
+    iVBORw0KGgo: "image/png",
+    "/9j/": "image/jpg",
+  };
 
   // Computed Properties
 
@@ -86,7 +93,8 @@ export default class DImg extends Vue {
     if (this.value && this.value.includes(",")) return this.value.split(",")[0];
     if (this.value)
       for (const s in this.signatures)
-        if (this.value.startsWith(s)) return `data:${this.signatures[s]};base64`;
+        if (this.value.startsWith(s))
+          return `data:${this.signatures[s]};base64`;
     return "";
   }
 
@@ -103,13 +111,21 @@ export default class DImg extends Vue {
 
   // Methods
 
-  update(event: string) {
-    if (event) {
-      const [type, data] = event.split(",");
-      this.$emit("input", data);
-      this.$emit("update:type", type);
-    }
+  async update(event: string) {
+    if (!event) return;
+
+    const imageData = (
+      this.resize ?
+      await ImageResizerInstance.resizeImage(event, this.resizeSize) :
+      event
+    );
+    const [type, data] = imageData.split(",");
+
+    this.$emit("input", data);
+    this.$emit("update:type", type);
   }
+
+  // Lifecycle
 
   @Watch("index")
   onSourceChanged() {
