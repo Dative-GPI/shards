@@ -28,7 +28,7 @@ import BaseDateTimePicker from "./common/BaseDateTimePicker.vue";
     BaseDateTimePicker,
   },
 })
-export default class DDateTimePicker extends Vue {
+export default class DDateTimeRangePicker extends Vue {
   // Properties
 
   @Prop({ required: false, default: () => [] })
@@ -51,9 +51,9 @@ export default class DDateTimePicker extends Vue {
   get currentValue() {
     const dates = [];
 
-    if (this.startDate && !this.startTime)
+    if (this.startDate && !this.startTime) {
       dates.push(parse(this.startDate, ISO_8601_DATE_FORMAT, new Date()));
-    else if (this.startDate && this.startTime)
+    } else if (this.startDate && this.startTime) {
       dates.push(
         parse(
           `${this.startDate} ${this.startTime}`,
@@ -61,10 +61,11 @@ export default class DDateTimePicker extends Vue {
           new Date()
         )
       );
+    }
 
-    if (this.endDate && !this.endTime)
+    if (this.endDate && !this.endTime) {
       dates.push(parse(this.endDate, ISO_8601_DATE_FORMAT, new Date()));
-    else if (this.endDate && this.endTime)
+    } else if (this.endDate && this.endTime) {
       dates.push(
         parse(
           `${this.endDate} ${this.endTime}`,
@@ -72,6 +73,7 @@ export default class DDateTimePicker extends Vue {
           new Date()
         )
       );
+    }
 
     return dates;
   }
@@ -81,27 +83,30 @@ export default class DDateTimePicker extends Vue {
   onMenuInput(menuValue: boolean) {
     if (menuValue) {
       this.currentMode = DateTimePickingMode.StartDate;
-      this.startDate = "";
-      this.startTime = "";
-      this.endDate = "";
-      this.endTime = "";
     } else {
       this.currentMode = DateTimePickingMode.None;
+      this.reset();
     }
   }
 
   onStartDate(date: string) {
     this.startDate = date;
+    this.startTime = "";
+    this.endDate = "";
+    this.endTime = "";
     this.currentMode = DateTimePickingMode.StartTime;
   }
 
   onStartTime(time: string) {
     this.startTime = time;
+    this.endDate = "";
+    this.endTime = "";
     this.currentMode = DateTimePickingMode.EndDate;
   }
 
   onEndDate(date: string) {
     this.endDate = date;
+    this.endTime = "";
     this.currentMode = DateTimePickingMode.EndTime;
   }
 

@@ -45,8 +45,17 @@ export default class DDateTimePicker extends Vue {
   }
 
   get currentValue() {
-    if (!this.value) return [];
-    return [this.value];
+    if (this.date && !this.time) {
+      return [parse(this.date, ISO_8601_DATE_FORMAT, new Date())];
+    } else if (this.date && this.time) {
+      return [parse(
+          `${this.date} ${this.time}`,
+          `${ISO_8601_DATE_FORMAT} ${ISO_8601_TIME_FORMAT}`,
+          new Date()
+      )];
+    }
+    
+    return [];
   }
 
   // Methods
@@ -54,15 +63,15 @@ export default class DDateTimePicker extends Vue {
   onMenuInput(menuValue: boolean) {
     if (menuValue) {
       this.currentMode = DateTimePickingMode.StartDate;
-      this.date = "";
-      this.time = "";
     } else {
       this.currentMode = DateTimePickingMode.None;
+      this.reset();
     }
   }
 
   onStartDate(date: string) {
     this.date = date;
+    this.time = "";
     this.currentMode = DateTimePickingMode.StartTime;
   }
 

@@ -27,10 +27,21 @@
         v-if="mode == DateTimePickingMode.StartDate"
       >
         <v-date-picker
+          v-if="selectedDates.length == 2"
+          range
+          :value="selectedDates"
+          :min="minDateString"
+          :max="maxDateString"
+          @input="$emit('input:startDate', $event[0])"
+          v-bind="$attrs"
+        />
+        <v-date-picker
+          v-else
           :value="startDate"
           :min="minDateString"
           :max="maxDateString"
           @change="$emit('input:startDate', $event)"
+          v-bind="$attrs"
         />
       </v-fade-transition>
 
@@ -41,6 +52,7 @@
         <v-time-picker
           format="24hr"
           @change="$emit('input:startTime', $event)"
+          v-bind="$attrs"
         />
       </v-fade-transition>
 
@@ -54,6 +66,7 @@
           :min="startDate"
           :max="maxDateString"
           @change="$emit('input:endDate', $event[1])"
+          v-bind="$attrs"
         />
       </v-fade-transition>
 
@@ -61,19 +74,28 @@
         leave-absolute
         v-if="mode == DateTimePickingMode.EndTime"
       >
-        <v-time-picker format="24hr" @change="$emit('input:endTime', $event)" />
+        <v-time-picker
+          format="24hr"
+          @change="$emit('input:endTime', $event)"
+          :min="minEndTime"
+          v-bind="$attrs"
+        />
       </v-fade-transition>
     </v-menu>
   </div>
 </template>
 
 <script lang="ts">
-import { DateTimePickingMode, ISO_8601_DATE_FORMAT } from "@/models";
-import { format, parse } from "date-fns";
-import { Component, Prop, Ref, Vue, Watch } from "vue-property-decorator";
+import {
+  DateTimePickingMode,
+  ISO_8601_DATE_FORMAT,
+  ISO_8601_TIME_FORMAT,
+} from "@/models";
+import { format } from "date-fns";
+import { Component, Prop, Ref, Vue } from "vue-property-decorator";
 
 @Component({})
-export default class DDateTimePicker extends Vue {
+export default class BaseDateTimePicker extends Vue {
   // Properties
 
   @Prop({ required: false, default: () => [] })
@@ -132,6 +154,21 @@ export default class DDateTimePicker extends Vue {
   get startDate() {
     if (!this.value || this.value.length == 0) return "";
     return format(this.value[0], ISO_8601_DATE_FORMAT);
+  }
+
+  get endDate() {
+    if (!this.value || this.value.length < 2) return "";
+    return format(this.value[1], ISO_8601_DATE_FORMAT);
+  }
+
+  get selectedDates() {
+    return [this.startDate, this.endDate].filter((v) => !!v);
+  }
+
+  get minEndTime() {
+    if (!this.value || this.value.length < 2) return undefined;
+    if (this.startDate != this.endDate) return undefined;
+    return format(this.value[0], ISO_8601_TIME_FORMAT);
   }
 
   // Methods
