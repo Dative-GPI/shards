@@ -24,7 +24,7 @@
         <slot :name="name" v-bind="data"></slot>
       </template>
     </v-img>
-    <slot name="actions">
+    <slot name="actions" :resize="resizeImage">
       <d-btn-file
         :class="{ hidden: !editable }"
         class="d-btn-edit-img"
@@ -114,15 +114,17 @@ export default class DImg extends Vue {
   async update(event: string) {
     if (!event) return;
 
-    const imageData = (
-      this.resize ?
-      await ImageResizerInstance.resizeImage(event, this.resizeSize) :
-      event
-    );
+    const imageData = await this.resizeImage(event);
     const [type, data] = imageData.split(",");
 
     this.$emit("input", data);
     this.$emit("update:type", type);
+  }
+
+  async resizeImage(image: string) {
+    return this.resize
+      ? await ImageResizerInstance.resizeImage(image, this.resizeSize)
+      : image;
   }
 
   // Lifecycle
