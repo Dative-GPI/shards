@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import { ImageResizerInstance } from "@/tools";
+import { ImageResizerInstance } from "../tools";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 @Component({

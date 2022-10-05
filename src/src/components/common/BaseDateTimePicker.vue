@@ -90,7 +90,7 @@ import {
   DateTimePickingMode,
   ISO_8601_DATE_FORMAT,
   ISO_8601_TIME_FORMAT,
-} from "@/models";
+} from "../../models";
 import { format } from "date-fns";
 import { Component, Prop, Ref, Vue } from "vue-property-decorator";
 
