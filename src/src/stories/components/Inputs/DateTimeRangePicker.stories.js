@@ -24,9 +24,6 @@ const Template = (args, { argTypes }) => ({
       return others;
     },
   },
-  mounted() {
-    this.valueClone = this.value;
-  },
   template: `
     <d-date-time-range-picker
       v-bind="$props"

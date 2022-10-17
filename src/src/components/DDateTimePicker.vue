@@ -11,9 +11,10 @@
 </template>
 
 <script lang="ts">
-import { DateTimePickingMode, ISO_8601_DATE_FORMAT, ISO_8601_TIME_FORMAT } from "../models";
 import { format, parse } from "date-fns";
-import { Component, Prop, Ref, Vue, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { DateTimePickingMode, ISO_8601_DATE_FORMAT, ISO_8601_TIME_FORMAT } from "../models";
+
 import BaseDateTimePicker from "./common/BaseDateTimePicker.vue";
 
 @Component({
@@ -23,20 +24,16 @@ import BaseDateTimePicker from "./common/BaseDateTimePicker.vue";
 })
 export default class DDateTimePicker extends Vue {
   // Properties
-
   @Prop({ required: false, default: () => null })
   value!: Date | null;
 
   // Data
-
   currentMode = DateTimePickingMode.None;
-
   date: string = "";
   time: string = "";
 
   // Computed Properties
-
-  get dateTime() {
+  get dateTime(): Date {
     return parse(
       `${this.date} ${this.time}`,
       `${ISO_8601_DATE_FORMAT} ${ISO_8601_TIME_FORMAT}`,
@@ -44,7 +41,7 @@ export default class DDateTimePicker extends Vue {
     );
   }
 
-  get currentValue() {
+  get currentValue(): Date[] {
     if (this.date && !this.time) {
       return [parse(this.date, ISO_8601_DATE_FORMAT, new Date())];
     } else if (this.date && this.time) {
@@ -59,8 +56,7 @@ export default class DDateTimePicker extends Vue {
   }
 
   // Methods
-
-  onMenuInput(menuValue: boolean) {
+  onMenuInput(menuValue: boolean): void {
     if (menuValue) {
       this.currentMode = DateTimePickingMode.StartDate;
     } else {
@@ -69,19 +65,19 @@ export default class DDateTimePicker extends Vue {
     }
   }
 
-  onStartDate(date: string) {
+  onStartDate(date: string): void {
     this.date = date;
     this.time = "";
     this.currentMode = DateTimePickingMode.StartTime;
   }
 
-  onStartTime(time: string) {
+  onStartTime(time: string): void {
     this.time = time;
     this.currentMode = DateTimePickingMode.None;
     this.$emit("input", this.dateTime);
   }
 
-  reset() {
+  reset(): void {
     if (!this.value) {
       this.date = "";
       this.time = "";
@@ -92,7 +88,6 @@ export default class DDateTimePicker extends Vue {
   }
 
   // Lifecycle
-
   @Watch("value")
   onValueChanged = this.reset;
 }
