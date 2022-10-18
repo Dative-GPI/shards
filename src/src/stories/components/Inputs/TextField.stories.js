@@ -19,5 +19,7 @@ Default.args = {
   label: "Text field",
   value: "Blablalb",
   editable: true,
-  outlined: true
+  singleLine: true,
+  outlined: false,
+  solo: false
 };

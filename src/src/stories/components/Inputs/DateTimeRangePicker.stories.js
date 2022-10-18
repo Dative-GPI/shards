@@ -47,5 +47,8 @@ Default.args = {
   showAdjacentMonths: false,
   showCurrent: true,
   showWeek: false,
-  solo: true
+  singleLine: true,
+  outlined: false,
+  solo: false,
+  prependIcon: "mdi-calendar"
 };

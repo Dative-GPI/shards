@@ -16,12 +16,11 @@
             :rules="$attrs.rules"
             :prepend-icon="solo ? undefined : prependIcon"
             :prepend-inner-icon="solo ? prependIcon : undefined"
-            :outlined="outlined"
             dense
             flat
             height="28px"
             :solo="solo"
-            v-bind="attrs"
+            v-bind="$attrs"
             v-on="on"
           />
         </slot>
@@ -123,9 +122,6 @@ export default class BaseDateTimePicker extends Vue {
 
   @Prop({ required: false, default: "mdi-calendar" })
   prependIcon!: string;
-
-  @Prop({required: false, default: false })
-  outlined!: boolean;
 
   @Prop({required: false, default: false })
   solo!: boolean
