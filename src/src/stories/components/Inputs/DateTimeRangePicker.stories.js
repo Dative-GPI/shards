@@ -11,7 +11,7 @@ const Template = (args, { argTypes }) => ({
   components: { DDateTimeRangePicker },
   props: Object.keys(argTypes),
   data: () => ({ 
-    valueClone: ""
+    valueClone: [new Date(), new Date()]
   }),
   watch: {
     value(newVal) {
@@ -46,5 +46,6 @@ Default.args = {
   scrollable: false,
   showAdjacentMonths: false,
   showCurrent: true,
-  showWeek: false
+  showWeek: false,
+  solo: true
 };
