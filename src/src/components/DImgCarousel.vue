@@ -1,5 +1,10 @@
 <template>
-  <v-carousel :height="height" class="d-img-carousel" :style="'width: ' + width + 'px'">
+  <v-carousel
+    :height="height"
+    class="d-img-carousel"
+    :style="'width: ' + width + 'px'"
+    :show-arrows="imageSrcs.length > 1"
+  >
     <v-carousel-item v-for="(imgsrc, i) in imageSrcs" :key="i">
       <v-img
         :src="imgsrc"
