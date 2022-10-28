@@ -30,5 +30,7 @@ export const Colors = {
     "alert-blue-background": '#D2DDFA',
     "alert-green": '#03AC00',
     "alert-green-background": '#C5E8C4',
+    "alert-yellow": "#F0D003",
+    "alert-yellow-background": "#FAF6B3",
     "page-information-background": '#DFF6FB'
 }

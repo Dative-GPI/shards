@@ -100,7 +100,6 @@ export default class DAutocompleteChipSet extends Vue {
   }
 
   add(value: any): void {
-    console.log(value);
     if (typeof(value) !== "string") {
       if (value != null) {
         if (!this.value.some((t: any) => t[this.itemKey] == value[this.itemKey])) {
