@@ -94,6 +94,8 @@ import DBaseWidget from "./components/dashboard/DBaseWidget.vue";
 import DDashboard from "./components/dashboard/DDashboard.vue";
 import DDashboardCase from "./components/dashboard/DDashboardCase.vue";
 
+import DDashboardV2 from "./components/dashboard-v2/DDashboard.vue"
+
 import AlertLoader from "./components/loaders/AlertLoader.vue";
 import DashboardLoader from "./components/loaders/DashboardLoader.vue";
 import DeviceLoader from "./components/loaders/DeviceLoader.vue";
@@ -220,6 +222,8 @@ const Shards = {
     vue.component("d-base-widget", DBaseWidget);
     vue.component("d-dashboard", DDashboard);
     vue.component("d-dashboard-case", DDashboardCase);
+
+    vue.component("d-dashboard-v2", DDashboardV2);
 
     vue.component("alert-loader", AlertLoader);
     vue.component("dashboard-loader", DashboardLoader);
