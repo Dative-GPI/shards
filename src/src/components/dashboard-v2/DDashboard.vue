@@ -1,20 +1,64 @@
 <template>
   <div style="position: relative;">
 
-    <div class="d-dashboard-grid">
+    <template v-if="editable">
+      <div ref="grid"
+        class="d-dashboard-grid"
+        style="height: 100%"
+        v-resize="onResize"
+        :style="{
+          'background-size': `${backgroundSize}px ${backgroundSize}px`,
+          'background-position': `-${backgroundSize / 2}px -${backgroundSize / 2}px`,
+          width: `calc(100% - ${drawerWidth}px)`
+        }"
+        @dragenter.prevent="dragEnter"
+        @dragover.prevent="dragOver"
+        @drop.stop="drop">
 
-      <div class="d-dashboard-widget" v-for="widget in widgets" :key="widget.id">
-        
+        <div class="d-dashboard-placeholder"
+          v-show="hovered"
+          :style="{
+            top: `${placeholderTop}px`,
+            left: `${placeholderLeft}px`,
+            width: `${placeholderWidth}px`,
+            height: `${placeholderHeight}px`
+          }">
+
+        </div>
+
+        <div class="d-dashboard-dragover"
+          ref="dragover"
+          v-show="hovered"
+          :style="{
+            width: `${dragoverWidth}px`,
+            height: `${dragoverHeight}px`
+          }">
+          Coucou
+        </div>
+
+
       </div>
+    </template>
 
-
+    <div class="d-dashboard-widget"
+      v-for="widget in widgets"
+      :key="widget.id"
+      :style="widgetPosition(widget)">
+      <slot name="widget"
+        v-bind="{ item: widget }" />
     </div>
 
-    {{ autoWidth }}
-
-    <v-navigation-drawer :value="true" right stateless absolute hide-overlay width="500">
+    <v-navigation-drawer :value="true"
+      right
+      stateless
+      absolute
+      hide-overlay
+      :width="drawerWidth">
       <div class="ma-1">
-        <d-tabs v-model="tabs" :fixed-tabs="true" height="50" :showArrows="false">
+        <d-tabs v-model="tabs"
+          :fixed-tabs="true"
+          height="50"
+          :showArrows="false">
           <d-tab :key="0">
             <slot name="tab-dashboard-properties-title">
               <span>
@@ -29,7 +73,8 @@
               </span>
             </slot>
           </d-tab>
-          <d-tab :key="2" :disabled="!configure">
+          <d-tab :key="2"
+            :disabled="!configure">
             <slot name="tab-widget-configuration-title">
               <span>
                 Widget configuration
@@ -38,7 +83,8 @@
           </d-tab>
         </d-tabs>
 
-        <d-tabs-items :value="tabs" class="ma-4">
+        <d-tabs-items :value="tabs"
+          class="ma-4">
           <d-tab-item :value="0">
             <slot name="tab-dashboard-properties"> </slot>
           </d-tab-item>
@@ -46,11 +92,17 @@
             <slot name="tab-widget-templates">
               <d-search-input v-model="search" />
               <v-list two-line>
-                <v-list-item v-for="item in filtredWidgetTemplates" :key="item.id" @dragstart="dragstart" @dragend="dragend"
-                  @click="dragstart">
-                  <slot name="widget-template" v-bind="{ item }">
+                <v-list-item v-for="item in filtredWidgetTemplates"
+                  :key="item.id"
+                  draggable="true"
+                  @dragstart="dragstart(item, $event)"
+                  @dragend="dragend"
+                  @click="append(item)">
+                  <slot name="widget-template"
+                    v-bind="{ item, dragstart: ev => dragstart(item, ev), append: () => append(item) }">
                     <v-list-item-avatar>
-                      <v-icon x-large v-text="item.icon"></v-icon>
+                      <v-icon x-large
+                        v-text="item.icon"></v-icon>
                     </v-list-item-avatar>
 
                     <v-list-item-content>
@@ -72,7 +124,7 @@
 </template>
   
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 @Component({
   inheritAttrs: false,
@@ -82,32 +134,38 @@ export default class DDashboardV2 extends Vue {
 
   search = "";
 
-  @Prop({required: false, default: 24})
-  maxWidth!: number;
+  @Prop({ required: false, default: false })
+  editable!: boolean;
+
+  @Prop({ required: false, default: 6 })
+  columns!: number;
 
   @Prop({ required: false, default: () => [] })
   widgetTemplates!: WidgetTemplate[];
 
-  @Prop({required: false, default: () => []})
+  @Prop({ required: false, default: () => [] })
   widgets!: Widget[];
+
+  @Prop({ required: false, default: 500 })
+  drawerWidth!: number;
+
+  backgroundSize = 0;
+  backgroundPosition = 0;
+
+  hovered = false;
+
+  placeholderTop = 0;
+  placeholderLeft = 0;
+  placeholderWidth = 0;
+  placeholderHeight = 0;
+
+  dragoverTop = 0;
+  dragoverLeft = 0;
+  dragoverWidth = 300;
+  dragoverHeight = 100;
 
   get configure() {
     return false;
-  }
-
-  get autoWidth(){
-    if(this.$vuetify.breakpoint.smAndDown){
-      return 6;
-    }
-    else if(this.$vuetify.breakpoint.mdAndDown) {
-      return 9;
-    }
-    else if(this.$vuetify.breakpoint.lgAndDown) {
-      return 12;
-    }
-    else if(this.$vuetify.breakpoint.xl) {
-      return this.maxWidth
-    }
   }
 
   get filtredWidgetTemplates() {
@@ -116,13 +174,53 @@ export default class DDashboardV2 extends Vue {
       || (w.description && w.description.toLowerCase().includes(this.search.toLowerCase())))
   }
 
-  dragstart() {
+  mounted() {
+    this.onResize();
+  }
 
+  append(item: WidgetTemplate) {
+
+  }
+
+  dragstart(item: WidgetTemplate, ev: DragEvent) {
+    console.log("drag start", item, ev);
+    this.hovered = true;
+    ev.dataTransfer!.setDragImage(this.$refs.dragover as Element, ev.offsetX, ev.offsetY);
+  }
+
+  dragEnter(ev: DragEvent) {
+    console.log("drag enter", ev);
+  }
+
+  dragOver(ev: DragEvent) {
+    console.log("drag over", ev);
+  }
+
+  drop(ev: DragEvent) {
+    console.log("drop", ev);
+    this.hovered = false;
   }
 
   dragend() {
 
   }
+
+  widgetPosition(item: Widget){
+    return {
+      top: '0%',
+      left: '0%',
+      width: '0%',
+      height: '0%'
+    }
+  }
+
+  onResize() {
+    this.backgroundSize = Math.floor((this.$el.clientWidth - this.drawerWidth) / this.columns);
+    this.backgroundPosition = - Math.floor(this.backgroundSize / 2);
+  }
+
+  @Watch("columns")
+  onColumnsChanged = this.onResize;
 }
 
 interface WidgetTemplate {
@@ -131,8 +229,10 @@ interface WidgetTemplate {
   label: string,
   description: string,
   icon: string,
-  width: number,
-  height: number,
+  minWidth: number,
+  maxWidth: number
+  minHeight: number,
+  maxHeight: number
 }
 
 interface Widget {

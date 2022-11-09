@@ -589,3 +589,11 @@ textarea {
   outline: 0;
   caret-color: #444;
 }
+
+
+.d-dashboard-grid {
+  background: white;
+  background-image: radial-gradient(black 1px, transparent 0);
+  background-size: 40px 40px;
+  background-position: -19px -19px;
+}
