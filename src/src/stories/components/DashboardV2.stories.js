@@ -58,11 +58,11 @@ const Template = (args, {argTypes}) => ({
         >
 
         <template #widget="{ item, configure, remove }">
-            <d-btn @click="configure">Configure</d-btn>
+            <d-btn v-if="editable" @click="configure">Configure</d-btn>
             {{ item.meta.label }}
         </template>
 
-        <template #widget-dragover="{templateId}">
+        <template #widget-template-dragover="{templateId}">
             {{ templateId }}
         </template>
 

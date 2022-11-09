@@ -1,5 +1,5 @@
 <template>
-  <div style="position: relative;" class="h-100 w-100">
+  <div style="position: relative;" class="h-100 w-100" @dragend="dragend">
 
     <div ref="grid" class="d-dashboard-grid" :class="{ editable }" v-resize="onResize" :style="{
       'background-size': `${backgroundSize}px ${backgroundSize}px`,
@@ -340,6 +340,8 @@ export default class DDashboardV2 extends Vue {
 
   dragend() {
     this.dragging = false;
+    this.movedWidgets.clear();
+    this.draggingOffsetY = 0;
   }
 
   computedMovedWidgets(x: number, y: number, width: number, height: number) {
@@ -389,7 +391,6 @@ export default class DDashboardV2 extends Vue {
   }
 
   computeSortedWidgets() {
-    console.log("Widgets changed");
     this.sortedWidgets = _.sortBy(this.widgets, w => [w.y, w.x]);
 
     let xMax = Math.max(...this.widgets.map(w => w.x + w.width))
