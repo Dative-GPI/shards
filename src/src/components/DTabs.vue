@@ -1,13 +1,7 @@
 <template>
-  <v-tabs
-    class="d-tabs"
-    v-bind="$attrs"
-    v-on="$listeners"
-    active-class="d-tab--active"
-    show-arrows
-    hide-slider
-    @change="$emit('input', $event)"
-  >
+  <v-tabs class="d-tabs" v-bind="$attrs" v-on="$listeners" active-class="d-tab--active"
+    :show-arrows="$attrs.showArrows !== undefined ? $attrs.showArrows : true" hide-slider
+    @change="$emit('input', $event)">
     <slot></slot>
     <template v-for="(index, name) in $slots" v-slot:[name]>
       <slot :name="name" />

@@ -1,3 +1,7 @@
+:root {
+  --v-card-base: #8EB0B950
+}
+
 html {
   font-size: 14px;
 }
@@ -38,7 +42,7 @@ html {
 .d-card {
   padding: 12px;
   position: relative;
-  border: 2px solid #8eb0b950 !important;
+  border: 2px solid var(--v-card-base) !important;
   border-radius: 4px !important;
 }
 
@@ -588,4 +592,28 @@ textarea {
   tab-size: 1;
   outline: 0;
   caret-color: #444;
+}
+
+
+.d-dashboard-grid.editable {
+  background: 
+    conic-gradient(from 90deg at var(--b) var(--b),
+    var(--v-alert-grey-background-base) 90deg,#0000 0) calc(-1*var(--b)) calc(-1*var(--b))/
+      calc(100%/var(--nc)) calc(100%/var(--nr));
+}
+
+.d-dashboard-widget {
+  position: absolute;
+  border: 2px solid var(--v-card-base) !important;
+  background-color: white;
+}
+
+.d-dashboard-placeholder {
+  position: absolute;
+  background-color: var(--v-alert-grey-background-darken2);
+}
+
+.d-dashboard-dragover {
+  position: absolute;
+  background-color: white;
 }
