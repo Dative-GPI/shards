@@ -24,8 +24,8 @@
         <div class="d-dashboard-dragover" ref="dragover" v-show="dragging && draggedType == 'template'" :style="{
           width: `${toPixelSize(dragoverWidth)}px`,
           height: `${toPixelSize(dragoverHeight)}px`,
-          top: `${toPixelPosition(dragoverTop)}px`,
-          left: `${toPixelPosition(dragoverLeft)}px`,
+          top: `${-10000}px`,
+          left: `${-10000}px`,
         }">
           <slot name="widget-template-dragover" v-bind="{ templateId: draggedId }"></slot>
         </div>
@@ -289,8 +289,8 @@ export default class DDashboardV2 extends Vue {
     let x = ev.clientX - rect.left - this.mouseOffsetX;
     let y = ev.clientY - rect.top - this.mouseOffsetY;
 
-    this.dragoverLeft = x;
-    this.dragoverTop = y;
+    // this.dragoverLeft = x;
+    // this.dragoverTop = y;
 
     let xRounded = clamp(Math.round(x / this.backgroundSize), 0, this.realColumns - this.draggedWidth);
     let yRounded = Math.max(Math.round(y / this.backgroundSize), 0);
