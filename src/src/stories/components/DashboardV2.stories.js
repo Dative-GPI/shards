@@ -8,20 +8,24 @@ export default {
 const Template = (args, {argTypes}) => ({
     components: { DashboardV2 },
     props: Object.keys(argTypes),
-    data: () => ({ widgetsClone: [] }),
+    data: () => ({ widgetsClone: [], columnsClone: 10 }),
     watch: {
       widgets(newVal) {
         this.widgetsClone = newVal;
+      },
+      columns(newVal) {
+        this.columnsClone = newVal;
       }
     },
     computed: {
       oProps() {
-        const { value, ...others } = this.$props;
+        const { widgets, columns, ...others } = this.$props;
         return others
       }
     },
     mounted() {
       this.widgetsClone = this.widgets;
+      this.columnsClone = this.columns;
     },
     methods: {
         addWidget({templateId, x, y}){
@@ -51,7 +55,8 @@ const Template = (args, {argTypes}) => ({
       `<d-dashboard-v2
         :widget-templates="widgetTemplates"
         :widgets="widgetsClone" 
-        v-bind="oProps" 
+        :columns.sync="columnsClone"
+        v-bind="oProps"
         @add="addWidget"
         @update="updateWidget"
         style="height: 90vh"
@@ -68,6 +73,8 @@ const Template = (args, {argTypes}) => ({
 
         <template #configuration="{ widgetId }">
             <d-text-field class="mt-5" v-if="getWidget(widgetId)" label="configuration" v-model="getWidget(widgetId).meta.label" />
+            <d-text-field type="number" min="1" :max="columnsClone" class="mt-5" v-if="getWidget(widgetId)" label="width" v-model.number="getWidget(widgetId).width" />
+            <d-text-field type="number" min="1" :max="columnsClone" class="mt-5" v-if="getWidget(widgetId)" label="height" v-model.number="getWidget(widgetId).height" />
         </template>
       
       </d-dashboard-v2>`,
@@ -76,6 +83,7 @@ const Template = (args, {argTypes}) => ({
 export const Default = Template.bind({});
 Default.args = {
     editable: true,
+    columns: 10,
     widgetTemplates: [
         {
             id: "wt1",

@@ -110,12 +110,12 @@ function clamp(x: number, a: number, b: number) {
   return Math.max(a, Math.min(x, b))
 }
 
-function createMatrix(m: number, n: number) {
+function createMatrix(m: number, n: number) : (Widget|null)[][] {
   let matrix = []
   for (let i = 0; i < m; i++) {
     let tmp = []
     for (let j = 0; j < n; j++) {
-      tmp.push(false);
+      tmp.push(null);
     }
     matrix.push(tmp);
   }
@@ -145,6 +145,9 @@ export default class DDashboardV2 extends Vue {
   @Prop({ required: false, default: 3 })
   minColumnStep!: number;
 
+  @Prop({required: false, default: 140})
+  minColumnSize!: number;
+
   @Prop({ required: false, default: -1 })
   maxColumns!: number;
 
@@ -159,6 +162,9 @@ export default class DDashboardV2 extends Vue {
 
   @Prop({ required: false, default: 16 })
   spacing!: number;
+
+  @Prop({required: false, default: 6})
+  minRows!: number;
 
   backgroundSize = 0;
   backgroundPosition = 0;
@@ -190,24 +196,11 @@ export default class DDashboardV2 extends Vue {
   sortedWidgets: Widget[] = []
 
   configuredWidget: string | null = null
-
-  call = 0
+  computedColumns = 0;
 
   get realColumns(){
     if(this.autoColumn){
-      if(this.$vuetify.breakpoint.smAndDown){
-        return this.minColumns;
-      }
-      else if(this.$vuetify.breakpoint.mdAndDown){
-        return this.minColumns + this.minColumnStep;
-      }
-      else if(this.$vuetify.breakpoint.lgAndDown){
-        return this.minColumns + this.minColumnStep * 2
-      }
-      else if(this.$vuetify.breakpoint.xl){
-        return this.minColumns + this.minColumnStep * 3
-        // Romain
-      }
+      return this.computedColumns;
     }
     return this.columns;
   }
@@ -226,12 +219,12 @@ export default class DDashboardV2 extends Vue {
   }
 
   get height() {
-    return Math.max(...this.widgets.map(w => w.y + w.height)) + (this.editable ? 3 : 0)
+    return Math.max(Math.max(...this.widgets.map(w => w.y + w.height))+ (this.editable ? 3 : 0), this.minRows)
   }
 
   mounted() {
     this.onResize();
-    this.computeSortedWidgets();
+    this.loadWidgets();
   }
 
   append(item: WidgetTemplate) {
@@ -302,7 +295,7 @@ export default class DDashboardV2 extends Vue {
     let xRounded = clamp(Math.round(x / this.backgroundSize), 0, this.realColumns - this.draggedWidth);
     let yRounded = Math.max(Math.round(y / this.backgroundSize), 0);
 
-    this.computedMovedWidgets(xRounded, yRounded, this.dragoverWidth, this.dragoverHeight);
+    this.computeMovedWidgetsThrottled(xRounded, yRounded, this.dragoverWidth, this.dragoverHeight, this.draggedId);
 
     this.placeholderTop = yRounded;
     this.placeholderLeft = xRounded;
@@ -316,7 +309,7 @@ export default class DDashboardV2 extends Vue {
     let xRounded = clamp(Math.round(x / this.backgroundSize), 0, this.realColumns - this.draggedWidth);
     let yRounded = Math.max(Math.round(y / this.backgroundSize), 0);
 
-    this.computedMovedWidgets(xRounded, yRounded, this.dragoverWidth, this.dragoverHeight);
+    this.computeMovedWidgets(xRounded, yRounded, this.dragoverWidth, this.dragoverHeight, this.draggedId);
 
     for (let widget of this.notDraggedWidgets) {
       if (this.movedWidgets.has(widget.id)) {
@@ -344,7 +337,7 @@ export default class DDashboardV2 extends Vue {
     this.draggingOffsetY = 0;
   }
 
-  computedMovedWidgets(x: number, y: number, width: number, height: number) {
+  computeMovedWidgets(x: number, y: number, width: number, height: number, ignoreWidgetId: string) {
     this.movedWidgets.clear();
     this.draggingOffsetY = 0;
 
@@ -353,7 +346,7 @@ export default class DDashboardV2 extends Vue {
     let touched = false;
 
     for (let widget of this.sortedWidgets) {
-      if (widget.id == this.draggedId) continue;
+      if (widget.id == ignoreWidgetId) continue;
 
       if (widget.y <= y + height) {
         touched = true;
@@ -366,6 +359,8 @@ export default class DDashboardV2 extends Vue {
       }
     }
   }
+
+  computeMovedWidgetsThrottled = _.throttle(this.computeMovedWidgets, 100);
 
   widgetPosition(item: Widget) {
     if (this.dragging && this.movedWidgets.has(item.id))
@@ -385,12 +380,23 @@ export default class DDashboardV2 extends Vue {
   }
 
   onResize() {
+    this.computeColumns();
+
     this.backgroundSize = Math.floor((this.$el.clientWidth - (this.editable ? this.drawerWidth : 0)) / this.realColumns);
     this.backgroundPosition = - Math.floor(this.backgroundSize / 2);
     this.cellSize = this.backgroundSize - this.spacing
   }
 
-  computeSortedWidgets() {
+  computeColumns(){
+    if(this.autoColumn){
+      let nbSizecolumns = Math.max(this.minColumns, Math.floor(this.$el.clientWidth / this.minColumnSize));
+      let nbStepColumns = Math.round(nbSizecolumns / this.minColumnStep) * this.minColumnStep;
+      this.computedColumns = this.maxColumns == -1 ? nbStepColumns : Math.min(this.maxColumns, nbStepColumns);
+      this.$emit("update:columns", this.realColumns);
+    } 
+  }
+
+  loadWidgets() {
     this.sortedWidgets = _.sortBy(this.widgets, w => [w.y, w.x]);
 
     let xMax = Math.max(...this.widgets.map(w => w.x + w.width))
@@ -409,22 +415,22 @@ export default class DDashboardV2 extends Vue {
       for (let i = widget.x; i < widget.x + widget.width; i++) {
         for (let j = widget.y; j < widget.y + widget.height; j++) {
           // pour chaque widget on vient remplir la map avec des true là où le widget prend de la place
-          if (map[i][j]) {
+          let above = map[i][j];
+          if (above) {
             // si il y a chevauchement, on calcule le décalage de tous les autres widgets vers le bas et on notifie le parent
-            this.computedMovedWidgets(widget.x, widget.y, widget.width, widget.height);
+            this.computeMovedWidgets(above.x, above.y, above.width, above.height, above.id);
 
-            for (let movedWidget of this.widgets) {
-              if (movedWidget.id != widget.id && this.movedWidgets.has(movedWidget.id)) {
+            for (let movedWidget of this.sortedWidgets) {
+              if (movedWidget.id != above.id && this.movedWidgets.has(movedWidget.id)) {
                 this.$emit("update", { widgetId: movedWidget.id, x: movedWidget.x, y: movedWidget.y + this.draggingOffsetY })
               }
             }
 
-            this.call++;
-            // on return puisque les widgets seront mis à jour et donc cette méthode redéclenchée
+            // on return puisque les widgets seront mis à jour et donc cette méthode redéclenchée pour corriger la suite
             return;
           }
           else {
-            map[i][j] = true;
+            map[i][j] = widget;
           }
         }
       }
@@ -460,18 +466,20 @@ export default class DDashboardV2 extends Vue {
   configure(item: Widget) {
     this.configuredWidget = item.id;
     this.tabs = 2;
+    this.$emit("configure", item.id);
   }
 
   @Watch("realColumns")
   @Watch("spacing")
   @Watch("editable")
+  @Watch("autoColumn")
   onGridChanged = this.onResize;
 
   @Watch("realColumns")
   onColumnsChanged = this.computeLayout;
 
   @Watch("widgets", { deep: true })
-  onWidgetsChanged = this.computeSortedWidgets
+  onWidgetsChanged = this.loadWidgets
 }
 
 interface WidgetTemplate {
