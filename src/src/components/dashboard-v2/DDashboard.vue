@@ -40,7 +40,7 @@
     </div>
 
 
-    <v-navigation-drawer v-if="editable" :value="true" right stateless absolute hide-overlay :width="drawerWidth">
+    <v-navigation-drawer v-if="editable" :value="true" right stateless fixed hide-overlay :width="drawerWidth">
       <div class="ma-1">
         <d-tabs v-model="tabs" :fixed-tabs="true" height="50" :showArrows="false">
           <d-tab :key="0">
