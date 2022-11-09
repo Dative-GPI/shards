@@ -596,23 +596,24 @@ textarea {
 
 
 .d-dashboard-grid.editable {
-  background: white;
-  background-image: radial-gradient(black 1px, transparent 0);
-  background-size: 40px 40px;
-  background-position: -19px -19px;
+  background: 
+    conic-gradient(from 90deg at var(--b) var(--b),
+    var(--v-alert-grey-background-base) 90deg,#0000 0) calc(-1*var(--b)) calc(-1*var(--b))/
+      calc(100%/var(--nc)) calc(100%/var(--nr));
 }
 
 .d-dashboard-widget {
   position: absolute;
   border: 2px solid var(--v-card-base) !important;
+  background-color: white;
 }
 
 .d-dashboard-placeholder {
   position: absolute;
-  background-color: #444;
+  background-color: var(--v-alert-grey-background-darken2);
 }
 
 .d-dashboard-dragover {
-  z-index: 1;
+  position: absolute;
   background-color: white;
 }

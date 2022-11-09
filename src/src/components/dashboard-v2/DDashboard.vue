@@ -1,10 +1,13 @@
 <template>
-  <div style="position: relative;">
+  <div style="position: relative;" class="h-100 w-100">
 
-    <div ref="grid" class="d-dashboard-grid" :class="{ editable }" style="height: 100%" v-resize="onResize" :style="{
+    <div ref="grid" class="d-dashboard-grid" :class="{ editable }" v-resize="onResize" :style="{
       'background-size': `${backgroundSize}px ${backgroundSize}px`,
-      'background-position': `-${backgroundSize / 2}px -${backgroundSize / 2}px`,
-      width: `calc(100% - ${drawerWidth}px)`
+      width: `${backgroundSize * realColumns}px `,
+      height: `${toPixelPosition(height)}px`,
+      '--nr': height,
+      '--nc': realColumns,
+      '--b': `${spacing}px` 
     }" @dragover.prevent="dragOver" @drop.stop="drop">
 
       <template v-if="editable">
@@ -18,22 +21,26 @@
 
         </div>
 
-        <div class="d-dashboard-dragover" ref="dragover" v-show="dragging" :style="{
+        <div class="d-dashboard-dragover" ref="dragover" v-show="dragging && draggedType == 'template'" :style="{
           width: `${toPixelSize(dragoverWidth)}px`,
-          height: `${toPixelSize(dragoverHeight)}px`
+          height: `${toPixelSize(dragoverHeight)}px`,
+          top: `${toPixelPosition(dragoverTop)}px`,
+          left: `${toPixelPosition(dragoverLeft)}px`,
         }">
           <slot name="widget-template-dragover" v-bind="{ templateId: draggedId }"></slot>
         </div>
       </template>
 
+
       <div class="d-dashboard-widget" v-for="widget in widgets" :class="{ hidden: dragging && widget.id == draggedId }"
-        :key="widget.id" draggable="true" @dragstart="dragstartWidget(widget, $event)" :style="widgetPosition(widget)">
+        :key="widget.id" :draggable="editable" @dragstart="dragstartWidget(widget, $event)"
+        :style="widgetPosition(widget)">
         <slot name="widget" v-bind="{ item: widget, configure: () => configure(widget) }" />
       </div>
     </div>
 
 
-    <v-navigation-drawer :value="true" right stateless absolute hide-overlay :width="drawerWidth">
+    <v-navigation-drawer v-if="editable" :value="true" right stateless absolute hide-overlay :width="drawerWidth">
       <div class="ma-1">
         <d-tabs v-model="tabs" :fixed-tabs="true" height="50" :showArrows="false">
           <d-tab :key="0">
@@ -61,7 +68,7 @@
 
         <d-tabs-items :value="tabs" class="ma-4">
           <d-tab-item :value="0">
-            <slot name="tab-dashboard-properties">
+            <slot name="tab-dashboard-properties" v-bind="{ computeLayout }">
               <d-btn @click="computeLayout">Compute Layout</d-btn>
             </slot>
           </d-tab-item>
@@ -69,7 +76,7 @@
             <slot name="tab-widget-templates">
               <d-search-input v-model="search" />
               <v-list two-line>
-                <v-list-item v-for="item in filtredWidgetTemplates" :key="item.id" draggable="true"
+                <v-list-item v-for="item in filtredWidgetTemplates" :key="item.id" :draggable="editable"
                   @dragstart="dragstartTemplate(item, $event)" @dragend="dragend" @click="append(item)">
                   <slot name="widget-template"
                     v-bind="{ item, dragstart: ev => dragstartTemplate(item, ev), append: () => append(item) }">
@@ -103,13 +110,11 @@ function clamp(x: number, a: number, b: number) {
   return Math.max(a, Math.min(x, b))
 }
 
-function createMatrix(m: number, n:number){
+function createMatrix(m: number, n: number) {
   let matrix = []
-  for(let i = 0; i < m; i++)
-  {
+  for (let i = 0; i < m; i++) {
     let tmp = []
-    for(let j = 0; j < n; j++)
-    {
+    for (let j = 0; j < n; j++) {
       tmp.push(false);
     }
     matrix.push(tmp);
@@ -127,9 +132,21 @@ export default class DDashboardV2 extends Vue {
 
   @Prop({ required: false, default: false })
   editable!: boolean;
+  
+  @Prop({ required: false, default: false, type: Boolean })
+  autoColumn!: boolean;
 
   @Prop({ required: false, default: 6 })
   columns!: number;
+
+  @Prop({ required: false, default: 3 })
+  minColumns!: number;
+
+  @Prop({ required: false, default: 3 })
+  minColumnStep!: number;
+
+  @Prop({ required: false, default: -1 })
+  maxColumns!: number;
 
   @Prop({ required: false, default: () => [] })
   widgetTemplates!: WidgetTemplate[];
@@ -176,6 +193,24 @@ export default class DDashboardV2 extends Vue {
 
   call = 0
 
+  get realColumns(){
+    if(this.autoColumn){
+      if(this.$vuetify.breakpoint.smAndDown){
+        return this.minColumns;
+      }
+      else if(this.$vuetify.breakpoint.mdAndDown){
+        return this.minColumns + this.minColumnStep;
+      }
+      else if(this.$vuetify.breakpoint.lgAndDown){
+        return this.minColumns + this.minColumnStep * 2
+      }
+      else if(this.$vuetify.breakpoint.xl){
+        return this.minColumns + this.minColumnStep * 3
+        // Romain
+      }
+    }
+    return this.columns;
+  }
 
   get filtredWidgetTemplates() {
     if (!this.search) return this.widgetTemplates;
@@ -190,6 +225,10 @@ export default class DDashboardV2 extends Vue {
     return this.widgets;
   }
 
+  get height() {
+    return Math.max(...this.widgets.map(w => w.y + w.height)) + (this.editable ? 3 : 0)
+  }
+
   mounted() {
     this.onResize();
     this.computeSortedWidgets();
@@ -201,7 +240,7 @@ export default class DDashboardV2 extends Vue {
   }
 
   toPixelPosition(position: number) {
-    return position * (this.cellSize + this.spacing) + this.spacing / 2;
+    return position * (this.cellSize + this.spacing);
   }
 
   toPixelSize(size: number) {
@@ -209,22 +248,22 @@ export default class DDashboardV2 extends Vue {
   }
 
   dragstartWidget(item: Widget, ev: DragEvent) {
-    
+
     this.draggedType = "widget";
     this.draggedWidth = item.width;
     this.draggedHeight = item.height;
-    
+
     this.dragoverWidth = item.width;
     this.dragoverHeight = item.height;
-    
+
     this.placeholderTop = item.y;
     this.placeholderLeft = item.x;
     this.placeholderWidth = item.width;
     this.placeholderHeight = item.height;
-    
+
     this.mouseOffsetX = Math.min(ev.offsetX, this.toPixelSize(this.dragoverWidth));
     this.mouseOffsetY = Math.min(ev.offsetY, this.toPixelSize(this.dragoverHeight));
-    
+
     setTimeout(() => {
       this.dragging = true;
       this.draggedId = item.id;
@@ -257,7 +296,10 @@ export default class DDashboardV2 extends Vue {
     let x = ev.clientX - rect.left - this.mouseOffsetX;
     let y = ev.clientY - rect.top - this.mouseOffsetY;
 
-    let xRounded = clamp(Math.round(x / this.backgroundSize), 0, this.columns - this.draggedWidth);
+    this.dragoverLeft = x;
+    this.dragoverTop = y;
+
+    let xRounded = clamp(Math.round(x / this.backgroundSize), 0, this.realColumns - this.draggedWidth);
     let yRounded = Math.max(Math.round(y / this.backgroundSize), 0);
 
     this.computedMovedWidgets(xRounded, yRounded, this.dragoverWidth, this.dragoverHeight);
@@ -271,7 +313,7 @@ export default class DDashboardV2 extends Vue {
     let x = ev.clientX - rect.left - this.mouseOffsetX;
     let y = ev.clientY - rect.top - this.mouseOffsetY;
 
-    let xRounded = clamp(Math.round(x / this.backgroundSize), 0, this.columns - this.draggedWidth);
+    let xRounded = clamp(Math.round(x / this.backgroundSize), 0, this.realColumns - this.draggedWidth);
     let yRounded = Math.max(Math.round(y / this.backgroundSize), 0);
 
     this.computedMovedWidgets(xRounded, yRounded, this.dragoverWidth, this.dragoverHeight);
@@ -309,9 +351,9 @@ export default class DDashboardV2 extends Vue {
     let touched = false;
 
     for (let widget of this.sortedWidgets) {
-      if(widget.id == this.draggedId) continue;
-      
-      if(widget.y <= y + height) {
+      if (widget.id == this.draggedId) continue;
+
+      if (widget.y <= y + height) {
         touched = true;
       }
       if (touched && widget.y + widget.height > y && (widget.x < actualXmax && widget.x + widget.width > actualXmin)) {
@@ -341,19 +383,19 @@ export default class DDashboardV2 extends Vue {
   }
 
   onResize() {
-    this.backgroundSize = Math.floor((this.$el.clientWidth - this.drawerWidth) / this.columns);
+    this.backgroundSize = Math.floor((this.$el.clientWidth - (this.editable ? this.drawerWidth : 0)) / this.realColumns);
     this.backgroundPosition = - Math.floor(this.backgroundSize / 2);
     this.cellSize = this.backgroundSize - this.spacing
   }
 
-  computeSortedWidgets(){
+  computeSortedWidgets() {
     console.log("Widgets changed");
     this.sortedWidgets = _.sortBy(this.widgets, w => [w.y, w.x]);
 
     let xMax = Math.max(...this.widgets.map(w => w.x + w.width))
     let yMax = Math.max(...this.widgets.map(w => w.y + w.height))
 
-    if(xMax > this.columns){
+    if (xMax > this.realColumns) {
       this.computeLayout();
       return;
     }
@@ -362,11 +404,11 @@ export default class DDashboardV2 extends Vue {
 
     let map = createMatrix(xMax, yMax);
 
-    for(let widget of this.sortedWidgets){
-      for(let i = widget.x; i < widget.x + widget.width; i++){
-        for(let j = widget.y; j < widget.y + widget.height; j++){
+    for (let widget of this.sortedWidgets) {
+      for (let i = widget.x; i < widget.x + widget.width; i++) {
+        for (let j = widget.y; j < widget.y + widget.height; j++) {
           // pour chaque widget on vient remplir la map avec des true là où le widget prend de la place
-          if(map[i][j]){
+          if (map[i][j]) {
             // si il y a chevauchement, on calcule le décalage de tous les autres widgets vers le bas et on notifie le parent
             this.computedMovedWidgets(widget.x, widget.y, widget.width, widget.height);
 
@@ -400,7 +442,7 @@ export default class DDashboardV2 extends Vue {
       x = offsetX;
       y = offsetY;
 
-      if (x + widget.width > this.columns) {
+      if (x + widget.width > this.realColumns) {
         x = 0;
         y = yMax
         offsetY = yMax
@@ -419,46 +461,32 @@ export default class DDashboardV2 extends Vue {
     this.tabs = 2;
   }
 
-  @Watch("columns")
+  @Watch("realColumns")
   @Watch("spacing")
+  @Watch("editable")
   onGridChanged = this.onResize;
 
-  @Watch("columns")
+  @Watch("realColumns")
   onColumnsChanged = this.computeLayout;
 
-  @Watch("widgets", {deep: true})
+  @Watch("widgets", { deep: true })
   onWidgetsChanged = this.computeSortedWidgets
-}
-
-type WidgetPosition = {
-  [id: string]: {
-    x: number,
-    y: number
-  }
 }
 
 interface WidgetTemplate {
   id: string,
-  code: string,
   label: string,
   description: string,
   icon: string,
-  minWidth: number,
-  maxWidth: number
   defaultWidth: number;
   defaultHeight: number;
-  minHeight: number,
-  maxHeight: number
 }
 
 interface Widget {
   id: string;
-  templateId: string
-  code: string;
   width: number;
   height: number;
   x: number;
   y: number;
-  meta: { [key: string]: string };
 }
 </script>
