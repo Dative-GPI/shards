@@ -1,3 +1,7 @@
+:root {
+  --v-card-base: #8EB0B950
+}
+
 html {
   font-size: 14px;
 }
@@ -38,7 +42,7 @@ html {
 .d-card {
   padding: 12px;
   position: relative;
-  border: 2px solid #8eb0b950 !important;
+  border: 2px solid var(--v-card-base) !important;
   border-radius: 4px !important;
 }
 
@@ -591,9 +595,24 @@ textarea {
 }
 
 
-.d-dashboard-grid {
+.d-dashboard-grid.editable {
   background: white;
   background-image: radial-gradient(black 1px, transparent 0);
   background-size: 40px 40px;
   background-position: -19px -19px;
+}
+
+.d-dashboard-widget {
+  position: absolute;
+  border: 2px solid var(--v-card-base) !important;
+}
+
+.d-dashboard-placeholder {
+  position: absolute;
+  background-color: #444;
+}
+
+.d-dashboard-dragover {
+  z-index: 1;
+  background-color: white;
 }

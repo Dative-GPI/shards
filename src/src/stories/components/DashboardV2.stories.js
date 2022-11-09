@@ -8,10 +8,10 @@ export default {
 const Template = (args, {argTypes}) => ({
     components: { DashboardV2 },
     props: Object.keys(argTypes),
-    data: () => ({ valueClone: [] }),
+    data: () => ({ widgetsClone: [] }),
     watch: {
-      value(newVal) {
-        this.valueClone = newVal;
+      widgets(newVal) {
+        this.widgetsClone = newVal;
       }
     },
     computed: {
@@ -21,22 +21,53 @@ const Template = (args, {argTypes}) => ({
       }
     },
     mounted() {
-      this.valueClone = this.value;
+      this.widgetsClone = this.widgets;
+    },
+    methods: {
+        addWidget({templateId, x, y}){
+            let template = this.widgetTemplates.find(t => t.id == templateId)
+            this.widgetsClone.push({
+                id: "w" + Math.random(100000),
+                templateId: templateId,
+                x,
+                y,
+                width: template.defaultWidth,
+                height: template.defaultHeight,
+                meta: {
+                    label: template.label
+                }
+            });
+        },
+        updateWidget({widgetId, x, y}){
+            let widget = this.widgetsClone.find(w => w.id == widgetId);
+            widget.x = x;
+            widget.y = y;
+        },
+        getWidget(id){
+            return this.widgetsClone.find(w => w.id == id);
+        }
     },
     template:
       `<d-dashboard-v2
         :widget-templates="widgetTemplates"
-        v-model="valueClone" 
+        :widgets="widgetsClone" 
         v-bind="oProps" 
+        @add="addWidget"
+        @update="updateWidget"
         style="height: 90vh"
         >
 
         <template #widget="{ item, configure, remove }">
+            <d-btn @click="configure">Configure</d-btn>
             {{ item.meta.label }}
         </template>
 
-        <template #widget-configure="{ item }">
-            <d-text-field label="configuration" v-model="item.meta.label" />
+        <template #widget-dragover="{templateId}">
+            {{ templateId }}
+        </template>
+
+        <template #configuration="{ widgetId }">
+            <d-text-field class="mt-5" v-if="getWidget(widgetId)" label="configuration" v-model="getWidget(widgetId).meta.label" />
         </template>
       
       </d-dashboard-v2>`,
@@ -52,27 +83,27 @@ Default.args = {
             label: "Tata",
             description: "Clablsqlqsd lqqsd lqdkqd kqcx kq kqsdj",
             icon: "mdi-wifi",
-            width: 2,
-            height: 2,
+            defaultWidth: 3,
+            defaultHeight: 2,
         },
         {
             id: "wt2",
             code: "toto",
             label: "Toto",
             icon: "mdi-wifi",
-            width: 2,
-            height: 2,
+            defaultWidth: 2,
+            defaultHeight: 3,
         },
         {
             id: "wt3",
             code: "titi",
             label: "Titi",
             icon: "mdi-wifi",
-            width: 2,
-            height: 2,
+            defaultWidth: 5,
+            defaultHeight: 2,
         }
     ],
-    value: [
+    widgets: [
         {
             id: "w1",
             templateId: "wt1",
