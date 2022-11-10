@@ -33,8 +33,9 @@
 
 
       <div class="d-dashboard-widget" v-for="widget in widgets"
-        :class="{ hidden: dragging && widget.id == draggedId && draggedType == 'widget', active: widget.id == configuredWidget }" :key="widget.id"
-        :draggable="editable" @dragstart="dragstartWidget(widget, $event)" :style="widgetPosition(widget)">
+        :class="{ hidden: dragging && widget.id == draggedId && draggedType == 'widget', active: widget.id == configuredWidget }"
+        :key="widget.id" :draggable="editable" @dragstart="dragstartWidget(widget, $event)"
+        :style="widgetPosition(widget)">
         <slot name="widget" v-bind="{ item: widget, configure: () => configure(widget) }" />
       </div>
     </div>
@@ -157,6 +158,9 @@ export default class DDashboardV2 extends Vue {
   @Prop({ required: false, default: () => [] })
   widgets!: Widget[];
 
+  @Prop({ required: false, default: () => null })
+  configuredWidget!: string | null
+
   @Prop({ required: false, default: 500 })
   drawerWidth!: number;
 
@@ -195,7 +199,6 @@ export default class DDashboardV2 extends Vue {
 
   sortedWidgets: Widget[] = []
 
-  configuredWidget: string | null = null
   computedColumns = 0;
 
   get realColumns() {
@@ -462,9 +465,7 @@ export default class DDashboardV2 extends Vue {
 
 
   configure(item: Widget) {
-    this.configuredWidget = item.id;
-    this.tabs = 2;
-    this.$emit("configure", item.id);
+    this.$emit("update:configured-widget", item.id);
   }
 
   @Watch("realColumns")
@@ -478,6 +479,11 @@ export default class DDashboardV2 extends Vue {
 
   @Watch("widgets", { deep: true })
   onWidgetsChanged = this.loadWidgets
+
+  @Watch("configuredWidget")
+  onConfiguredWidgetChanged(){
+    this.tabs = 2;
+  }
 }
 
 interface WidgetTemplate {
