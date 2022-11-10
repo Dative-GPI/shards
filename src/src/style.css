@@ -604,7 +604,6 @@ textarea {
 
 .d-dashboard-widget {
   position: absolute;
-  border: 2px solid var(--v-card-base) !important;
   background-color: white;
 }
 
@@ -616,4 +615,8 @@ textarea {
 .d-dashboard-dragover {
   position: absolute;
   background-color: white;
+}
+
+.d-card-border {
+  border: 2px solid var(--v-card-base);
 }

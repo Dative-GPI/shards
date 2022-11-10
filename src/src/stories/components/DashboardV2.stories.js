@@ -63,8 +63,10 @@ const Template = (args, {argTypes}) => ({
         >
 
         <template #widget="{ item, configure, remove }">
-            <d-btn v-if="editable" @click="configure">Configure</d-btn>
-            {{ item.meta.label }}
+            <div class="h-100 w-100" :class="{'d-card-border': item.meta.border}">
+                <d-btn v-if="editable" @click="configure">Configure</d-btn>
+                {{ item.meta.label }}
+            </div>
         </template>
 
         <template #widget-template-dragover="{templateId}">
@@ -120,7 +122,8 @@ Default.args = {
             width: 3,
             height: 2,
             meta: {
-                label: "Coucou"
+                label: "Coucou",
+                border: true
             }
         },
         {
@@ -131,7 +134,8 @@ Default.args = {
             width: 3,
             height: 2,
             meta: {
-                label: "Coucou2"
+                label: "Coucou2",
+                border: false
             }
         },
         {
@@ -142,7 +146,8 @@ Default.args = {
             width: 3,
             height: 2,
             meta: {
-                label: "Coucou3"
+                label: "Coucou3",
+                border: true
             }
         },
         {
@@ -153,7 +158,8 @@ Default.args = {
             width: 3,
             height: 2,
             meta: {
-                label: "Coucou3"
+                label: "Coucou3",
+                border: true
             }
         }
     ]

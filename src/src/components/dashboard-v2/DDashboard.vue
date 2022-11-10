@@ -188,7 +188,7 @@ export default class DDashboardV2 extends Vue {
 
   draggingOffsetY = 0;
   draggingOffsetYmin = 0;
-  movedWidgets: Set<string> = new Set<string>();
+  movedWidgets: string[] = [];
 
   mouseOffsetX = 0;
   mouseOffsetY = 0;
@@ -312,7 +312,7 @@ export default class DDashboardV2 extends Vue {
     this.computeMovedWidgets(xRounded, yRounded, this.dragoverWidth, this.dragoverHeight, this.draggedId);
 
     for (let widget of this.notDraggedWidgets) {
-      if (this.movedWidgets.has(widget.id)) {
+      if (this.movedWidgets.includes(widget.id)) {
         this.$emit("update", { widgetId: widget.id, x: widget.x, y: widget.y + this.draggingOffsetY })
       }
     }
@@ -333,12 +333,12 @@ export default class DDashboardV2 extends Vue {
 
   dragend() {
     this.dragging = false;
-    this.movedWidgets.clear();
+    this.movedWidgets = [];
     this.draggingOffsetY = 0;
   }
 
   computeMovedWidgets(x: number, y: number, width: number, height: number, ignoreWidgetId: string) {
-    this.movedWidgets.clear();
+    let tmp: string[] = []
     this.draggingOffsetY = 0;
 
     let actualXmin = x;
@@ -355,15 +355,16 @@ export default class DDashboardV2 extends Vue {
         actualXmin = Math.min(actualXmin, widget.x)
         actualXmax = Math.max(actualXmax, widget.x + widget.width)
         this.draggingOffsetY = Math.max(this.draggingOffsetY, (y - widget.y) + height)
-        this.movedWidgets.add(widget.id);
+        tmp.push(widget.id);
       }
     }
+    this.movedWidgets = tmp;
   }
 
   computeMovedWidgetsThrottled = _.throttle(this.computeMovedWidgets, 100);
 
   widgetPosition(item: Widget) {
-    if (this.dragging && this.movedWidgets.has(item.id))
+    if (this.dragging && this.movedWidgets.includes(item.id))
       return {
         top: this.toPixelPosition(item.y + this.draggingOffsetY) + 'px',
         left: this.toPixelPosition(item.x) + 'px',
@@ -421,7 +422,7 @@ export default class DDashboardV2 extends Vue {
             this.computeMovedWidgets(above.x, above.y, above.width, above.height, above.id);
 
             for (let movedWidget of this.sortedWidgets) {
-              if (movedWidget.id != above.id && this.movedWidgets.has(movedWidget.id)) {
+              if (movedWidget.id != above.id && this.movedWidgets.includes(movedWidget.id)) {
                 this.$emit("update", { widgetId: movedWidget.id, x: movedWidget.x, y: movedWidget.y + this.draggingOffsetY })
               }
             }
