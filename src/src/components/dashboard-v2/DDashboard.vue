@@ -7,7 +7,7 @@
       height: `${toPixelPosition(height)}px`,
       '--nr': height,
       '--nc': realColumns,
-      '--b': `${spacing}px` 
+      '--b': `${spacing}px`
     }" @dragover.prevent="dragOver" @drop.stop="drop">
 
       <template v-if="editable">
@@ -32,9 +32,9 @@
       </template>
 
 
-      <div class="d-dashboard-widget" v-for="widget in widgets" :class="{ hidden: dragging && widget.id == draggedId }"
-        :key="widget.id" :draggable="editable" @dragstart="dragstartWidget(widget, $event)"
-        :style="widgetPosition(widget)">
+      <div class="d-dashboard-widget" v-for="widget in widgets"
+        :class="{ hidden: dragging && widget.id == draggedId && draggedType == 'widget', active: widget.id == configuredWidget }" :key="widget.id"
+        :draggable="editable" @dragstart="dragstartWidget(widget, $event)" :style="widgetPosition(widget)">
         <slot name="widget" v-bind="{ item: widget, configure: () => configure(widget) }" />
       </div>
     </div>
@@ -110,7 +110,7 @@ function clamp(x: number, a: number, b: number) {
   return Math.max(a, Math.min(x, b))
 }
 
-function createMatrix(m: number, n: number) : (Widget|null)[][] {
+function createMatrix(m: number, n: number): (Widget | null)[][] {
   let matrix = []
   for (let i = 0; i < m; i++) {
     let tmp = []
@@ -132,7 +132,7 @@ export default class DDashboardV2 extends Vue {
 
   @Prop({ required: false, default: false })
   editable!: boolean;
-  
+
   @Prop({ required: false, default: false, type: Boolean })
   autoColumn!: boolean;
 
@@ -145,7 +145,7 @@ export default class DDashboardV2 extends Vue {
   @Prop({ required: false, default: 3 })
   minColumnStep!: number;
 
-  @Prop({required: false, default: 140})
+  @Prop({ required: false, default: 140 })
   minColumnSize!: number;
 
   @Prop({ required: false, default: -1 })
@@ -163,7 +163,7 @@ export default class DDashboardV2 extends Vue {
   @Prop({ required: false, default: 16 })
   spacing!: number;
 
-  @Prop({required: false, default: 6})
+  @Prop({ required: false, default: 6 })
   minRows!: number;
 
   backgroundSize = 0;
@@ -198,8 +198,8 @@ export default class DDashboardV2 extends Vue {
   configuredWidget: string | null = null
   computedColumns = 0;
 
-  get realColumns(){
-    if(this.autoColumn){
+  get realColumns() {
+    if (this.autoColumn) {
       return this.computedColumns;
     }
     return this.columns;
@@ -219,7 +219,7 @@ export default class DDashboardV2 extends Vue {
   }
 
   get height() {
-    return Math.max(Math.max(...this.widgets.map(w => w.y + w.height))+ (this.editable ? 3 : 0), this.minRows)
+    return Math.max(Math.max(...this.widgets.map(w => w.y + w.height)) + (this.editable ? 3 : 0), this.minRows)
   }
 
   mounted() {
@@ -241,7 +241,7 @@ export default class DDashboardV2 extends Vue {
   }
 
   dragstartWidget(item: Widget, ev: DragEvent) {
-
+    this.configure(item);
     this.draggedType = "widget";
     this.draggedWidth = item.width;
     this.draggedHeight = item.height;
@@ -288,9 +288,6 @@ export default class DDashboardV2 extends Vue {
     let rect = (this.$refs.grid as HTMLElement).getBoundingClientRect()
     let x = ev.clientX - rect.left - this.mouseOffsetX;
     let y = ev.clientY - rect.top - this.mouseOffsetY;
-
-    // this.dragoverLeft = x;
-    // this.dragoverTop = y;
 
     let xRounded = clamp(Math.round(x / this.backgroundSize), 0, this.realColumns - this.draggedWidth);
     let yRounded = Math.max(Math.round(y / this.backgroundSize), 0);
@@ -388,13 +385,13 @@ export default class DDashboardV2 extends Vue {
     this.cellSize = this.backgroundSize - this.spacing
   }
 
-  computeColumns(){
-    if(this.autoColumn){
+  computeColumns() {
+    if (this.autoColumn) {
       let nbSizecolumns = Math.max(this.minColumns, Math.floor(this.$el.clientWidth / this.minColumnSize));
       let nbStepColumns = Math.round(nbSizecolumns / this.minColumnStep) * this.minColumnStep;
       this.computedColumns = this.maxColumns == -1 ? nbStepColumns : Math.min(this.maxColumns, nbStepColumns);
       this.$emit("update:columns", this.realColumns);
-    } 
+    }
   }
 
   loadWidgets() {
