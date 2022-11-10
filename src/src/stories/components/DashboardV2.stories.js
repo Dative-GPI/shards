@@ -21,6 +21,15 @@ const Template = (args, {argTypes}) => ({
       oProps() {
         const { widgets, columns, configuredWidget, ...others } = this.$props;
         return others
+      },
+      smartWidgets(){
+        return this.widgetsClone.map(w => {
+            let {width, ...others} = w;
+            return {
+                ...others,
+                width: Math.min(width, this.columnsClone)
+            };
+        })
       }
     },
     mounted() {
@@ -55,38 +64,45 @@ const Template = (args, {argTypes}) => ({
         }
     },
     template:
-      `<d-dashboard-v2
-        :widget-templates="widgetTemplates"
-        :widgets="widgetsClone" 
-        :columns.sync="columnsClone"
-        :configured-widget.sync="configuredWidgetClone"
-        v-bind="oProps"
-        @add="addWidget"
-        @update="updateWidget"
-        style="height: 90vh"
-        >
+      `
+      <div>
+        <div style="background-color: whitesmoke; height: 50px; width: 100%; margin-bottom: 10px;">
+        </div>
+        <d-dashboard-v2
+            :widget-templates="widgetTemplates"
+            :widgets="smartWidgets" 
+            :columns.sync="columnsClone"
+            :configured-widget.sync="configuredWidgetClone"
+            v-bind="oProps"
+            @add="addWidget"
+            @update="updateWidget"
+            style="height: max(70vh, 600px); overflow-y: auto; overflow-x: hidden"
+            >
 
-        <template #widget="{ item, configure, remove }">
-            <div class="h-100 w-100" :class="{'d-card-border': item.meta.border}">
-                <d-btn v-if="editable" @click="configure">Configure</d-btn>
-                {{ item.meta.label }}
-            </div>
-        </template>
+            <template #widget="{ item, configure, remove }">
+                <div class="h-100 w-100" :class="{'d-card-border': item.meta.border}">
+                    <d-btn v-if="editable" @click="configure">Configure</d-btn>
+                    {{ item.meta.label }}
+                </div>
+            </template>
 
-        <template #widget-template-dragover="{templateId}">
-            {{ templateId }}
-        </template>
+            <template #widget-template-dragover="{templateId}">
+                {{ templateId }}
+            </template>
 
-        <template #configuration="{ widgetId }">
-            <template  v-if="getWidget(widgetId)">
-                <d-text-field class="mt-5" label="configuration" v-model="getWidget(widgetId).meta.label" />
-                <d-text-field type="number" min="1" :max="columnsClone" class="mt-5" label="width" v-model.number="getWidget(widgetId).width" />
-                <d-text-field type="number" min="1" :max="columnsClone" class="mt-5" label="height" v-model.number="getWidget(widgetId).height" />
-                <d-switch class="mx-1 mt-3" label="border" v-model="getWidget(widgetId).meta.border" />
-            </template
-        </template>
-      
-      </d-dashboard-v2>`,
+            <template #configuration="{ widgetId }">
+                <template  v-if="getWidget(widgetId)">
+                    <d-text-field class="mt-5" label="configuration" v-model="getWidget(widgetId).meta.label" />
+                    <d-text-field type="number" min="1" :max="columnsClone" class="mt-5" label="width" v-model.number="getWidget(widgetId).width" />
+                    <d-text-field type="number" min="1" :max="columnsClone" class="mt-5" label="height" v-model.number="getWidget(widgetId).height" />
+                    <d-switch class="mx-1 mt-3" label="border" v-model="getWidget(widgetId).meta.border" />
+                </template
+            </template>
+        
+        </d-dashboard-v2>
+        <div style="background-color: whitesmoke; height: 50px; width: 100%; margin-top: 10px;">
+        </div>
+    </div>`,
 })
 
 export const Default = Template.bind({});

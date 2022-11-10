@@ -1,49 +1,75 @@
 <template>
-  <div style="position: relative;" class="h-100 w-100" @dragend="dragend">
+  <div class="d-dashboard"
+    @dragend="dragend">
 
-    <div ref="grid" class="d-dashboard-grid" :class="{ editable }" v-resize="onResize" :style="{
-      'background-size': `${backgroundSize}px ${backgroundSize}px`,
-      width: `${backgroundSize * realColumns}px `,
-      height: `${toPixelPosition(height)}px`,
-      '--nr': height,
-      '--nc': realColumns,
-      '--b': `${spacing}px`
-    }" @dragover.prevent="dragOver" @drop.stop="drop">
+    <div class="d-dashboard-grid-container"
+      :class="{ editable }">
+      <div ref="grid"
+        class="d-dashboard-grid"
+        :class="{ editable }"
+        v-resize="onResize"
+        :style="{
+          'background-size': `${backgroundSize}px ${backgroundSize}px`,
+          width: `${backgroundSize * realColumns}px `,
+          height: `${toPixelPosition(height)}px`,
+          '--nr': height,
+          '--nc': realColumns,
+          '--b': `${spacing}px`
+        }"
+        @dragover.prevent="dragOver"
+        @drop.stop="drop">
 
-      <template v-if="editable">
-        <div class="d-dashboard-placeholder" v-show="dragging" :style="{
-          top: `${toPixelPosition(placeholderTop)}px`,
-          left: `${toPixelPosition(placeholderLeft)}px`,
-          width: `${toPixelSize(placeholderWidth)}px`,
-          height: `${toPixelSize(placeholderHeight)}px`
-        }">
-          <slot name="widget-placeholder"></slot>
+        <template v-if="editable">
+          <div class="d-dashboard-placeholder"
+            v-show="dragging"
+            :style="{
+              top: `${toPixelPosition(placeholderTop)}px`,
+              left: `${toPixelPosition(placeholderLeft)}px`,
+              width: `${toPixelSize(placeholderWidth)}px`,
+              height: `${toPixelSize(placeholderHeight)}px`
+            }">
+            <slot name="widget-placeholder"></slot>
 
+          </div>
+
+          <div class="d-dashboard-dragover"
+            ref="dragover"
+            v-show="dragging && draggedType == 'template'"
+            :style="{
+              width: `${toPixelSize(dragoverWidth)}px`,
+              height: `${toPixelSize(dragoverHeight)}px`,
+              top: `${-10000}px`,
+              left: `${-10000}px`,
+            }">
+            <slot name="widget-template-dragover"
+              v-bind="{ templateId: draggedId }"></slot>
+          </div>
+        </template>
+
+
+        <div class="d-dashboard-widget"
+          v-for="widget in widgets"
+          :class="{ hidden: dragging && widget.id == draggedId && draggedType == 'widget', active: widget.id == configuredWidget }"
+          :key="widget.id"
+          :draggable="editable"
+          @dragstart="dragstartWidget(widget, $event)"
+          :style="widgetPosition(widget)">
+          <slot name="widget"
+            v-bind="{ item: widget, configure: () => configure(widget) }" />
         </div>
-
-        <div class="d-dashboard-dragover" ref="dragover" v-show="dragging && draggedType == 'template'" :style="{
-          width: `${toPixelSize(dragoverWidth)}px`,
-          height: `${toPixelSize(dragoverHeight)}px`,
-          top: `${-10000}px`,
-          left: `${-10000}px`,
-        }">
-          <slot name="widget-template-dragover" v-bind="{ templateId: draggedId }"></slot>
-        </div>
-      </template>
-
-
-      <div class="d-dashboard-widget" v-for="widget in widgets"
-        :class="{ hidden: dragging && widget.id == draggedId && draggedType == 'widget', active: widget.id == configuredWidget }"
-        :key="widget.id" :draggable="editable" @dragstart="dragstartWidget(widget, $event)"
-        :style="widgetPosition(widget)">
-        <slot name="widget" v-bind="{ item: widget, configure: () => configure(widget) }" />
       </div>
     </div>
 
 
-    <v-navigation-drawer v-if="editable" :value="true" right stateless fixed hide-overlay :width="drawerWidth">
+    <v-navigation-drawer v-if="editable"
+      :value="true"
+      right
+      stateless
+      absolute
+      hide-overlay
+      :width="drawerWidth">
       <div class="ma-1">
-        <d-tabs v-model="tabs" :fixed-tabs="true" height="50" :showArrows="false">
+        <d-tabs v-model="tabs" v-bind="tabsProps">
           <d-tab :key="0">
             <slot name="tab-dashboard-properties-title">
               <span>
@@ -58,7 +84,8 @@
               </span>
             </slot>
           </d-tab>
-          <d-tab :key="2" :disabled="!configuredWidget">
+          <d-tab :key="2"
+            :disabled="!configuredWidget">
             <slot name="tab-widget-configuration-title">
               <span>
                 Widget configuration
@@ -67,9 +94,11 @@
           </d-tab>
         </d-tabs>
 
-        <d-tabs-items :value="tabs" class="ma-4">
+        <d-tabs-items :value="tabs"
+          class="ma-4">
           <d-tab-item :value="0">
-            <slot name="tab-dashboard-properties" v-bind="{ computeLayout }">
+            <slot name="tab-dashboard-properties"
+              v-bind="{ computeLayout }">
               <d-btn @click="computeLayout">Compute Layout</d-btn>
             </slot>
           </d-tab-item>
@@ -77,12 +106,17 @@
             <slot name="tab-widget-templates">
               <d-search-input v-model="search" />
               <v-list two-line>
-                <v-list-item v-for="item in filtredWidgetTemplates" :key="item.id" :draggable="editable"
-                  @dragstart="dragstartTemplate(item, $event)" @dragend="dragend" @click="append(item)">
+                <v-list-item v-for="item in filtredWidgetTemplates"
+                  :key="item.id"
+                  :draggable="editable"
+                  @dragstart="dragstartTemplate(item, $event)"
+                  @dragend="dragend"
+                  @click="append(item)">
                   <slot name="widget-template"
                     v-bind="{ item, dragstart: ev => dragstartTemplate(item, ev), append: () => append(item) }">
                     <v-list-item-avatar>
-                      <v-icon x-large v-text="item.icon"></v-icon>
+                      <v-icon x-large
+                        v-text="item.icon"></v-icon>
                     </v-list-item-avatar>
 
                     <v-list-item-content>
@@ -95,7 +129,8 @@
             </slot>
           </d-tab-item>
           <d-tab-item :value="2">
-            <slot name="configuration" v-bind="{ widgetId: configuredWidget }" />
+            <slot name="configuration"
+              v-bind="{ widgetId: configuredWidget }" />
           </d-tab-item>
         </d-tabs-items>
       </div>
@@ -170,6 +205,9 @@ export default class DDashboardV2 extends Vue {
   @Prop({ required: false, default: 6 })
   minRows!: number;
 
+  @Prop({required: false, default: () => null})
+  tabsProps!: Object;
+
   backgroundSize = 0;
   backgroundPosition = 0;
   cellSize = 0;
@@ -232,7 +270,7 @@ export default class DDashboardV2 extends Vue {
 
   append(item: WidgetTemplate) {
     let maxY = Math.max(...this.widgets.map(w => w.y + w.height))
-    this.$emit("add", { templateId: item.id, x: 0, y: maxY + 1 })
+    this.$emit("add", { templateId: item.id, x: 0, y: maxY })
   }
 
   toPixelPosition(position: number) {
@@ -403,6 +441,15 @@ export default class DDashboardV2 extends Vue {
     let xMax = Math.max(...this.widgets.map(w => w.x + w.width))
     let yMax = Math.max(...this.widgets.map(w => w.y + w.height))
 
+    let maxWidth = Math.max(...this.widgets.map(w => w.width))
+
+    if(maxWidth > this.realColumns){
+      console.warn("Widget are too large for this dashboards");
+      // TODO : soit on notifie le parent que le widget doit changer de taille
+      // soit le parent est assez intelligent pour donner des widgets qui ont au max le nombre de colonne
+      return
+    }
+
     if (xMax > this.realColumns) {
       this.computeLayout();
       return;
@@ -481,7 +528,7 @@ export default class DDashboardV2 extends Vue {
   onWidgetsChanged = this.loadWidgets
 
   @Watch("configuredWidget")
-  onConfiguredWidgetChanged(){
+  onConfiguredWidgetChanged() {
     this.tabs = 2;
   }
 }

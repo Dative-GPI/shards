@@ -594,6 +594,19 @@ textarea {
   caret-color: #444;
 }
 
+.d-dashboard-grid-container.editable {
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100%;
+}
+
+.d-dashboard {
+  position: relative;
+}
+
+.d-dashboard-grid {
+  position: relative;
+}
 
 .d-dashboard-grid.editable {
   background: 
