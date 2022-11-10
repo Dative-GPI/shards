@@ -76,7 +76,8 @@ const Template = (args, {argTypes}) => ({
             v-bind="oProps"
             @add="addWidget"
             @update="updateWidget"
-            style="height: max(70vh, 600px); overflow-y: auto; overflow-x: hidden"
+            style="overflow-y: auto; overflow-x: hidden"
+            :style="editable ? 'height: 70vh' : ''"
             >
 
             <template #widget="{ item, configure, remove }">
