@@ -20,19 +20,27 @@
         @drop.stop="drop">
 
         <template v-if="editable">
-          <div class="d-dashboard-placeholder"
+          <div
+            class="d-dashboard-placeholder"
             v-show="dragging"
             :style="{
               top: `${toPixelPosition(placeholderTop)}px`,
               left: `${toPixelPosition(placeholderLeft)}px`,
               width: `${toPixelSize(placeholderWidth)}px`,
               height: `${toPixelSize(placeholderHeight)}px`
-            }">
-            <slot name="widget-placeholder"></slot>
-
+            }"
+          >
+            <slot
+              name="widget-placeholder"
+              v-bind="{
+                width: toPixelSize(placeholderWidth),
+                height: toPixelSize(placeholderHeight)
+              }"
+            />
           </div>
 
-          <div class="d-dashboard-dragover"
+          <div
+            class="d-dashboard-dragover"
             ref="dragover"
             v-show="dragging && draggedType == 'template'"
             :style="{
@@ -40,26 +48,38 @@
               height: `${toPixelSize(dragoverHeight)}px`,
               top: `${-10000}px`,
               left: `${-10000}px`,
-            }">
-            <slot name="widget-template-dragover"
-              v-bind="{ templateId: draggedId }"></slot>
+            }"
+          >
+            <slot
+              name="widget-template-dragover"
+              v-bind="{
+                templateId: draggedId,
+                width: toPixelSize(dragoverWidth),
+                height: toPixelSize(dragoverHeight)
+              }"
+            />
           </div>
         </template>
-
 
         <div class="d-dashboard-widget"
           v-for="widget in widgets"
           :class="{ hidden: dragging && widget.id == draggedId && draggedType == 'widget', active: widget.id == configuredWidget }"
           :key="widget.id"
           :draggable="editable"
+          :style="widgetPosition(widget)"
           @dragstart="dragstartWidget(widget, $event)"
-          :style="widgetPosition(widget)">
+        >
           <slot name="widget"
-            v-bind="{ item: widget, configure: () => configure(widget) }" />
+            v-bind="{
+              item: widget,
+              width: toPixelSize(widget.width),
+              height: toPixelSize(widget.height),
+              configure: () => configure(widget)
+            }"
+          />
         </div>
       </div>
     </div>
-
 
     <v-navigation-drawer v-if="editable"
       :value="true"
