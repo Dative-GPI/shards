@@ -87,8 +87,8 @@ const Template = (args, {argTypes}) => ({
                 </div>
             </template>
 
-            <template #widget-template-dragover="{templateId}">
-                {{ templateId }}
+            <template #widget-dragover="props">
+                {{ props }}
             </template>
 
             <template #configuration="{ widgetId }">
@@ -97,7 +97,7 @@ const Template = (args, {argTypes}) => ({
                     <d-text-field type="number" min="1" :max="columnsClone" class="mt-5" label="width" v-model.number="getWidget(widgetId).width" />
                     <d-text-field type="number" min="1" :max="columnsClone" class="mt-5" label="height" v-model.number="getWidget(widgetId).height" />
                     <d-switch class="mx-1 mt-3" label="border" v-model="getWidget(widgetId).meta.border" />
-                </template
+                    </template>
             </template>
         
         </d-dashboard-v2>

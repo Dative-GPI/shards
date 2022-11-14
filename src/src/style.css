@@ -596,7 +596,7 @@ textarea {
 
 .d-dashboard-grid-container.editable {
   overflow-y: auto;
-  overflow-x: hidden;
+  overflow-x: auto;
   height: 100%;
 }
 

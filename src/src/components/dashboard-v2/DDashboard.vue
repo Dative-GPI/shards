@@ -1,93 +1,62 @@
 <template>
-  <div class="d-dashboard"
-    @dragend="dragend">
+  <div class="d-dashboard" @dragend="dragend">
 
-    <div class="d-dashboard-grid-container"
-      :class="{ editable }">
-      <div ref="grid"
-        class="d-dashboard-grid"
-        :class="{ editable }"
-        v-resize="onResize"
-        :style="{
-          'background-size': `${backgroundSize}px ${backgroundSize}px`,
-          width: `${backgroundSize * realColumns}px `,
-          height: `${toPixelPosition(height)}px`,
-          '--nr': height,
-          '--nc': realColumns,
-          '--b': `${spacing}px`
-        }"
-        @dragover.prevent="dragOver"
-        @drop.stop="drop">
+    <div class="d-dashboard-grid-container" :class="{ editable }"
+      :style="editable ? `margin-right: ${drawerWidth}px` : ''">
+      <div ref="grid" class="d-dashboard-grid" :class="{ editable }" v-resize="onResize" :style="{
+        'background-size': `${backgroundSize}px ${backgroundSize}px`,
+        width: `${backgroundSize * realColumns}px `,
+        height: `${toPixelPosition(height)}px`,
+        '--nr': height,
+        '--nc': realColumns,
+        '--b': `${spacing}px`
+      }" @dragover.prevent="dragOver" @drop.stop="drop">
 
         <template v-if="editable">
-          <div
-            class="d-dashboard-placeholder"
-            v-show="dragging"
-            :style="{
-              top: `${toPixelPosition(placeholderTop)}px`,
-              left: `${toPixelPosition(placeholderLeft)}px`,
-              width: `${toPixelSize(placeholderWidth)}px`,
-              height: `${toPixelSize(placeholderHeight)}px`
-            }"
-          >
-            <slot
-              name="widget-placeholder"
-              v-bind="{
-                width: toPixelSize(placeholderWidth),
-                height: toPixelSize(placeholderHeight)
-              }"
-            />
-          </div>
-
-          <div
-            class="d-dashboard-dragover"
-            ref="dragover"
-            v-show="dragging && draggedType == 'template'"
-            :style="{
-              width: `${toPixelSize(dragoverWidth)}px`,
-              height: `${toPixelSize(dragoverHeight)}px`,
-              top: `${-10000}px`,
-              left: `${-10000}px`,
-            }"
-          >
-            <slot
-              name="widget-template-dragover"
-              v-bind="{
-                templateId: draggedId,
-                width: toPixelSize(dragoverWidth),
-                height: toPixelSize(dragoverHeight)
-              }"
-            />
+          <div class="d-dashboard-placeholder" v-show="dragging" :style="{
+            top: `${toPixelPosition(placeholderTop)}px`,
+            left: `${toPixelPosition(placeholderLeft)}px`,
+            width: `${toPixelSize(placeholderWidth)}px`,
+            height: `${toPixelSize(placeholderHeight)}px`
+          }">
+            <slot name="widget-placeholder" v-bind="{
+              width: toPixelSize(placeholderWidth),
+              height: toPixelSize(placeholderHeight)
+            }" />
           </div>
         </template>
 
-        <div class="d-dashboard-widget"
-          v-for="widget in widgets"
-          :class="{ hidden: dragging && widget.id == draggedId && draggedType == 'widget', active: widget.id == configuredWidget }"
-          :key="widget.id"
-          :draggable="editable"
-          :style="widgetPosition(widget)"
-          @dragstart="dragstartWidget(widget, $event)"
-        >
-          <slot name="widget"
-            v-bind="{
-              item: widget,
-              width: toPixelSize(widget.width),
-              height: toPixelSize(widget.height),
-              configure: () => configure(widget)
-            }"
-          />
+        <div class="d-dashboard-widget" v-for="widget in widgets"
+          :class="{ hidden: dragging && widget.id == draggedId && draggedType === 'widget', active: widget.id == configuredWidget }"
+          :key="widget.id" :draggable="editable" :style="widgetPosition(widget)"
+          @dragstart="dragstartWidget(widget, $event)">
+          <slot name="widget" v-bind="{
+            item: widget,
+            width: toPixelSize(widget.width),
+            height: toPixelSize(widget.height),
+            configure: () => configure(widget)
+          }" />
         </div>
+
+
+        <template v-if="editable">
+          <div class="d-dashboard-dragover" ref="dragover" v-show="dragging" :style="{
+            width: `${toPixelSize(dragoverWidth)}px`,
+            height: `${toPixelSize(dragoverHeight)}px`,
+          }">
+            <slot name="widget-dragover" v-bind="{
+              draggedId: draggedId,
+              draggedType: draggedType,
+              width: toPixelSize(dragoverWidth),
+              height: toPixelSize(dragoverHeight)
+            }">
+            </slot>
+          </div>
+        </template>
       </div>
     </div>
 
-    <v-navigation-drawer v-if="editable"
-      :value="true"
-      right
-      stateless
-      absolute
-      hide-overlay
-      :width="drawerWidth">
+    <v-navigation-drawer v-if="editable" :value="true" right stateless absolute hide-overlay :width="drawerWidth">
       <div class="ma-1">
         <d-tabs v-model="tabs" v-bind="tabsProps">
           <d-tab :key="0">
@@ -104,8 +73,7 @@
               </span>
             </slot>
           </d-tab>
-          <d-tab :key="2"
-            :disabled="!configuredWidget">
+          <d-tab :key="2" :disabled="!configuredWidget">
             <slot name="tab-widget-configuration-title">
               <span>
                 Widget configuration
@@ -114,29 +82,23 @@
           </d-tab>
         </d-tabs>
 
-        <d-tabs-items :value="tabs"
-          class="ma-4">
+        <d-tabs-items :value="tabs" class="ma-4">
           <d-tab-item :value="0">
-            <slot name="tab-dashboard-properties"
-              v-bind="{ computeLayout }">
+            <slot name="tab-dashboard-properties" v-bind="{ computeLayout }">
               <d-btn @click="computeLayout">Compute Layout</d-btn>
             </slot>
           </d-tab-item>
           <d-tab-item :value="1">
+
             <slot name="tab-widget-templates">
               <d-search-input v-model="search" />
               <v-list two-line>
-                <v-list-item v-for="item in filtredWidgetTemplates"
-                  :key="item.id"
-                  :draggable="editable"
-                  @dragstart="dragstartTemplate(item, $event)"
-                  @dragend="dragend"
-                  @click="append(item)">
+                <v-list-item v-for="item in filtredWidgetTemplates" :key="item.id" :draggable="editable"
+                  @dragstart="dragstartTemplate(item, $event)" @dragend="dragend" @click="append(item)">
                   <slot name="widget-template"
                     v-bind="{ item, dragstart: ev => dragstartTemplate(item, ev), append: () => append(item) }">
                     <v-list-item-avatar>
-                      <v-icon x-large
-                        v-text="item.icon"></v-icon>
+                      <v-icon x-large v-text="item.icon"></v-icon>
                     </v-list-item-avatar>
 
                     <v-list-item-content>
@@ -149,8 +111,7 @@
             </slot>
           </d-tab-item>
           <d-tab-item :value="2">
-            <slot name="configuration"
-              v-bind="{ widgetId: configuredWidget }" />
+            <slot name="configuration" v-bind="{ widgetId: configuredWidget }" />
           </d-tab-item>
         </d-tabs-items>
       </div>
@@ -225,7 +186,7 @@ export default class DDashboardV2 extends Vue {
   @Prop({ required: false, default: 6 })
   minRows!: number;
 
-  @Prop({required: false, default: () => null})
+  @Prop({ required: false, default: () => null })
   tabsProps!: Object;
 
   backgroundSize = 0;
@@ -247,6 +208,8 @@ export default class DDashboardV2 extends Vue {
   dragoverLeft = 0;
   dragoverWidth = 300;
   dragoverHeight = 100;
+
+  screenshot = false;
 
   draggingOffsetY = 0;
   draggingOffsetYmin = 0;
@@ -318,10 +281,17 @@ export default class DDashboardV2 extends Vue {
     this.mouseOffsetX = Math.min(ev.offsetX, this.toPixelSize(this.dragoverWidth));
     this.mouseOffsetY = Math.min(ev.offsetY, this.toPixelSize(this.dragoverHeight));
 
+    // le bon gros hack, image invisible
+    let img = new Image();
+    img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
+    ev.dataTransfer!.setDragImage(img, 0, 0);
+
     setTimeout(() => {
       this.dragging = true;
       this.draggedId = item.id;
-    }, 100);
+    }, 10);
+
+    this.dragOver(ev);
   }
 
   dragstartTemplate(item: WidgetTemplate, ev: DragEvent) {
@@ -340,9 +310,24 @@ export default class DDashboardV2 extends Vue {
     this.mouseOffsetX = Math.min(ev.offsetX, this.toPixelSize(this.dragoverWidth));
     this.mouseOffsetY = Math.min(ev.offsetY, this.toPixelSize(this.dragoverHeight));
 
-    ev.dataTransfer!.setDragImage(this.$refs.dragover as Element, this.mouseOffsetX, this.mouseOffsetY);
+    this.screenshot = true;
+
+    // le bon gros hack, image invisible
+    let img = new Image();
+    img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
+    ev.dataTransfer!.setDragImage(img, 0, 0);
+
+    setTimeout(() => {
+      this.screenshot = false;
+    }, 100);
 
     this.dragOver(ev);
+  }
+
+  setDragOverPosition(x: number, y: number) {
+    let dragover = this.$refs.dragover as HTMLElement;
+    dragover.style.top = `${y}px`;
+    dragover.style.left = `${x}px`;
   }
 
   dragOver(ev: DragEvent) {
@@ -357,6 +342,8 @@ export default class DDashboardV2 extends Vue {
 
     this.placeholderTop = yRounded;
     this.placeholderLeft = xRounded;
+
+    this.setDragOverPosition(x, y);
   }
 
   drop(ev: DragEvent) {
@@ -441,7 +428,7 @@ export default class DDashboardV2 extends Vue {
   onResize() {
     this.computeColumns();
 
-    this.backgroundSize = Math.floor((this.$el.clientWidth - (this.editable ? this.drawerWidth : 0)) / this.realColumns);
+    this.backgroundSize = Math.floor(this.$el.clientWidth / this.realColumns);
     this.backgroundPosition = - Math.floor(this.backgroundSize / 2);
     this.cellSize = this.backgroundSize - this.spacing
   }
@@ -463,7 +450,7 @@ export default class DDashboardV2 extends Vue {
 
     let maxWidth = Math.max(...this.widgets.map(w => w.width))
 
-    if(maxWidth > this.realColumns){
+    if (maxWidth > this.realColumns) {
       console.warn("Widget are too large for this dashboards");
       // TODO : soit on notifie le parent que le widget doit changer de taille
       // soit le parent est assez intelligent pour donner des widgets qui ont au max le nombre de colonne
@@ -542,7 +529,14 @@ export default class DDashboardV2 extends Vue {
   onGridChanged = this.onResize;
 
   @Watch("realColumns")
-  onColumnsChanged = this.computeLayout;
+  onColumnsChanged(){
+    let xMax = Math.max(...this.widgets.map(w => w.x + w.width))
+
+    // si on a assez de place pour afficher ce qui est demandé on s'amuse pas à recalculer le layout
+    if (xMax <= this.realColumns) return;
+
+    this.computeLayout();
+  }
 
   @Watch("widgets", { deep: true })
   onWidgetsChanged = this.loadWidgets
