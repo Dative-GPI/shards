@@ -337,7 +337,6 @@ export default class DDashboardV2 extends Vue {
 
     let xRounded = clamp(Math.round(x / this.backgroundSize), 0, this.realColumns - this.draggedWidth);
     let yRounded = Math.max(Math.round(y / this.backgroundSize), 0);
-
     this.computeMovedWidgetsThrottled(xRounded, yRounded, this.dragoverWidth, this.dragoverHeight, this.draggedId);
 
     this.placeholderTop = yRounded;
@@ -396,7 +395,7 @@ export default class DDashboardV2 extends Vue {
       if (widget.y <= y + height) {
         touched = true;
       }
-      if (touched && widget.y + widget.height > y && (widget.x < actualXmax && widget.x + widget.width > actualXmin)) {
+      if (touched && (widget.y + widget.height > y) && (widget.x < actualXmax && widget.x + widget.width > actualXmin)) {
         actualXmin = Math.min(actualXmin, widget.x)
         actualXmax = Math.max(actualXmax, widget.x + widget.width)
         this.draggingOffsetY = Math.max(this.draggingOffsetY, (y - widget.y) + height)
@@ -443,7 +442,7 @@ export default class DDashboardV2 extends Vue {
   }
 
   loadWidgets() {
-    this.sortedWidgets = _.sortBy(this.widgets, w => [w.y, w.x]);
+    this.sortedWidgets = _.sortBy(this.widgets, ['y', 'x']);
 
     let xMax = Math.max(...this.widgets.map(w => w.x + w.width))
     let yMax = Math.max(...this.widgets.map(w => w.y + w.height))
