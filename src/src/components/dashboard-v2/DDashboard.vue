@@ -219,6 +219,7 @@ export default class DDashboardV2 extends Vue {
   mouseOffsetY = 0;
 
   sortedWidgets: Widget[] = []
+  widgetPositions: WidgetPositions = {};
 
   computedColumns = 0;
 
@@ -392,10 +393,7 @@ export default class DDashboardV2 extends Vue {
     for (let widget of this.sortedWidgets) {
       if (widget.id == ignoreWidgetId) continue;
 
-      if (widget.y <= y + height) {
-        touched = true;
-      }
-      if (touched && (widget.y + widget.height > y) && (widget.x < actualXmax && widget.x + widget.width > actualXmin)) {
+      if ((widget.y + widget.height > y) && (widget.x < actualXmax && widget.x + widget.width > actualXmin)) {
         actualXmin = Math.min(actualXmin, widget.x)
         actualXmax = Math.max(actualXmax, widget.x + widget.width)
         this.draggingOffsetY = Math.max(this.draggingOffsetY, (y - widget.y) + height)
@@ -408,20 +406,29 @@ export default class DDashboardV2 extends Vue {
   computeMovedWidgetsThrottled = _.throttle(this.computeMovedWidgets, 100);
 
   widgetPosition(item: Widget) {
+    let x = item.x;
+    let y = item.y;
+    let width = item.width;
+    let height = item.height;
+
+    if(!this.editable){
+      let position = this.widgetPositions[item.id];
+  
+      if(position) {
+        x = position.x;
+        y = position.y;
+      }
+    }
+
     if (this.dragging && this.movedWidgets.includes(item.id))
-      return {
-        top: this.toPixelPosition(item.y + this.draggingOffsetY) + 'px',
-        left: this.toPixelPosition(item.x) + 'px',
-        width: this.toPixelSize(item.width) + 'px',
-        height: this.toPixelSize(item.height) + 'px'
-      }
-    else
-      return {
-        top: this.toPixelPosition(item.y) + 'px',
-        left: this.toPixelPosition(item.x) + 'px',
-        width: this.toPixelSize(item.width) + 'px',
-        height: this.toPixelSize(item.height) + 'px'
-      }
+      y += this.draggingOffsetY
+
+    return {
+      top: this.toPixelPosition(y) + 'px',
+      left: this.toPixelPosition(x) + 'px',
+      width: this.toPixelSize(width) + 'px',
+      height: this.toPixelSize(height) + 'px'
+    }
   }
 
   onResize() {
@@ -456,10 +463,7 @@ export default class DDashboardV2 extends Vue {
       return
     }
 
-    if (xMax > this.realColumns) {
-      this.computeLayout();
-      return;
-    }
+    this.computeLayout();
 
     // on créé une map du dashboard avec que des false
 
@@ -499,6 +503,14 @@ export default class DDashboardV2 extends Vue {
     let x = 0;
     let y = 0;
 
+    let xMax = Math.max(...this.widgets.map(w => w.x + w.width))
+    if (xMax <= this.realColumns) {
+      this.widgetPositions = {};
+      return;
+    }
+
+    let newLayout : WidgetPositions = {};
+
     for (let widget of this.sortedWidgets) {
       x = offsetX;
       y = offsetY;
@@ -509,11 +521,16 @@ export default class DDashboardV2 extends Vue {
         offsetY = yMax
       }
 
-      this.$emit("update", { widgetId: widget.id, x, y });
+      if(this.editable)
+        this.$emit("update", { widgetId: widget.id, x, y });
+      else 
+        newLayout[widget.id] = {x, y};
 
       offsetX = x + widget.width;
       yMax = Math.max(yMax, y + widget.height);
     }
+
+    this.widgetPositions = newLayout;
   }
 
 
@@ -523,21 +540,12 @@ export default class DDashboardV2 extends Vue {
 
   @Watch("realColumns")
   @Watch("spacing")
-  @Watch("editable")
   @Watch("autoColumn")
   onGridChanged = this.onResize;
-
-  @Watch("realColumns")
-  onColumnsChanged(){
-    let xMax = Math.max(...this.widgets.map(w => w.x + w.width))
-
-    // si on a assez de place pour afficher ce qui est demandé on s'amuse pas à recalculer le layout
-    if (xMax <= this.realColumns) return;
-
-    this.computeLayout();
-  }
-
+  
   @Watch("widgets", { deep: true })
+  @Watch("editable")
+  @Watch("realColumns")
   onWidgetsChanged = this.loadWidgets
 
   @Watch("configuredWidget")
@@ -561,5 +569,12 @@ interface Widget {
   height: number;
   x: number;
   y: number;
+}
+
+interface WidgetPositions {
+  [key: string]: {
+    x: number,
+    y: number,
+  }
 }
 </script>

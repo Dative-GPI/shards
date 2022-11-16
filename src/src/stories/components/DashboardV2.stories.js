@@ -76,12 +76,11 @@ const Template = (args, {argTypes}) => ({
             v-bind="oProps"
             @add="addWidget"
             @update="updateWidget"
-            style="overflow-y: auto; overflow-x: hidden"
-            :style="editable ? 'height: 70vh' : ''"
+            :style="editable ? 'height: 70vh; overflow-y: auto' : ''"
             >
 
             <template #widget="{ item, configure, remove }">
-                <div class="h-100 w-100" :class="{'d-card-border': item.meta.border}">
+                <div class="h-100 w-100" :class="{'d-card-border': item.meta.border || item.hideBorders === false}">
                     <d-btn v-if="editable" @click="configure">Configure</d-btn>
                     ({{ item.x }}, {{ item.y}}) [{{ item.width }}, {{ item.height}}] 
                 </div>
