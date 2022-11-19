@@ -30,12 +30,16 @@
           :class="{ hidden: dragging && widget.id == draggedId && draggedType === 'widget', active: widget.id == configuredWidget }"
           :key="widget.id" :draggable="editable" :style="widgetPosition(widget)"
           @dragstart="dragstartWidget(widget, $event)">
-          <slot name="widget" v-bind="{
-            item: widget,
-            width: toPixelSize(widget.width),
-            height: toPixelSize(widget.height),
-            configure: () => configure(widget)
-          }" />
+          <v-lazy :width="toPixelSize(widget.width)" :height="toPixelSize(widget.height)" :options="{
+            threshold: .5
+          }">
+            <slot name="widget" v-bind="{
+              item: widget,
+              width: toPixelSize(widget.width),
+              height: toPixelSize(widget.height),
+              configure: () => configure(widget)
+            }" />
+          </v-lazy>
         </div>
 
 
@@ -411,10 +415,10 @@ export default class DDashboardV2 extends Vue {
     let width = item.width;
     let height = item.height;
 
-    if(!this.editable){
+    if (!this.editable) {
       let position = this.widgetPositions[item.id];
-  
-      if(position) {
+
+      if (position) {
         x = position.x;
         y = position.y;
       }
@@ -509,7 +513,7 @@ export default class DDashboardV2 extends Vue {
       return;
     }
 
-    let newLayout : WidgetPositions = {};
+    let newLayout: WidgetPositions = {};
 
     for (let widget of this.sortedWidgets) {
       x = offsetX;
@@ -521,10 +525,10 @@ export default class DDashboardV2 extends Vue {
         offsetY = yMax
       }
 
-      if(this.editable)
+      if (this.editable)
         this.$emit("update", { widgetId: widget.id, x, y });
-      else 
-        newLayout[widget.id] = {x, y};
+      else
+        newLayout[widget.id] = { x, y };
 
       offsetX = x + widget.width;
       yMax = Math.max(yMax, y + widget.height);
@@ -542,7 +546,7 @@ export default class DDashboardV2 extends Vue {
   @Watch("spacing")
   @Watch("autoColumn")
   onGridChanged = this.onResize;
-  
+
   @Watch("widgets", { deep: true })
   @Watch("editable")
   @Watch("realColumns")

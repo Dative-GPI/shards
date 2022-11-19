@@ -184,6 +184,42 @@ Default.args = {
                 label: "Coucou3",
                 border: true
             }
+        },
+        {
+            id: "w5",
+            templateId: "wt2",
+            x: 0,
+            y: 0,
+            width: 3,
+            height: 2,
+            meta: {
+                label: "Coucou3",
+                border: true
+            }
+        },
+        {
+            id: "w6",
+            templateId: "wt2",
+            x: 0,
+            y: 0,
+            width: 3,
+            height: 2,
+            meta: {
+                label: "Coucou3",
+                border: true
+            }
+        },
+        {
+            id: "w7",
+            templateId: "wt2",
+            x: 0,
+            y: 0,
+            width: 3,
+            height: 2,
+            meta: {
+                label: "Coucou3",
+                border: true
+            }
         }
     ]
 }
