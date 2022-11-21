@@ -47,6 +47,9 @@ export default class DDatePicker extends Vue {
   @Prop({ required: false, default: "" })
   contentClass!: string;
 
+  @Prop({required: false, default: () => - new Date().getTimezoneOffset()})
+  timezoneOffset!: number;
+
   menu = false;
 
   get cleanDate(): Date | null {
@@ -67,14 +70,21 @@ export default class DDatePicker extends Vue {
   get stringCleanDate() {
     if (!this.cleanDate) return null
 
-    return addMinutes(this.cleanDate, - this.cleanDate.getTimezoneOffset())
-      .toISOString().substring(0, 10)
+    let localDate = addMinutes(this.cleanDate, this.timezoneOffset);
+
+    if(!isFinite(localDate.getTime())) return null;
+    
+    return localDate.toISOString().substring(0, 10)
   }
 
   get formattedDate() {
     if (!this.cleanDate) return "";
 
-    return format(addMinutes(this.cleanDate, - this.cleanDate.getTimezoneOffset()), this.format)
+    let localDate = addMinutes(this.cleanDate, this.timezoneOffset);
+
+    if(!isFinite(localDate.getTime())) return null;
+    
+    return format(localDate, this.format)
   }
 
   onDateChanged(sdate: string) {
