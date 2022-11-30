@@ -19,7 +19,15 @@
     </template>
 
     <template #no-data>
-      <slot name="no-data"></slot>
+      <slot name="no-data">
+        <v-list-item dense>
+          <v-list-item-content dense>
+            <v-list-item-title>
+              {{ noDataText }}
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </slot>
     </template>
   </v-autocomplete>
 </template>
@@ -42,5 +50,8 @@ export default class DAutocomplete extends Vue {
 
   @Prop({ required: false, default: () => true, type: Function })
   filter!: (item: any) => boolean;
+
+  @Prop({ required: false, default: "No data available", type: String })
+  noDataText!: string;
 }
 </script>
