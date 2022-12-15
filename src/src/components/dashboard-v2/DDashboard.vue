@@ -257,8 +257,8 @@ export default class DDashboardV2 extends Vue {
   }
 
   append(item: WidgetTemplate) {
-    let maxY = Math.max(...this.widgets.map(w => w.y + w.height))
-    this.$emit("add", { templateId: item.id, x: 0, y: maxY })
+    let maxY = Math.max(...this.widgets.map(w => w.y + w.height), 0);
+    this.$emit("add", { templateId: item.id, x: 0, y: maxY });
   }
 
   toPixelPosition(position: number) {
