@@ -1,16 +1,21 @@
 <template>
-  <div :style="{ display: 'inline-flex', alignItems: 'center', height: height }">
+  <v-row no-gutters align="center">
     <d-chip-group>
       <d-chip
         v-for="(item, index) in value"
+        :class="minified ? 'my-0' : ''"
         :key="index"
         :close="editable"
         @click:close="() => remove(item)"
       >
         <slot name="item" v-bind="{ item, index }">
           <v-row no-gutters align="center">
-            <span class="text-body-1"> {{ item[itemLabel] }} </span>
-            <d-icon class="ml-2" v-if="!itemsOnly && !item.isCustom" :size="20"> {{ itemsIcon }} </d-icon>
+            <span class="text-body-1">
+              {{ item[itemLabel] }}
+            </span>
+            <d-icon class="ml-2" v-if="!itemsOnly && !item.isCustom" :size="20">
+              {{ itemsIcon }}
+            </d-icon>
           </v-row>
         </slot>
       </d-chip>
@@ -20,32 +25,35 @@
         <v-combobox
           v-if="!itemsOnly"
           v-model="text"
+          height="28px"
+          class="d-text-field"
           :items="items"
+          :outlined="outlined"
           :itemValue="itemKey"
           :itemText="itemLabel"
-          :outlined="outlined"
-          :rules="[required ? !!value.length : true]"
-          :style="{ maxWidth: maxWidth, height: height, alignItems: 'center', paddingTop: '4px !important' }"
           :placeholder="inputLabel"
+          :rules="[required ? !!value.length : true]"
+          :style="{ maxWidth: maxWidth, paddingTop: '0 !important', alignItems: 'center' }"
           @keydown.enter="(event) => !!event.target.value.length ? null : add(event.target.value)"
           @change="(value) => add(value)"
         />
         <d-autocomplete
           v-else
           v-model="text"
+          height="28px"
           :items="items"
           :itemValue="itemKey"
           :itemText="itemLabel"
           :outlined="outlined"
           :returnObject="true"
           :rules="[required ? !!value.length : true]"
-          :style="{ maxWidth: maxWidth, height: height, alignItems: 'center', paddingTop: '4px !important' }"
+          :style="{ maxWidth: maxWidth, paddingTop: '0 !important' }"
           :placeholder="inputLabel"
           @change="(value) => add(value)"
         />
       </slot>
     </div>
-  </div>
+  </v-row>
 </template>
 
 <script lang="ts">
@@ -83,14 +91,14 @@ export default class DAutocompleteChipSet extends Vue {
   @Prop({ required: false, default: "Add new" })
   inputLabel!: string;
 
+  @Prop({ required: false, default: 0 })
+  minLength!: number;
+
   @Prop({ required: false, default: "100%" })
   maxWidth!: string;
 
-  @Prop({ required: false, default: "40px" })
-  height!: string;
-
-  @Prop({ required: false, default: 0 })
-  minLength!: number;
+  @Prop({ required: false, default: true })
+  minified!: boolean;
 
   text: string = "";
 
@@ -127,3 +135,9 @@ export default class DAutocompleteChipSet extends Vue {
   }
 }
 </script>
+
+<style scoped>
+::v-deep .v-input__slot {
+  margin-bottom: 4px !important;
+}
+</style>

@@ -10,7 +10,7 @@ export default {
 const Template = (args, { argTypes }) => ({
   components: { DAutocompleteChipSet },
   props: Object.keys(argTypes),
-  data: () => ({ valueClone: [] }),
+  data: () => ({ valueClone: [], valueZwei: [] }),
   watch: {
     value(newVal) {
       this.valueClone = newVal;
@@ -24,8 +24,9 @@ const Template = (args, { argTypes }) => ({
   },
   mounted() {
     this.valueClone = this.value;
+    this.valueZwei = [{ label: "Test 1" }, { label: "Test 2" }]
   },
-  template: '<d-autocomplete-chip-set v-model="valueClone" v-bind="oProps"/>',
+  template: '<v-row><d-autocomplete-chip-set v-model="valueClone" v-bind="oProps"/><d-autocomplete-chip-set v-model="valueZwei" /></v-row>',
 });
 
 //👇 Each story then reuses that template
@@ -41,6 +42,7 @@ Default.args = {
   value: [{ id: "1", label: "Achilles" }],
   itemKey: "id",
   itemLabel: "label",
+  itemsOnly: true,
   editable: true,
   outlined: false
 };

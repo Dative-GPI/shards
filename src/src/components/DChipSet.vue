@@ -3,19 +3,15 @@
     <d-chip-group :column="column" :style="{ 'max-width': maxWidth }">
       <d-chip
         v-for="(item, index) in value"
-        class="black-1--text"
-        :key="
-          complex
-            ? itemValue instanceof Function
-              ? itemValue(item)
-              : item[itemValue] || index
-            : item
-        "
+        :class="minified ? 'my-0' : ''"
+        :key="index"
         :close="editable"
         @click:close="() => remove(item)"
       >
         <slot name="item" v-bind="{ item, index }">
-          {{ itemText && itemText instanceof Function ? itemText(item) : item && item[itemText] || item }}
+          <span class="text-body-1">
+            {{ itemText && itemText instanceof Function ? itemText(item) : item && item[itemText] || item }}
+          </span>
         </slot>
       </d-chip>
     </d-chip-group>
@@ -23,15 +19,15 @@
       <slot name="input">
         <d-text-field
           v-if="!complex"
-          class="nopadding"
           solo
+          prefix="|"
+          class="nopadding"
           :placeholder="inputLabel"
+          :rules="[required ? !!value.length || requiredMessage : true]"
+          :style="`width: ${inputSize}ch; ${minified ? '' : 'height: 40px'}; alignItems: center;`"
+          v-model="text"
           @keypress.enter="add"
           @blur="add"
-          v-model="text"
-          :style="`width: ${inputSize}ch; height: 40px; alignItems: center;`"
-          prefix="|"
-          :rules="[required ? !!value.length || requiredMessage : true]"
         />
       </slot>
     </div>
@@ -77,6 +73,9 @@ export default class DChipSet extends Vue {
   @Prop({ required: false, default: "Required" })
   requiredMessage!: string;
 
+  @Prop({ required: false, default: false })
+  minified!: boolean;
+
   get complex() {
     return (
       this.value &&
@@ -90,10 +89,7 @@ export default class DChipSet extends Vue {
 
   remove(group: string): void {
     this.$emit("remove", group);
-    this.$emit(
-      "input",
-      this.value.filter((g) => g !== group)
-    );
+    this.$emit("input", this.value.filter((g) => g !== group));
   }
 
   add(): void {
