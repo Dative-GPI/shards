@@ -193,6 +193,9 @@ export default class DDashboardV2 extends Vue {
   @Prop({ required: false, default: () => null })
   tabsProps!: Object;
 
+  @Prop({ required: false, default: false })
+  half!: boolean
+
   backgroundSize = 0;
   backgroundPosition = 0;
   cellSize = 0;
@@ -228,10 +231,11 @@ export default class DDashboardV2 extends Vue {
   computedColumns = 0;
 
   get realColumns() {
+    let result = this.columns;
     if (this.autoColumn) {
-      return this.computedColumns;
+      result = this.computedColumns;
     }
-    return this.columns;
+    return this.half ? Math.floor(result / 2) : result;
   }
 
   get filtredWidgetTemplates() {
@@ -392,7 +396,6 @@ export default class DDashboardV2 extends Vue {
 
     let actualXmin = x;
     let actualXmax = x + width;
-    let touched = false;
 
     for (let widget of this.sortedWidgets) {
       if (widget.id == ignoreWidgetId) continue;
@@ -440,6 +443,12 @@ export default class DDashboardV2 extends Vue {
 
     this.backgroundSize = Math.floor(this.$el.clientWidth / this.realColumns);
     this.backgroundPosition = - Math.floor(this.backgroundSize / 2);
+
+    if (this.half) {
+      this.backgroundSize /= 2
+      this.backgroundPosition /= 2
+    }
+
     this.cellSize = this.backgroundSize - this.spacing
   }
 
