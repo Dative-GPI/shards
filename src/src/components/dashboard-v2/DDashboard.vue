@@ -193,7 +193,7 @@ export default class DDashboardV2 extends Vue {
   @Prop({ required: false, default: () => null })
   tabsProps!: Object;
 
-  @Prop({ required: false, default: false })
+  @Prop({ required: false, default: false, type: Boolean })
   half!: boolean
 
   backgroundSize = 0;
