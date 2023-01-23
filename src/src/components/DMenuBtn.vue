@@ -18,7 +18,7 @@
     </d-list>
     <d-list dense style="max-height: 250px; overflow-y: auto" class="pt-0">
       <draggable :value="sortedColumns" @input="dropColumn" :disabled="!sortable">
-        <d-list-item v-for="(column, index) in sortedColumns" :key="column[itemValue] + index">
+        <d-list-item v-for="(column, index) in sortedColumns" :key="index">
           <d-icon v-if="sortable" class="d-cursor-drag pr-1">mdi-drag</d-icon>
           <d-simple-checkbox :ripple="false" class="ma-0 pa-0" :value="!column.hidden" @input="toggleColumn(column)"
             @click.ctrl="onlyColumn(column)" />

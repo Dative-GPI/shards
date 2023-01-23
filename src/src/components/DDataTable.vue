@@ -14,27 +14,20 @@
         <tr>
           <th
             v-for="header in props.headers"
-            :key="header.value"
             class="d-data-table-header"
-            :style="{
-              width: (header.width && header.width + 'px') || undefined,
-            }"
+            :key="header.value"
+            :style="{ width: (header.width && header.width + 'px') || undefined }"
           >
-            <!-- Th pour le sortable -->
-
-            <!-- Th pour le multi select -->
             <v-row
+              v-if="header.value == 'data-table-select' && !singleSelect"
               no-gutters
               class="justify-center"
-              v-if="header.value == 'data-table-select' && !singleSelect"
             >
               <d-simple-checkbox
+                class="d-toggle-select-all"
                 :value="props.everyItem"
                 :indeterminate="props.someItems && !props.everyItem"
-                class="d-toggle-select-all"
-                @click="
-                  on['toggle-select-all'](!(props.everyItem || props.someItems))
-                "
+                @click="on['toggle-select-all'](!(props.everyItem || props.someItems))"
               />
             </v-row>
 
@@ -50,28 +43,22 @@
               <slot :name="`header.${header.value}-left-prepend`" />
 
               <slot :name="`header.${header.value}`">
-                <span
-                  class="d-data-table-header-text grey-3--text text-body-1"
-                  >{{ header.text }}</span
-                >
+                <span class="d-data-table-header-text grey-3--text text-body-1">
+                  {{ header.text }}
+                </span>
               </slot>
 
               <d-btn
-                icon
                 v-if="header.configurable"
-                @click="
-                  configured === header.value
-                    ? (configured = null)
-                    : (configured = header.value)
-                "
+                icon
+                @click="configured === header.value ? (configured = null) : (configured = header.value)"
               >
                 <d-icon
-                  :color="
-                    configured === header.value ? 'alert-orange' : 'grey-1'
-                  "
                   small
-                  >{{ configurationIcon }}</d-icon
+                  :color="configured === header.value ? 'alert-orange' : 'grey-1'"
                 >
+                  {{ configurationIcon }}
+                </d-icon>
               </d-btn>
 
               <slot :name="`header.${header.value}-left-append`" />
@@ -82,18 +69,15 @@
                 <slot :name="`header.${header.value}-right-prepend`" />
 
                 <d-btn
-                  icon
                   v-if="header.sortable"
+                  icon
                   @click="on.sort(header.value)"
                 >
                   <template v-if="props.options.sortBy.includes(header.value)">
                     <d-icon color="blue-1" small>
                       {{
-                        props.options.sortDesc[
-                          props.options.sortBy.indexOf(header.value)
-                        ]
-                          ? "mdi-sort-ascending"
-                          : "mdi-sort-descending"
+                        props.options.sortDesc[props.options.sortBy.indexOf(header.value)] ?
+                          "mdi-sort-ascending" : "mdi-sort-descending"
                       }}
                     </d-icon>
                   </template>
@@ -111,14 +95,11 @@
                   <template #activator="{ on }">
                     <d-btn icon v-on="on">
                       <d-icon
-                        :color="
-                          filters[header.value].every((c) => !c.hidden)
-                            ? 'grey-1'
-                            : 'blue-1'
-                        "
                         small
-                        >mdi-filter</d-icon
+                        :color="filters[header.value].every((c) => !c.hidden) ? 'grey-1' : 'blue-1'"
                       >
+                        mdi-filter
+                      </d-icon>
                     </d-btn>
                   </template>
 
@@ -140,7 +121,7 @@
       </thead>
     </template>
 
-    <template #item.data-table-select="{ isSelected, select }">
+    <template #[`item.data-table-select`]="{ isSelected, select }">
       <v-row no-gutters class="align-bottom justify-center">
         <d-simple-checkbox :value="isSelected" @click="select(!isSelected)" />
       </v-row>
@@ -164,8 +145,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import _ from "lodash";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import { Column, FilterValue } from "../models";
 
@@ -174,7 +155,6 @@ import { Column, FilterValue } from "../models";
 })
 export default class DDataTable extends Vue {
   // Properties
-
   @Prop({ required: true })
   columns!: Column[];
 
@@ -200,13 +180,11 @@ export default class DDataTable extends Vue {
   hideHeader!: boolean;
 
   // Data
-
   filters: { [key: string]: FilterValue[] } = {};
 
-  configured = null;
+  configured: string | null = null;
 
   // Computed Properties
-
   get showDefaultHeader() {
     return !this.hideHeader && this.$vuetify.breakpoint.xs;
   }
@@ -239,17 +217,13 @@ export default class DDataTable extends Vue {
   }
 
   get filteredItems() {
-    return this.items.filter((i) =>
-      _(this.filters).reduce<boolean>(
-        (include, filterValues, key) =>
-          include && this.filterItem(filterValues, i[key]),
-        true
-      )
-    );
+    return this.items.filter((i) => _(this.filters).reduce<boolean>(
+      (include, filterValues, key) => include && this.filterItem(filterValues, i[key]),
+      true
+    ));
   }
 
   // Methods
-
   mounted() {
     this.computeFilters();
   }
@@ -261,49 +235,61 @@ export default class DDataTable extends Vue {
     for (const col of filterableHeaders) {
       const key = col.value!;
 
-      const mapToInnerValue = col.innerValue ? col.innerValue : (i: any) => i;
+      if (col.fixedFilters != null) {
+        const value = col.fixedFilters.map(
+          (v): FilterValue => ({
+            hidden: false,
+            text: (v && v.toString()) || "—",
+            value: v || null,
 
-      const itemValues = this.items
-        .flatMap((item) =>
-          Array.isArray(item[key]) && item[key].length == 0
-            ? undefined
-            : item[key]
-        )
-        .map(mapToInnerValue); // Undefined trick to get a value for empty arrays
+            filter: col.methodFilter != null ? col.methodFilter : (value, item) => {
+              item = [item].flat();
+              return Array.isArray(item) ?
+                item.includes(v) || (!v && item.length == 0) : (!v && !item) || v == item;
+            }
+          })
+        );
 
-      const distinctItemValues = [...new Set(itemValues)];
+        const sortedValue = value.sort((v1, v2) => {
+          return v1.text.localeCompare(v2.text, undefined, { numeric: true });
+        });
 
-      const value = distinctItemValues.map(
-        (v): FilterValue => ({
-          hidden: false,
-          text: (v && v.toString()) || "—",
-          value: v || null,
+        filterDict[key] = sortedValue;
+      }
+      else {
+        const mapToInnerValue = col.innerValue ? col.innerValue : (i: any) => i;
+        const itemValues = this.items
+          .flatMap((item) => Array.isArray(item[key]) && item[key].length == 0 ? undefined : item[key])
+          .map(mapToInnerValue);
 
-          filter: (value) => {
-            // We put the value in an array then flatten it to handle cases where value is an array and where it is not
-            value = [value].flat().map(mapToInnerValue);
+        const distinctValues = [...new Set(itemValues)];
 
-            return Array.isArray(value)
-              ? value.includes(v) || (!v && value.length == 0)
-              : (!v && !value) || v == value;
-          },
-        })
-      );
+        const value = distinctValues.map(
+          (v): FilterValue => ({
+            hidden: false,
+            text: (v && v.toString()) || "—",
+            value: v || null,
 
-      const sortedValue = value.sort((v1, v2) =>
-        v1.text.localeCompare(v1.text, undefined, { numeric: true })
-      );
+            filter: col.methodFilter != null ? col.methodFilter : (value, item) => {
+              item = [item].flat().map(mapToInnerValue);
+              return Array.isArray(item) ?
+                item.includes(v) || (!v && item.length == 0) : (!v && !item) || v == item;
+            }
+          })
+        );
 
-      filterDict[key] = sortedValue;
+        const sortedValue = value.sort((v1, v2) => {
+          return v1.text.localeCompare(v2.text, undefined, { numeric: true });
+        });
+
+        filterDict[key] = sortedValue;
+      }
     }
-
     this.filters = filterDict;
   }
 
-  filterItem(filterValue: FilterValue[], value: any): boolean {
-    return filterValue
-      .filter((f) => !f.hidden)
-      .some((f) => !!f.filter && f.filter(value));
+  filterItem(values: FilterValue[], item: any): boolean {
+    return values.filter((v) => !v.hidden).some((v) => !!v.filter && v.filter(v.value, item));
   }
 
   @Watch("items")

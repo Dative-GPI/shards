@@ -33,9 +33,7 @@ const Template = (args, { argTypes }) => ({
   },
   template:
     `<d-data-list :columns.sync="columnsClone" v-bind="oProps">
-      <template #table-header.localisation.filter.item="{item}">
-        <d-chip class="clickable">{{ item.text }}</d-chip>
-      </template>
+
       <template #table-item.localisation="{ configure, item }">
           <d-chip-set :editable="configure" v-model="item.localisation" item-text="name" />
       </template>
@@ -141,7 +139,6 @@ Default.args = {
   itemKey: "id",
 };
 
-
 export const WithObjectArray = Template.bind({});
 WithObjectArray.args = {
   multiSort: true,
@@ -243,3 +240,83 @@ WithObjectArray.args = {
   itemKey: "id",
 };
 
+export const WithFilters = Template.bind({});
+WithFilters.args = {
+  multiSort: true,
+  columnText: "text",
+  columnValue: "value",
+  columnPosition: "index",
+  configurationIcon: "$cog",
+  search: "",
+  columns: [
+    {
+      text: 'Article',
+      sortable: false,
+      filterable: true,
+      value: 'name',
+      sortable: true,
+      hidden: false,
+      width: 50,
+      index: 0
+    },
+    {
+      text: 'Serial number',
+      value: 'SerialNumber',
+      align: 'end',
+      sortable: true,
+      hidden: false,
+      width: 50,
+      index: 1
+    },
+    {
+      text: 'Localisation',
+      value: 'localisation',
+      filterable: true,
+      hidden: false,
+      index: 6,
+      width: 50,
+      configurable: true,
+      fixedFilters: ["", "Alsace", "Region parisienne"],
+      methodFilter: (value, item) => {
+        if (item == null) {
+          return value == null;
+        }
+        switch (value) {
+          case "Alsace": return item.first === "Strasbourg";
+          case "Region parisienne": return item.first === "Paris";
+        }
+      }
+    }
+  ],
+  items: [
+    {
+      id: 1,
+      name: 'Four à chariot rotatif',
+      localisation: { first: "Strasbourg", second: "Paris" },
+      SerialNumber: 100
+    },
+    {
+      id: 2,
+      name: 'Four spécial',
+      localisation: { first: "Paris" },
+      SerialNumber: 200
+    },
+    {
+      id: 3,
+      name: 'Four à chariot fixe',
+      localisation: { first: "Strasbourg", second: "Paris" },
+      SerialNumber: 300
+    },
+    {
+      id: 4,
+      name: 'Four à graisse de phoque',
+      SerialNumber: 400
+    },
+    {
+      id: 5,
+      name: '',
+      SerialNumber: 500
+    }
+  ],
+  itemKey: "id",
+};

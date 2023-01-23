@@ -1,26 +1,31 @@
 export interface Column {
-    [key: string]: any,
-    hidden: boolean;
-    index: number;
-    
+    [key: string]: any;
     text?: string;
     value?: string;
-    align?: 'start' | 'center' | 'end',
-    sortable?: boolean,
-    filterable?: boolean,
-    groupable?: boolean,
-    divider?: boolean,
-    class?: string | string[],
-    cellClass?: string | string[],
-    width?: string | number,
+    hidden: boolean;
+    index: number;
 
-    filter?: (value: any, search: string, item: any) => boolean,
-    sort?: (a: any, b: any) => number
+    divider?: boolean;
+    groupable?: boolean;
+    width?: string | number;
+    class?: string | string[];
+    cellClass?: string | string[];
+    align?: 'start' | 'center' | 'end';
+
+    sortable?: boolean;
+    sort?: (a: any, b: any) => number;
+
+    filterable?: boolean;
+    fixedFilters?: any[];
+    methodFilter?: (value: any, item: any) => boolean;
 
     innerValue?: (value: any) => any;
 
-    /** Equivalent to filterable. Should not be set directly ! */
-    canBeFiltered?: boolean,
-    /** Should not be set directly ! */
-    slotName?: string,
+    // Used by vuetify to filter based on search
+    filter?: (value: any, search: string, item: any) => boolean;
+
+    // Equivalent to filterable. Should not be set directly !
+    canBeFiltered?: boolean;
+    // Should not be set directly !
+    slotName?: string;
 }
