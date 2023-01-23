@@ -12,13 +12,15 @@
           </slot>
         </d-title>
       </v-card-title>
-      <slot> </slot>
-      <template v-for="(index, name) in $slots" v-slot:[name]>
-        <slot :name="name" />
-      </template>
-      <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">
-        <slot :name="name" v-bind="data"></slot>
-      </template>
+      <v-card-text class="d-scrollbarless">
+        <slot> </slot>
+        <template v-for="(index, name) in $slots" v-slot:[name]>
+          <slot :name="name" />
+        </template>
+        <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">
+          <slot :name="name" v-bind="data"></slot>
+        </template>
+      </v-card-text>
       <v-card-actions>
         <slot name="actions">
           <v-spacer />
@@ -75,5 +77,9 @@ export default class DFullScreenDialog extends Vue {
 <style scoped>
 ::v-deep .v-dialog:not(.v-dialog--fullscreen) {
     max-height: calc(100vh - 100px) !important;
+}
+
+.d-scrollbarless {
+  max-height: calc(100vh - 196px) !important;
 }
 </style>

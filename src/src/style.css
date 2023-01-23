@@ -633,3 +633,13 @@ textarea {
 .d-card-border {
   border: 2px solid var(--v-card-base);
 }
+
+.d-scrollbarless {
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.d-scrollbarless::-webkit-scrollbar {
+  display: none;
+}
