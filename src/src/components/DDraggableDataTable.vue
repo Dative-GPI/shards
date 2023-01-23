@@ -240,15 +240,15 @@ export default class DDraggableDataTable extends Vue {
 
       if (col.fixedFilters != null) {
         const value = col.fixedFilters.map(
-          (v): FilterValue => ({
+          (ff): FilterValue => ({
             hidden: false,
-            text: (v && v.toString()) || "—",
-            value: v || null,
+            text: (ff.text && ff.text.toString()) || "—",
+            value: ff.value || null,
 
             filter: col.methodFilter != null ? col.methodFilter : (value, item) => {
               item = [item].flat();
               return Array.isArray(item) ?
-                item.includes(v) || (!v && item.length == 0) : (!v && !item) || v == item;
+                item.includes(ff.value) || (!ff.value && item.length == 0) : (!ff.value && !item) || ff.value == item;
             }
           })
         );

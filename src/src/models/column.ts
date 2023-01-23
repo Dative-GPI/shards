@@ -16,7 +16,7 @@ export interface Column {
     sort?: (a: any, b: any) => number;
 
     filterable?: boolean;
-    fixedFilters?: any[];
+    fixedFilters?: { value: any, text: string }[];
     methodFilter?: (value: any, item: any) => boolean;
 
     innerValue?: (value: any) => any;

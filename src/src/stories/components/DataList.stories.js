@@ -35,7 +35,9 @@ const Template = (args, { argTypes }) => ({
     `<d-data-list :columns.sync="columnsClone" v-bind="oProps">
 
       <template #table-item.localisation="{ configure, item }">
-          <d-chip-set :editable="configure" v-model="item.localisation" item-text="name" />
+        <v-row no-gutters v-if="item != null">
+          {{ item.first }} {{ item.second }}
+        </v-row>
       </template>
 
       <template #tile-item="{ item }">
@@ -257,16 +259,27 @@ WithFilters.args = {
       sortable: true,
       hidden: false,
       width: 50,
-      index: 0
+      index: 0,
+      fixedFilters: [{ value: "lol", text: "Ah ah ah" }],
+      methodFilter: (value, item) => {
+        return (item != null && item != "");
+      }
     },
     {
       text: 'Serial number',
       value: 'SerialNumber',
       align: 'end',
+      filterable: true,
       sortable: true,
       hidden: false,
       width: 50,
-      index: 1
+      index: 1,
+      methodFilter: (value, item) => {
+        if (item == null) {
+          return value == null;
+        }
+        return item >= value;
+      }
     },
     {
       text: 'Localisation',
@@ -276,14 +289,14 @@ WithFilters.args = {
       index: 6,
       width: 50,
       configurable: true,
-      fixedFilters: ["", "Alsace", "Region parisienne"],
+      fixedFilters: [{ value: 0, text: "" }, { value: 1, text: "Alsace" }, { value: 2, text: "Region parisienne" }],
       methodFilter: (value, item) => {
         if (item == null) {
           return value == null;
         }
         switch (value) {
-          case "Alsace": return item.first === "Strasbourg";
-          case "Region parisienne": return item.first === "Paris";
+          case 1: return item.first === "Strasbourg";
+          case 2: return item.first === "Paris";
         }
       }
     }
