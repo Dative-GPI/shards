@@ -89,8 +89,9 @@
 
                 <d-menu-btn
                   v-if="header.canBeFiltered && filters[header.value]"
-                  v-model="filters[header.value]"
+                  :value="filters[header.value]"
                   :sortable="false"
+                  @input="(value) => toggleFilters(header.value, value)"
                 >
                   <template #activator="{ on }">
                     <d-btn icon v-on="on">
@@ -173,6 +174,9 @@ export default class DDataTable extends Vue {
   @Prop({ required: false, default: false, type: Boolean })
   singleSelect!: boolean;
 
+  @Prop({ required: false, default: true, type: Boolean })
+  handleFilters!: boolean;
+
   @Prop({ required: true })
   items!: Array<any>;
 
@@ -185,15 +189,15 @@ export default class DDataTable extends Vue {
   configured: string | null = null;
 
   // Computed Properties
-  get showDefaultHeader() {
+  get showDefaultHeader(): boolean {
     return !this.hideHeader && this.$vuetify.breakpoint.xs;
   }
 
-  get showCustomHeader() {
+  get showCustomHeader(): boolean {
     return !this.hideHeader && !this.$vuetify.breakpoint.xs;
   }
 
-  get headers() {
+  get headers(): Column[] {
     const visibleColumns = this.columns.filter((c) => !c.hidden);
 
     const sortedVisibleColumns = visibleColumns.sort(
@@ -212,23 +216,33 @@ export default class DDataTable extends Vue {
     });
   }
 
-  get itemsSlots() {
+  get itemsSlots(): Column[] {
     return this.headers.filter((h) => this.$scopedSlots[h.slotName!]);
   }
 
-  get filteredItems() {
-    return this.items.filter((i) => _(this.filters).reduce<boolean>(
-      (include, filterValues, key) => include && this.filterItem(filterValues, i[key]),
-      true
-    ));
+  get filteredItems(): any[] {
+    if (this.handleFilters) {
+      return this.items.filter((i) => _(this.filters).reduce<boolean>(
+        (include, filterValues, key) => include && this.filterItem(filterValues, i[key]),
+        true
+      ));
+    }
+    else {
+      return this.items;
+    }
   }
 
   // Methods
-  mounted() {
+  mounted(): void {
     this.computeFilters();
   }
+  
+  toggleFilters(header: string, value: FilterValue[]): void {
+    this.filters[header] = value;
+    this.$emit("update:filters", this.filters);
+  }
 
-  computeFilters() {
+  computeFilters(): void {
     const filterableHeaders = this.headers.filter((h) => h.canBeFiltered);
     const filterDict: { [key: string]: FilterValue[] } = {};
 
