@@ -248,19 +248,21 @@ export default class DDataTable extends Vue {
 
     for (const col of filterableHeaders) {
       const key = col.value!;
+      const currentFilters = this.filters[key];
 
       if (col.fixedFilters != null) {
         const value = col.fixedFilters.map(
           (ff): FilterValue => ({
-            hidden: false,
-            text: (ff.text && ff.text.toString()) || "—",
-            value: ff.value || null,
+              hidden: currentFilters != null && currentFilters.find(f => f.value == (ff.value || null)) != null ?
+                currentFilters.find(f => f.value == (ff.value || null))!.hidden : false,
+              text: (ff.text && ff.text.toString()) || "—",
+              value: ff.value || null,
 
-            filter: col.methodFilter != null ? col.methodFilter : (value, item) => {
-              item = [item].flat();
-              return Array.isArray(item) ?
-                item.includes(value) || (!value && item.length == 0) : (!value && !item) || value == item;
-            }
+              filter: col.methodFilter != null ? col.methodFilter : (value, item) => {
+                item = [item].flat();
+                return Array.isArray(item) ?
+                  item.includes(value) || (!value && item.length == 0) : (!value && !item) || value == item;
+              }
           })
         );
 
@@ -280,16 +282,17 @@ export default class DDataTable extends Vue {
 
         const value = distinctValues.map(
           (v): FilterValue => ({
-            hidden: false,
-            text: (v && v.toString()) || "—",
-            value: v || null,
+              hidden: currentFilters != null && currentFilters.find(f => f.value == (v || null)) != null ?
+                currentFilters.find(f => f.value == (v || null))!.hidden : false,
+              text: (v && v.toString()) || "—",
+              value: v || null,
 
-            filter: col.methodFilter != null ? col.methodFilter : (value, item) => {
-              item = [item].flat().map(mapToInnerValue);
-              return Array.isArray(item) ?
-                item.includes(v) || (!v && item.length == 0) : (!v && !item) || v == item;
-            }
-          })
+              filter: col.methodFilter != null ? col.methodFilter : (value, item) => {
+                item = [item].flat().map(mapToInnerValue);
+                return Array.isArray(item) ?
+                  item.includes(v) || (!v && item.length == 0) : (!v && !item) || v == item;
+              }
+            })
         );
 
         const sortedValue = value.sort((v1, v2) => {
