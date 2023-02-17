@@ -87,6 +87,7 @@ import DTile from "./components/DTile.vue";
 import DTitle from "./components/DTitle.vue";
 import DToggle from "./components/DToggle.vue";
 import DToggleSet from "./components/DToggleSet.vue";
+import DTooltip from "./components/DTooltip.vue"
 import DSimpleDialog from "./components/DSimpleDialog.vue";
 import DValidationBar from "./components/DValidationBar.vue";
 
@@ -217,6 +218,7 @@ const Shards = {
     vue.component("d-title", DTitle);
     vue.component("d-toggle", DToggle);
     vue.component("d-toggle-set", DToggleSet);
+    vue.component("d-tooltip", DTooltip);
     vue.component("d-simple-dialog", DSimpleDialog);
     vue.component("d-validation-bar", DValidationBar);
 

@@ -21,9 +21,8 @@ export const Default = Template.bind({});
 Default.args = { label: "Button" };
 
 
-// export const Dangerous = Template.bind();
-// Dangerous.args = {
-//   color: "red-4",
-//   class: "black-1--text",
-//   label: "Button"
-// }
+export const Checked = Template.bind({});
+Checked.args = {
+  label: "Button",
+  checked: true
+};

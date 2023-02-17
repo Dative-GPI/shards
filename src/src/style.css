@@ -34,8 +34,7 @@ html {
   border-color: #606060 !important;
 }
 
-
-.d-application.v-application .d-btn.d-btn-checkbox:not(.active) {
+.d-application.v-application .d-btn.d-btn-checkbox {
   border-color: #606060 !important;
 }
 

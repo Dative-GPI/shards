@@ -2,23 +2,28 @@
   <d-btn
     v-bind="$attrs"
     v-on="$listeners"
-    class="d-btn-checkbox"
+    :outlined="true"
+    class="d-btn-checkbox white-1"
+    :icon="icon"
   >
-    <slot> </slot>
-    <template v-for="(index, name) in $slots" v-slot:[name]>
-      <slot :name="name" />
-    </template>
-    <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">
-      <slot :name="name" v-bind="data"></slot>
-    </template>
+    <span class="grey-3--text">
+      <slot></slot>
+    </span>
   </d-btn>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component({
   inheritAttrs: false,
 })
-export default class DBtnCheckbox extends Vue {}
+export default class DBtnCheckbox extends Vue {
+  @Prop({ required: false, default: false })
+  checked!: boolean;
+
+  get icon(): string {
+    return this.$attrs.icon || this.checked ? "mdi-checkbox-marked" : "mdi-checkbox-blank-outline";
+  }
+}
 </script>
