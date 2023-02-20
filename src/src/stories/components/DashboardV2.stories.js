@@ -37,15 +37,15 @@ const Template = (args, {argTypes}) => ({
       this.columnsClone = this.columns;
     },
     methods: {
-        addWidget({templateId, x, y}){
+        addWidget({templateId, x, y, width, height}){
             let template = this.widgetTemplates.find(t => t.id == templateId)
             let widget = {
                 id: "w" + Math.random(100000),
                 templateId: templateId,
                 x,
                 y,
-                width: template.defaultWidth,
-                height: template.defaultHeight,
+                width: width,
+                height: height,
                 meta: {
                     label: template.label,
                     border: true
@@ -54,10 +54,12 @@ const Template = (args, {argTypes}) => ({
             this.widgetsClone.push(widget);
             this.configuredWidgetClone = widget.id;
         },
-        updateWidget({widgetId, x, y}){
+        updateWidget({widgetId, x, y, width, height}){
             let widget = this.widgetsClone.find(w => w.id == widgetId);
             widget.x = x;
             widget.y = y;
+            widget.width = width;
+            widget.height = height;
         },
         getWidget(id){
             return this.widgetsClone.find(w => w.id == id);
