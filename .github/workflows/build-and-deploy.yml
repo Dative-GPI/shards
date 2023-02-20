@@ -14,6 +14,15 @@ jobs:
         with:
           persist-credentials: false
 
+      # Setting .npmrc file up to publish to npm
+      - name: Setting things up 🔧
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.x'
+          registry-url: 'https://registry.npmjs.org'
+          # User or organization
+          scope: '@dative-gpi'
+          
       - name: Install and Build 🔧
         run: |
           cd src
