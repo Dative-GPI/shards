@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="d-draggable"
-    :draggable="draggable"
-    @dragstart="startDrag($event)"
-  >
+  <div :id="id" class="d-draggable" :draggable="draggable">
     <!-- Icon to announce that the tile is draggable -->
     <slot name="icon">
       <d-icon class="grey-2--text drag-icon" v-if="draggable">
@@ -13,30 +9,14 @@
 
     <slot></slot>
 
-    <template v-if="draggable && dragging">
-      <!-- Divs to detect if we drag over the left or the right side of the tile -->
-      <div
-        class="drag-left"
-        @drop="onDrop($event, false)"
-        @dragover.prevent
-        @dragenter.prevent="dragEnter($event, false)"
-        @dragleave.prevent="dragLeave($event, false)"
-        @click.prevent
-      ></div>
-      <div
-        class="drag-right"
-        @drop="onDrop($event, true)"
-        @dragover.prevent
-        @dragenter.prevent="dragEnter($event, true)"
-        @dragleave.prevent="dragLeave($event, true)"
-        @click.prevent
-      ></div>
-    </template>
+    <div class="d-draggable-preview" style="display: none" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
+import interact from "interactjs";
+import { uniqueId } from "lodash";
 
 @Component({})
 export default class DDraggable extends Vue {
@@ -45,50 +25,97 @@ export default class DDraggable extends Vue {
   @Prop({ required: false, default: true })
   draggable!: boolean;
 
-  //    This is used to allow clicks on the slot. Is shared between the DDraggables of a same set
-  @Prop({ required: false, default: true })
-  dragging!: boolean;
+  @Prop({ required: false, default: () => null })
+  index!: number | null;
 
   // Data
   // Computed Properties
+
+  get id() {
+    const suffix =
+      this.index == null ? uniqueId("generated-") : this.index.toString();
+    return `d-draggable-${suffix}`;
+  }
+
   // Methods
 
-  startDrag(evt: DragEvent) {
-    if (!this.draggable) return;
-    if (!evt.dataTransfer) return;
+  mounted() {
+    interact(`#${this.id}`).dropzone({
+      ondragenter: this.onDragEnter,
+      ondragleave: this.onDragLeave,
+      ondrop: this.onDrop,
+    });
 
-    evt.dataTransfer.dropEffect = "move";
-    evt.dataTransfer.effectAllowed = "move";
-
-    this.$emit("dragstart", evt);
-  }
-
-  dragEnter(evt: DragEvent, isRight: boolean) {
-    if (evt.target) (evt.target as HTMLElement).classList.add("dragover");
-  }
-
-  dragLeave(evt: DragEvent, isRight: boolean) {
-    if (evt.target) (evt.target as HTMLElement).classList.remove("dragover");
-  }
-
-  onDrop(evt: DragEvent, isRight: boolean) {
-    if (!this.draggable) return;
-    if (!evt.dataTransfer) return;
-
-    if (evt.target) (evt.target as HTMLElement).classList.remove("dragover");
-
-    this.$emit("drop", {
-      evt: evt,
-      isRight: isRight,
+    interact(`#${this.id}`).draggable({
+      autoScroll: true,
+      modifiers: [
+        interact.modifiers.restrictRect({
+          restriction: "parent",
+          endOnly: true,
+        }),
+      ],
+      listeners: {
+        start: this.onDragStart,
+        move: this.onDragMove,
+        end: this.onDragEnd,
+      },
     });
   }
 
-  mounted() {
-    document.addEventListener("mouseup", this.dragStop.bind(this));
+  onDragEnter(event: any) {
+    const dropzone: HTMLElement = event.target;
+    dropzone.classList.add("dragover");
   }
 
-  dragStop() {
-    this.$emit("dragstop");
+  onDragLeave(event: any) {
+    const dropzone: HTMLElement = event.target;
+    dropzone.classList.remove("dragover");
+  }
+
+  onDrop(event: any) {
+    const dropzone: HTMLElement = event.target;
+
+    if (dropzone.classList.contains("dragover")) {
+      dropzone.classList.remove("dragover");
+      this.$emit("drop", { event: event, index: this.index });
+    }
+  }
+
+  onDragStart(event: any) {
+    const dragged: HTMLElement = event.target;
+    const preview: HTMLElement = dragged.getElementsByClassName("d-draggable-preview")[0] as HTMLElement;
+    
+    dragged.classList.add("d-dragged");
+    preview.style.display = "block";
+
+    this.$emit("dragstart", { event: event, index: this.index });
+  }
+
+  onDragMove(event: any) {
+    const dragged: HTMLElement = event.target;
+    const preview: HTMLElement = dragged.getElementsByClassName("d-draggable-preview")[0] as HTMLElement;
+
+    const transformX =
+      event.dx + parseFloat(preview.getAttribute("data-x") || "0");
+    const transformY =
+      event.dy + parseFloat(preview.getAttribute("data-y") || "0");
+
+    preview.style.transform = `translate(${transformX}px, ${transformY}px)`;
+    preview.setAttribute("data-x", transformX);
+    preview.setAttribute("data-y", transformY);
+  }
+
+  onDragEnd(event: any) {
+    const dragged: HTMLElement = event.target;
+    const preview: HTMLElement = dragged.getElementsByClassName("d-draggable-preview")[0] as HTMLElement;
+
+    dragged.classList.remove("d-dragged");
+    preview.removeAttribute("data-x");
+    preview.removeAttribute("data-y");
+    preview.style.transform = "";
+    preview.style.display = "none";
+
+    this.$emit("dragstop", { event: event, index: this.index });
   }
 }
 </script>
@@ -100,43 +127,24 @@ export default class DDraggable extends Vue {
   margin-right: 4px;
 }
 
-.d-draggable .drag-left,
-.d-draggable .drag-right {
-  position: absolute;
-  width: 50%;
-  height: 100%;
-  top: 0;
-}
-
-.d-draggable .drag-left.dragover::before,
-.d-draggable .drag-right.dragover::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  width: 2px;
-  height: 100%;
-  background-color: var(--v-blue-1-base);
-}
-
-.d-draggable .drag-left {
-  left: 0;
-}
-
-.d-draggable .drag-right {
-  right: 0;
-}
-
-.d-draggable .drag-left.dragover::before {
-  left: -5px;
-}
-
-.d-draggable .drag-right.dragover::before {
-  right: -5px;
+.d-draggable.dragover {
+  box-shadow: 1px 1px 2px 0px black;
 }
 
 .drag-icon {
   position: absolute;
   top: 5px;
   right: 5px;
+}
+
+.d-draggable .d-draggable-preview {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgb(10, 10, 10);
+  opacity: 0.3;
+  z-index: 10;
 }
 </style>

@@ -11,52 +11,56 @@ const Template = (args, { argTypes }) => ({
     components: { DDraggable },
     props: Object.keys(argTypes),
     data: () => ({
-        names: [ "Alice", "Benjamin", "Christopher", "Dylan", "Emily" ],
+        names: ["Alice", "Benjamin", "Christopher", "Dylan", "Emily"],
+        backgrounds: ["aquamarine", "beige", 'coral'],
         dragIndex: -1,
-        draggingClone: false
+        bgIndex: 0
     }),
     computed: {
-      oProps() {
-        const { dragging, ...others } = this.$props;
-        return others
-      }
+        bg() {
+            return this.backgrounds[this.bgIndex % this.backgrounds.length];
+        }
     },
     methods: {
-        dragStart(evt, index) {
-            this.dragIndex = index;
-            this.draggingClone = true;
+        dragStart(evt) {
+            this.dragIndex = evt.index;
         },
-        onDrop({ evt, isRight }, index) {
-            const endIndex = isRight ? index + 1 : index;
-        
-            this.names.splice(endIndex, 0, this.names[this.dragIndex]);
-            const startIndex =
-              endIndex <= this.dragIndex
-                ? this.dragIndex + 1
-                : this.dragIndex;
-            this.names.splice(startIndex, 1);
-        
+        onDrop(evt) {
+            if (this.dragIndex < 0) return;
+
+            const insertOffset = this.dragIndex > evt.index ? 0 : 1;
+            const deleteOffset = this.dragIndex > evt.index ? 1 : 0;
+            this.names.splice(evt.index + insertOffset, 0, this.names[this.dragIndex]);
+            this.names.splice(this.dragIndex + deleteOffset, 1);
+
             this.dragIndex = -1;
-            this.draggingClone = false;
         },
         dragStop() {
             this.dragIndex = -1;
-            this.draggingClone = false;
+        },
+        changeColor() {
+            this.bgIndex++;
         }
     },
     template:
         `
         <div class="d-flex">
             <d-draggable
-                v-bind="oProps"
-                :dragging="draggingClone"
+                v-bind="$attrs"
                 v-for="(name, index) in names" 
-                @dragstart="dragStart($event, index)" 
-                @drop="onDrop($event, index)"
+                @dragstart="dragStart" 
+                @drop="onDrop"
                 @dragstop="dragStop"
+                :index="index"
                 :key="index"
             >
-                <div style="height: 50px; background: aquamarine; padding: 10px">
+                <div :style="{
+                        height: '50px',
+                        background: bg,
+                        padding: '10px'
+                    }"
+                    @click="changeColor"
+                >
                     {{ name }}
                 </div>
             </d-draggable>

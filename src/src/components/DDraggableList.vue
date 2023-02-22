@@ -1,11 +1,11 @@
 <template>
   <div class="d-draggable-list">
-    <d-draggable 
-      :dragging="dragging"
-      v-for="(item, index) in items" 
-      @dragstart="dragStart($event, index)" 
-      @drop="onDrop($event, index)"
+    <d-draggable
+      v-for="(item, index) in items"
+      @dragstart="dragStart($event)"
+      @drop="onDrop($event)"
       @dragstop="dragStop"
+      :index="index"
       :key="'draggable-list-item-' + index"
     >
       <template #icon>
@@ -33,42 +33,39 @@ export default class DDraggableList extends Vue {
 
   // Data
 
-  dragging = false;
   dragIndex = -1;
 
   // Computed Properties
   // Methods
 
-  dragStart(evt: DragEvent, index: number) {
-    this.dragIndex = index;
-    this.dragging = true;
+  dragStart(evt: { event: Event; index: number }) {
+    this.dragIndex = evt.index;
   }
 
-  onDrop(evt: { evt: DragEvent, isRight: boolean }, index: number) {
-    const endIndex = evt.isRight ? index + 1 : index;
+  onDrop(evt: { event: Event; index: number }) {
+    if (this.dragIndex < 0) return;
 
     let newItems = [...this.items];
 
-    newItems.splice(endIndex, 0, newItems[this.dragIndex]);
-    const startIndex = endIndex <= this.dragIndex ? this.dragIndex + 1 : this.dragIndex;
-    newItems.splice(startIndex, 1);
+    const insertOffset = this.dragIndex > evt.index ? 0 : 1;
+    const deleteOffset = this.dragIndex > evt.index ? 1 : 0;
+    newItems.splice(evt.index + insertOffset, 0, newItems[this.dragIndex]);
+    newItems.splice(this.dragIndex + deleteOffset, 1);
 
     this.$emit("change", newItems);
 
     this.dragIndex = -1;
-    this.dragging = false;
   }
 
   dragStop() {
     this.dragIndex = -1;
-    this.dragging = false;
   }
 }
 </script>
 
 <style scoped>
-  .d-draggable-list {
-    display: flex;
-    flex-flow: row wrap;
-  }
+.d-draggable-list {
+  display: flex;
+  flex-flow: row wrap;
+}
 </style>
