@@ -46,7 +46,7 @@ const Template = (args, { argTypes }) => ({
         `
         <div class="d-flex">
             <d-draggable
-                v-bind="$attrs"
+                v-bind="$props"
                 v-for="(name, index) in names" 
                 @dragstart="dragStart" 
                 @drop="onDrop"

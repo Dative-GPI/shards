@@ -63,16 +63,22 @@ export default class DDraggable extends Vue {
   }
 
   onDragEnter(event: any) {
+    if (!this.draggable) return;
+
     const dropzone: HTMLElement = event.target;
     dropzone.classList.add("dragover");
   }
 
   onDragLeave(event: any) {
+    if (!this.draggable) return;
+
     const dropzone: HTMLElement = event.target;
     dropzone.classList.remove("dragover");
   }
 
   onDrop(event: any) {
+    if (!this.draggable) return;
+
     const dropzone: HTMLElement = event.target;
 
     if (dropzone.classList.contains("dragover")) {
@@ -82,6 +88,8 @@ export default class DDraggable extends Vue {
   }
 
   onDragStart(event: any) {
+    if (!this.draggable) return;
+
     const dragged: HTMLElement = event.target;
     const preview: HTMLElement = dragged.getElementsByClassName("d-draggable-preview")[0] as HTMLElement;
     
@@ -92,6 +100,8 @@ export default class DDraggable extends Vue {
   }
 
   onDragMove(event: any) {
+    if (!this.draggable) return;
+
     const dragged: HTMLElement = event.target;
     const preview: HTMLElement = dragged.getElementsByClassName("d-draggable-preview")[0] as HTMLElement;
 
@@ -106,6 +116,8 @@ export default class DDraggable extends Vue {
   }
 
   onDragEnd(event: any) {
+    if (!this.draggable) return;
+
     const dragged: HTMLElement = event.target;
     const preview: HTMLElement = dragged.getElementsByClassName("d-draggable-preview")[0] as HTMLElement;
 

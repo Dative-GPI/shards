@@ -2,6 +2,7 @@
   <div class="d-draggable-list">
     <d-draggable
       v-for="(item, index) in items"
+      :draggable="draggable"
       @dragstart="dragStart($event)"
       @drop="onDrop($event)"
       @dragstop="dragStop"
