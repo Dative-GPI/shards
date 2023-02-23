@@ -1,28 +1,43 @@
 <template>
-  <div class="d-draggable-list">
-    <d-draggable
+  <draggable
+    v-bind="$attrs"
+    :value="items"
+    @input="$emit('change', $event)"
+    :disabled="!draggable"
+    @start="drag = true"
+    @end="drag = false"
+    ghost-class="ghost"
+  >
+    <div
       v-for="(item, index) in items"
-      :draggable="draggable"
-      @dragstart="dragStart($event)"
-      @drop="onDrop($event)"
-      @dragstop="dragStop"
-      :index="index"
+      class="item-container"
+      :class="{
+        'drag-cursor': draggable
+      }"
       :key="'draggable-list-item-' + index"
     >
-      <template #icon>
-        <slot name="icon" />
-      </template>
+      <div class="handle" v-if="draggable">
+        <slot name="handle">
+          <d-icon class="grey-2--text drag-icon"> mdi-drag </d-icon>
+        </slot>
+      </div>
+
       <slot name="item" :item="item">
-        <div>{{ item }}</div>
+        {{ item }}
       </slot>
-    </d-draggable>
-  </div>
+    </div>
+  </draggable>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
+import Draggable from "vuedraggable";
 
-@Component({})
+@Component({
+  components: {
+    Draggable,
+  },
+})
 export default class DDraggableList extends Vue {
   // Properties
 
@@ -34,39 +49,30 @@ export default class DDraggableList extends Vue {
 
   // Data
 
-  dragIndex = -1;
+  drag = false;
 
   // Computed Properties
   // Methods
-
-  dragStart(evt: { event: Event; index: number }) {
-    this.dragIndex = evt.index;
-  }
-
-  onDrop(evt: { event: Event; index: number }) {
-    if (this.dragIndex < 0) return;
-
-    let newItems = [...this.items];
-
-    const insertOffset = this.dragIndex > evt.index ? 0 : 1;
-    const deleteOffset = this.dragIndex > evt.index ? 1 : 0;
-    newItems.splice(evt.index + insertOffset, 0, newItems[this.dragIndex]);
-    newItems.splice(this.dragIndex + deleteOffset, 1);
-
-    this.$emit("change", newItems);
-
-    this.dragIndex = -1;
-  }
-
-  dragStop() {
-    this.dragIndex = -1;
-  }
+  // Watchers
 }
 </script>
 
 <style scoped>
-.d-draggable-list {
-  display: flex;
-  flex-flow: row wrap;
+.item-container {
+  position: relative;
+}
+
+.drag-cursor {
+  cursor: grab;
+}
+
+.drag-icon {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+.ghost {
+  opacity: 0.5;
 }
 </style>

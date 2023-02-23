@@ -10,20 +10,32 @@ export default {
 const Template = (args, { argTypes }) => ({
     components: { DDraggableList },
     props: Object.keys(argTypes),
-    data: () => ({ itemsClone: [] }),
+    data: () => ({
+        itemsClone: [],
+        backgrounds: ["aquamarine", "beige", 'coral'],
+        bgIndex: 0
+    }),
     computed: {
-      oProps() {
-        const { items, ...others } = this.$props;
-        return others
-      }
+        oProps() {
+            const { items, ...others } = this.$props;
+            return others;
+        },
+        bg() {
+            return this.backgrounds[this.bgIndex % this.backgrounds.length];
+        }
+    },
+    methods: {
+        changeColor() {
+            this.bgIndex++;
+        }
     },
     watch: {
-      items(newItems) {
-        this.itemsClone = newItems;
-      }
+        items(newItems) {
+            this.itemsClone = newItems;
+        }
     },
     mounted() {
-        this.itemsClone = this.items
+        this.itemsClone = this.items;
     },
     template:
         `
@@ -31,9 +43,17 @@ const Template = (args, { argTypes }) => ({
                 v-bind="oProps" 
                 :items="itemsClone"
                 @change="itemsClone = $event"
+                class="d-flex"
             >
                 <template #item="{ item }">
-                    <div style="height: 50px; background: aquamarine; padding: 10px">
+                    <div :style="{
+                            height: '50px',
+                            background: bg,
+                            padding: '10px',
+                            margin: '4px',
+                        }"
+                        @click="changeColor"
+                    >
                         {{ item }}
                     </div>
                 </template>
@@ -45,6 +65,6 @@ const Template = (args, { argTypes }) => ({
 export const Default = Template.bind({});
 Default.args = {
     draggable: true,
-    items: [ "Alice", "Benjamin", "Christopher", "Dylan", "Emily" ]
+    items: ["Alice", "Benjamin", "Christopher", "Dylan", "Emily"]
 };
 
