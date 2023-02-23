@@ -49,6 +49,7 @@
           :no-data-text="noDataText"
           :no-results-text="noResultsText"
           :disable-drag="disableDrag"
+          :hide-handle="hideHandle"
           v-if="mode == 'table'"
         >
           <template v-for="(index, name) in scopedSlots" v-slot:[name]="data">
@@ -84,7 +85,7 @@
               >
                 <slot name="tile-item" v-bind="{ index, item }" />
 
-                <div class="handle" v-if="!disableDrag">
+                <div class="handle" v-if="!hideHandle">
                   <slot name="tile-handle">
                     <d-icon class="drag-cursor"> mdi-drag </d-icon>
                   </slot>
