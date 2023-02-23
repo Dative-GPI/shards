@@ -38,7 +38,7 @@
       <draggable
         :value="props.items"
         @input="$emit('update:items', $event)"
-        :disabled="disabledDrag"
+        :disabled="disableDrag"
         ghost-class="ghost"
         tag="tbody"
       >
@@ -119,7 +119,7 @@ export default class DDraggableDataTableVariant extends Vue {
   itemClass!: (item: any) => string;
 
   @Prop({ required: false, default: false, type: Boolean })
-  disabledDrag!: boolean;
+  disableDrag!: boolean;
 
   @Prop({ required: false, default: false, type: Boolean })
   hideHandle!: boolean;

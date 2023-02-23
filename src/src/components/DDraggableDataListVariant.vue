@@ -48,6 +48,7 @@
           :item-key="itemKey"
           :no-data-text="noDataText"
           :no-results-text="noResultsText"
+          :disable-drag="disableDrag"
           v-if="mode == 'table'"
         >
           <template v-for="(index, name) in scopedSlots" v-slot:[name]="data">
@@ -71,7 +72,7 @@
             <draggable
               :value="items"
               @input="$emit('update:items', $event)"
-              :disabled="disabledDrag"
+              :disabled="disableDrag"
               ghost-class="ghost"
               class="row no-gutters align-center"
             >
@@ -83,7 +84,7 @@
               >
                 <slot name="tile-item" v-bind="{ index, item }" />
 
-                <div class="handle" v-if="!disabledDrag">
+                <div class="handle" v-if="!disableDrag">
                   <slot name="tile-handle">
                     <d-icon class="drag-cursor"> mdi-drag </d-icon>
                   </slot>
@@ -151,7 +152,7 @@ export default class DDraggableDataList extends Vue {
   tileClass!: string;
 
   @Prop({ required: false, default: false, type: Boolean })
-  disabledDrag!: boolean;
+  disableDrag!: boolean;
 
   @Prop({ required: false, default: false, type: Boolean })
   hideHandle!: boolean;
