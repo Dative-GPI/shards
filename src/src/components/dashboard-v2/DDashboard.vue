@@ -105,10 +105,10 @@
               </v-list>
             </slot>
           </d-tab-item>
+          <d-tab-item :value="1">
+            <slot name="configuration" v-bind="{ widgetId: configuredWidget }" />
+          </d-tab-item>
           <d-tab-item :value="2">
-            <d-tab-item :value="1">
-              <slot name="configuration" v-bind="{ widgetId: configuredWidget }" />
-            </d-tab-item>
             <slot name="tab-dashboard-properties" v-bind="{ computeLayout }">
               <d-btn @click="computeLayout">Compute Layout</d-btn>
             </slot>
