@@ -1,4 +1,7 @@
 export const Icons: IconsDictionary = {
+  alertsPodiumWidget: {
+    component: () => import("./AlertsPodiumWidget.vue")
+  },
   alertsWidget: {
     component: () => import("./AlertsWidget.vue")
   },
