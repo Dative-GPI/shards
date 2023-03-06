@@ -252,7 +252,7 @@ export default class DDashboardV2 extends Vue {
     if (this.autoColumn) {
       result = this.computedColumns;
     }
-    return this.half ? Math.floor(result / 2) : result;
+    return Math.max(this.minColumns, this.half ? Math.floor(result / 2) : result);
   }
 
   get filtredWidgetTemplates() {
@@ -314,6 +314,12 @@ export default class DDashboardV2 extends Vue {
   }
 
   dragstartWidget(item: Widget, ev: DragEvent) {
+    if(!this.editable)
+    {
+      ev.preventDefault();
+      return;
+    }
+
     this.dragging = true;
     this.draggedId = item.id;
     this.draggedType = "widget";
@@ -326,6 +332,12 @@ export default class DDashboardV2 extends Vue {
   }
 
   dragstartTemplate(item: WidgetTemplate, ev: DragEvent) {
+    if(!this.editable)
+    {
+      ev.preventDefault();
+      return;
+    }
+
     this.dragging = true;
     this.draggedType = "template";
     this.draggedId = item.id;
@@ -336,6 +348,12 @@ export default class DDashboardV2 extends Vue {
   }
 
   dragstartResize(widget: Widget, ev: DragEvent) {
+    if(!this.editable)
+    {
+      ev.preventDefault();
+      return;
+    }
+    
     this.resizing = true;
     this.draggedId = widget.id;
     this.draggedType = "widget";
