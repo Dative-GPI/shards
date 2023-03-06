@@ -49,6 +49,8 @@ export default class DRightDrawer extends Vue {
 }
 
 ::v-deep .d-drawer-header {
+  z-index: 5;
+  width: 100%;
   display: flex;
   flex-wrap: nowrap;
   position: absolute;
