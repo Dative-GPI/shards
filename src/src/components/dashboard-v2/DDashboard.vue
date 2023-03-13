@@ -84,7 +84,7 @@
         </d-tabs>
 
         <d-tabs-items :value="tabs" class="ma-4">
-          <d-tab-item :value="0">
+          <d-tab-item :value="0" eager>
             <slot name="tab-widget-templates">
               <d-search-input v-model="search" />
               <v-list two-line>
@@ -93,22 +93,28 @@
                   <slot name="widget-template"
                     v-bind="{ item, dragstart: ev => dragstartTemplate(item, ev), append: () => append(item) }">
                     <v-list-item-avatar>
-                      <v-icon x-large v-text="item.icon"></v-icon>
+                      <v-icon x-large>
+                        {{ item.icon }}
+                      </v-icon>
                     </v-list-item-avatar>
 
                     <v-list-item-content>
-                      <v-list-item-title v-text="item.label"></v-list-item-title>
-                      <v-list-item-subtitle v-text="item.description"></v-list-item-subtitle>
+                      <v-list-item-title>
+                        {{ item.label }}
+                      </v-list-item-title>
+                      <v-list-item-subtitle>
+                        {{ item.description }}
+                      </v-list-item-subtitle>
                     </v-list-item-content>
                   </slot>
                 </v-list-item>
               </v-list>
             </slot>
           </d-tab-item>
-          <d-tab-item :value="1">
+          <d-tab-item :value="1" eager>
             <slot name="configuration" v-bind="{ widgetId: configuredWidget }" />
           </d-tab-item>
-          <d-tab-item :value="2">
+          <d-tab-item :value="2" eager>
             <slot name="tab-dashboard-properties" v-bind="{ computeLayout }">
               <d-btn @click="computeLayout">Compute Layout</d-btn>
             </slot>
