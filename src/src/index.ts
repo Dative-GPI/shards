@@ -3,6 +3,7 @@ import DAlert from "./components/DAlert.vue";
 import DApp from "./components/DApp.vue";
 import DAutocomplete from "./components/DAutocomplete.vue";
 import DAutocompleteChipSet from "./components/DAutocompleteChipSet.vue";
+import DBadge from "./components/DBadge.vue";
 import DBlurHash from "./components/DBlurHash.vue";
 import DBlurImg from "./components/DBlurImg.vue";
 import DBottomBar from "./components/DBottomBar.vue";
@@ -94,11 +95,6 @@ import DTooltip from "./components/DTooltip.vue"
 import DSimpleDialog from "./components/DSimpleDialog.vue";
 import DValidationBar from "./components/DValidationBar.vue";
 
-import DBaseConfiguration from "./components/dashboard/DBaseConfiguration.vue";
-import DBaseWidget from "./components/dashboard/DBaseWidget.vue";
-import DDashboard from "./components/dashboard/DDashboard.vue";
-import DDashboardCase from "./components/dashboard/DDashboardCase.vue";
-
 import DDashboardV2 from "./components/dashboard-v2/DDashboard.vue"
 
 import AlertLoader from "./components/loaders/AlertLoader.vue";
@@ -137,6 +133,7 @@ const Shards = {
     vue.component("d-app", DApp);
     vue.component("d-autocomplete", DAutocomplete);
     vue.component("d-autocomplete-chip-set", DAutocompleteChipSet)
+    vue.component("d-badge", DBadge);
     vue.component("d-blur-hash", DBlurHash);
     vue.component("d-blur-img", DBlurImg);
     vue.component("d-bottom-bar", DBottomBar);
@@ -227,11 +224,6 @@ const Shards = {
     vue.component("d-tooltip", DTooltip);
     vue.component("d-simple-dialog", DSimpleDialog);
     vue.component("d-validation-bar", DValidationBar);
-
-    vue.component("d-base-configuration", DBaseConfiguration);
-    vue.component("d-base-widget", DBaseWidget);
-    vue.component("d-dashboard", DDashboard);
-    vue.component("d-dashboard-case", DDashboardCase);
 
     vue.component("d-dashboard-v2", DDashboardV2);
 
