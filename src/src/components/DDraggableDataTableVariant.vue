@@ -13,7 +13,8 @@
       <thead>
         <tr>
           <d-draggable-data-header-variant
-            v-for="header in props.headers"
+            v-for="(header, i) in props.headers"
+            :key="i"
             :header="header"
             :every-item="props.everyItem"
             :some-items="props.someItems"
@@ -43,7 +44,8 @@
         tag="tbody"
       >
         <d-draggable-data-row-variant
-          v-for="item in props.items"
+          v-for="(item, i) in props.items"
+          :key="i"
           :item="item"
           :headers="props.headers"
           :item-class="itemClass"
