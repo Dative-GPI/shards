@@ -2,7 +2,12 @@
   <div>
     <slot name="header">
       <v-row no-gutters class="align-center mb-1">
-        <d-search-input v-if="searchable" v-model="searching" class="mr-3" />
+        <d-search-input
+          v-if="searchable"
+          class="mr-3"
+          :value="searching"
+          @input="onSearchingChanged"
+        />
         <d-menu-btn
           v-if="mode == 'table' && !$vuetify.breakpoint.xs"
           :sortable="columnSortable"
@@ -83,7 +88,7 @@
 
 <script lang="ts">
 import _ from "lodash";
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import { Column } from "../models";
 import { NormalizedScopedSlot } from "vue/types/vnode";
@@ -122,6 +127,9 @@ export default class DDraggableDataList extends Vue {
   @Prop({ required: false, default: true, type: Boolean })
   searchable!: boolean;
 
+  @Prop({ required: false, default: "" })
+  search!: string;
+
   @Prop({ required: false, default: true, type: Boolean })
   columnSortable!: boolean;
 
@@ -149,6 +157,18 @@ export default class DDraggableDataList extends Vue {
       this.mode = "table";
     } else {
       this.mode = this.initialMode;
+    }
+  }
+
+  onSearchingChanged(newVal: string) {
+    this.searching = newVal;
+    this.$emit("update:search", newVal);
+  }
+
+  @Watch("search")
+  onSearchChanged(newValue: string, oldValue: string) {
+    if (newValue !== oldValue) {
+      this.onSearchingChanged(this.search);
     }
   }
 }

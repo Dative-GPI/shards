@@ -148,6 +148,7 @@ Default.args = {
           folder: false
       }
   ],
+  search: "",
   itemKey: "id",
   canDrop: (item) => {
     if (item.folder) { return true; }
