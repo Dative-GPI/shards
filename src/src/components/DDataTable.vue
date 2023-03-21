@@ -310,6 +310,6 @@ export default class DDataTable extends Vue {
   }
 
   @Watch("items")
-  inItemsChanged = this.computeFilters;
+  onItemsChanged = this.computeFilters;
 }
 </script>

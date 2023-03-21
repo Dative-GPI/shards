@@ -9,6 +9,15 @@
     @dragleave.prevent="(value) => onDragLeave(value)"
     @click="$emit('click:row', item)"
   >
+    <td v-if="showSelect">
+      <v-row no-gutters align="center" justify="center">
+        <d-simple-checkbox
+          :value="selected"
+          @input="$emit('select', item)"
+        />
+      </v-row>
+    </td>
+
     <td v-for="(header, index) in headers" :key="index">
       <slot :item="item" :name="slotName(header)">
         <v-row no-gutters :justify="alignment(header)">
@@ -26,6 +35,15 @@
     @dragleave.stop="(value) => onDragLeave(value)"
     @click="$emit('click:row', item)"
   >
+    <td v-if="showSelect">
+      <v-row no-gutters align="center" justify="center">
+        <d-simple-checkbox
+          :value="selected"
+          @input="$emit('select', item)"
+        />
+      </v-row>
+    </td>
+
     <td v-for="(header, index) in headers" :key="index">
       <slot :item="item" :name="slotName(header)">
         <v-row no-gutters :justify="alignment(header)">
@@ -51,6 +69,12 @@ export default class DDraggableDataRow extends Vue {
 
   @Prop({ required: false, default: () => () => "" })
   dragOverClass!: (item: any) => string;
+
+  @Prop({ required: false, default: false, type: Boolean })
+  showSelect!: boolean;
+
+  @Prop({ required: false, default: false, type: Boolean })
+  selected!: boolean;
   
   @Prop({ required: false, default: () => ({}) })
   item!: any;
@@ -62,6 +86,9 @@ export default class DDraggableDataRow extends Vue {
 
   get trClasses(): string {
     let classes = `${this.itemClass(this.item)} `;
+    if (this.selected) {
+      classes += "selected-row ";
+    }
     if (this.dragCounter > 0) {
       classes += this.dragOverClass(this.item);
     }
@@ -121,3 +148,9 @@ export default class DDraggableDataRow extends Vue {
   }
 }
 </script>
+
+<style scoped>
+.selected-row {
+  background-color: var(--v-alert-grey-background-base);
+}
+</style>

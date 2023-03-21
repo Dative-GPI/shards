@@ -7,7 +7,10 @@
     :hide-default-header="!showDefaultHeader"
     :headers="headers"
     :items="filteredItems"
+    :show-select="showSelect"
     :single-select="singleSelect"
+    :value="value"
+    @input="(value) => $emit('input', value)"
   >
     <template v-slot:header="{ props, on }" v-if="showCustomHeader">
       <thead>
@@ -48,6 +51,19 @@
                 </span>
               </slot>
 
+              <d-btn
+                v-if="header.configurable"
+                icon
+                @click="configured === header.value ? (configured = null) : (configured = header.value)"
+              >
+                <d-icon
+                  small
+                  :color="configured === header.value ? 'alert-orange' : 'grey-1'"
+                >
+                  {{ configurationIcon }}
+                </d-icon>
+              </d-btn>
+
               <slot :name="`header.${header.value}-left-append`" />
 
               <template v-if="header.sortable || header.canBeFiltered">
@@ -76,8 +92,9 @@
 
                 <d-menu-btn
                   v-if="header.canBeFiltered && filters[header.value]"
-                  v-model="filters[header.value]"
+                  :value="filters[header.value]"
                   :sortable="false"
+                  @input="(value) => toggleFilters(header.value, value)"
                 >
                   <template #activator="{ on }">
                     <d-btn icon v-on="on">
@@ -121,6 +138,9 @@
         :can-drop="canDrop"
         :item-class="itemClass"
         :drag-over-class="dragOverClass"
+        :show-select="showSelect"
+        :selected="isSelected(props.item)"
+        @select="onSelectItem(props.item)"
         @click:row="(item) => $emit('click:row', item)"
         @drag="(item) => $emit('drag', item)"
         @drop="(item, target) => $emit('drop', item, target)"
@@ -167,10 +187,19 @@ export default class DDraggableDataTable extends Vue {
   columnPosition!: string;
 
   @Prop({ required: false, default: false, type: Boolean })
+  showSelect!: boolean;
+
+  @Prop({ required: false, default: false, type: Boolean })
   singleSelect!: boolean;
 
   @Prop({ required: true })
+  itemKey!: string;
+
+  @Prop({ required: true })
   items!: any[];
+
+  @Prop({ required: false, default: () => [] })
+  value!: any[];
 
   @Prop({ required: false, default: false })
   hideHeader!: boolean;
@@ -227,29 +256,56 @@ export default class DDraggableDataTable extends Vue {
   }
 
   // Methods
-  mounted() {
+  mounted(): void {
     this.computeFilters();
   }
 
-  computeFilters() {
+  isSelected(item: any): boolean {
+    return (this.value.find(v => v[this.itemKey] === item[this.itemKey]) != null);
+  }
+
+  onSelectItem(item: any): void {
+    if (this.singleSelect) {
+      this.$emit("input", [item]);
+    }
+    else {
+      let valueCopy = _.cloneDeep(this.value);
+      if (valueCopy.find(v => v[this.itemKey] === item[this.itemKey])) {
+        this.$emit("input", valueCopy.filter(v => v[this.itemKey] !== item[this.itemKey]));
+      }
+      else {
+        valueCopy.push(item);
+        this.$emit("input", valueCopy);
+      }
+    }
+  }
+  
+  toggleFilters(header: string, value: FilterValue[]): void {
+    this.filters[header] = value;
+    this.$emit("update:filters", this.filters);
+  }
+
+  computeFilters(): void {
     const filterableHeaders = this.headers.filter((h) => h.canBeFiltered);
     const filterDict: { [key: string]: FilterValue[] } = {};
 
     for (const col of filterableHeaders) {
       const key = col.value!;
+      const currentFilters = this.filters[key];
 
       if (col.fixedFilters != null) {
         const value = col.fixedFilters.map(
           (ff): FilterValue => ({
-            hidden: false,
-            text: (ff.text && ff.text.toString()) || "—",
-            value: ff.value || null,
+              hidden: currentFilters != null && currentFilters.find(f => f.value == (ff.value || null)) != null ?
+                currentFilters.find(f => f.value == (ff.value || null))!.hidden : false,
+              text: (ff.text && ff.text.toString()) || "—",
+              value: ff.value || null,
 
-            filter: col.methodFilter != null ? col.methodFilter : (value, item) => {
-              item = [item].flat();
-              return Array.isArray(item) ?
-                item.includes(ff.value) || (!ff.value && item.length == 0) : (!ff.value && !item) || ff.value == item;
-            }
+              filter: col.methodFilter != null ? col.methodFilter : (value, item) => {
+                item = [item].flat();
+                return Array.isArray(item) ?
+                  item.includes(value) || (!value && item.length == 0) : (!value && !item) || value == item;
+              }
           })
         );
 
@@ -269,16 +325,17 @@ export default class DDraggableDataTable extends Vue {
 
         const value = distinctValues.map(
           (v): FilterValue => ({
-            hidden: false,
-            text: (v && v.toString()) || "—",
-            value: v || null,
+              hidden: currentFilters != null && currentFilters.find(f => f.value == (v || null)) != null ?
+                currentFilters.find(f => f.value == (v || null))!.hidden : false,
+              text: (v && v.toString()) || "—",
+              value: v || null,
 
-            filter: col.methodFilter != null ? col.methodFilter : (value, item) => {
-              item = [item].flat().map(mapToInnerValue);
-              return Array.isArray(item) ?
-                item.includes(v) || (!v && item.length == 0) : (!v && !item) || v == item;
-            }
-          })
+              filter: col.methodFilter != null ? col.methodFilter : (value, item) => {
+                item = [item].flat().map(mapToInnerValue);
+                return Array.isArray(item) ?
+                  item.includes(v) || (!v && item.length == 0) : (!v && !item) || v == item;
+              }
+            })
         );
 
         const sortedValue = value.sort((v1, v2) => {

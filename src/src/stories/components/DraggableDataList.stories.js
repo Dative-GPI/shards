@@ -43,10 +43,11 @@ const Template = (args, { argTypes }) => ({
       </v-row>
       <v-row no-gutters class="mt-5">
         <d-draggable-data-list
-          v-bind="oProps"
+          :showSelect="true"
           :columns.sync="columnsClone"
           :canDrop="canDrop"
           :dragOverClass="dragOverClass"
+          v-bind="oProps"
           @click:row="itemClick"
         >
           <template #table-item.icon="{ item }">

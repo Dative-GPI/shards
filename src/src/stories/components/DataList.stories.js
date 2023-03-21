@@ -32,8 +32,12 @@ const Template = (args, { argTypes }) => ({
     this.columnsClone = this.columns;
   },
   template:
-    `<d-data-list :columns.sync="columnsClone" v-bind="oProps">
-
+    `<d-data-list
+      :showSelect="true"
+      :singleSelect="true"
+      :columns.sync="columnsClone"
+      v-bind="oProps"
+    >
       <template #table-item.localisation="{ configure, item }">
         <v-row no-gutters v-if="item != null">
           {{ item.first }} {{ item.second }}

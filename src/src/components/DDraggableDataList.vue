@@ -42,6 +42,7 @@
     <div>
       <slot name="table" v-bind="{ items }">
         <d-draggable-data-table
+          v-if="mode == 'table'"
           v-bind="$attrs"
           v-on="$listeners"
           :columns="columns"
@@ -50,7 +51,8 @@
           :item-key="itemKey"
           :no-data-text="noDataText"
           :no-results-text="noResultsText"
-          v-if="mode == 'table'"
+          :value="innerValue"
+          @input="onInput"
         >
           <template v-for="(index, name) in scopedSlots" v-slot:[name]="data">
             <slot :name="'table-' + name" v-bind="data">{{ name }}</slot>
@@ -136,6 +138,21 @@ export default class DDraggableDataList extends Vue {
   @Prop({ required: false, default: "mr-2" })
   tileClass!: string;
 
+  @Prop({ required: false, default: () => [] })
+  value!: any[];
+
+  innerValue: any[] = [];
+
+  @Watch("value")
+  onValueChange(): void {
+    this.innerValue = this.value.slice();
+  }
+
+  onInput(value: any): void {
+    this.innerValue = value;
+    this.$emit('input', this.innerValue);
+  }
+
   mode: "table" | "tile" = "tile";
 
   searching: string = "";
@@ -151,6 +168,8 @@ export default class DDraggableDataList extends Vue {
   }
 
   mounted() {
+    this.onValueChange();
+
     if (this.disableTable) {
       this.mode = "tile";
     } else if (this.disableTiles) {
