@@ -1,7 +1,6 @@
 <template>
   <v-data-table
     v-bind="$attrs"
-    v-on="$listeners"
     class="d-data-table"
     fixed-header
     :hide-default-header="!showDefaultHeader"
@@ -9,8 +8,8 @@
     :items="filteredItems"
     :show-select="showSelect"
     :single-select="singleSelect"
-    :value="value"
-    @input="(value) => $emit('input', value)"
+    :value="innerSelectedItems"
+    @input="(items) => $emit('update:selection', items)"
   >
     <template v-slot:header="{ props, on }" v-if="showCustomHeader">
       <thead>
@@ -152,12 +151,6 @@
         <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">
           <slot :name="name" v-bind="data"></slot>
         </template>
-
-        <template #[`item.data-table-select`]="{ isSelected, select }">
-          <v-row no-gutters class="align-bottom justify-center">
-            <d-simple-checkbox :value="isSelected" @click="select(!isSelected)" />
-          </v-row>
-        </template>
       </d-draggable-data-row>
     </template>
   </v-data-table>
@@ -199,7 +192,7 @@ export default class DDraggableDataTable extends Vue {
   items!: any[];
 
   @Prop({ required: false, default: () => [] })
-  value!: any[];
+  selectedItems!: any[];
 
   @Prop({ required: false, default: false })
   hideHeader!: boolean;
@@ -214,6 +207,8 @@ export default class DDraggableDataTable extends Vue {
   dragOverClass!: (item: any) => string;
 
   // Data
+  innerSelectedItems: any[] = [];
+
   filters: { [key: string]: FilterValue[] } = {};
 
   // Computed Properties
@@ -257,25 +252,25 @@ export default class DDraggableDataTable extends Vue {
 
   // Methods
   mounted(): void {
+    this.innerSelectedItems = _.cloneDeep(this.selectedItems);
+    
     this.computeFilters();
   }
 
   isSelected(item: any): boolean {
-    return (this.value.find(v => v[this.itemKey] === item[this.itemKey]) != null);
+    return (this.innerSelectedItems.find(v => v[this.itemKey] === item[this.itemKey]) != null);
   }
 
   onSelectItem(item: any): void {
     if (this.singleSelect) {
-      this.$emit("input", [item]);
+      this.innerSelectedItems = [item];
     }
     else {
-      let valueCopy = _.cloneDeep(this.value);
-      if (valueCopy.find(v => v[this.itemKey] === item[this.itemKey])) {
-        this.$emit("input", valueCopy.filter(v => v[this.itemKey] !== item[this.itemKey]));
+      if (this.innerSelectedItems.find(v => v[this.itemKey] === item[this.itemKey])) {
+        this.innerSelectedItems = this.innerSelectedItems.filter(v => v[this.itemKey] !== item[this.itemKey]);
       }
       else {
-        valueCopy.push(item);
-        this.$emit("input", valueCopy);
+        this.innerSelectedItems.push(item);
       }
     }
   }
@@ -353,6 +348,11 @@ export default class DDraggableDataTable extends Vue {
   }
 
   @Watch("items")
-  onItemsChanged = this.computeFilters;
+  onItemsChange = this.computeFilters;
+
+  @Watch("selectedItems")
+  onSelectedItemsChange() {
+    this.innerSelectedItems = _.cloneDeep(this.selectedItems);
+  }
 }
 </script>

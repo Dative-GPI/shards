@@ -6,7 +6,7 @@
           v-if="searchable"
           class="mr-3"
           :value="searching"
-          @input="onSearchingChanged"
+          @input="onSearchingChange"
         />
         <d-menu-btn
           v-if="mode == 'table' && !$vuetify.breakpoint.xs"
@@ -51,8 +51,8 @@
           :item-key="itemKey"
           :no-data-text="noDataText"
           :no-results-text="noResultsText"
-          :value="innerValue"
-          @input="onInput"
+          :selected-items="innerValue"
+          @update:selection="onSelectionChange"
         >
           <template v-for="(index, name) in scopedSlots" v-slot:[name]="data">
             <slot :name="'table-' + name" v-bind="data">{{ name }}</slot>
@@ -99,6 +99,7 @@ import { NormalizedScopedSlot } from "vue/types/vnode";
   inheritAttrs: false,
 })
 export default class DDraggableDataList extends Vue {
+  // Properties
   @Prop({ required: true })
   items!: any[];
 
@@ -141,22 +142,14 @@ export default class DDraggableDataList extends Vue {
   @Prop({ required: false, default: () => [] })
   value!: any[];
 
+  // Data
   innerValue: any[] = [];
-
-  @Watch("value")
-  onValueChange(): void {
-    this.innerValue = this.value.slice();
-  }
-
-  onInput(value: any): void {
-    this.innerValue = value;
-    this.$emit('input', this.innerValue);
-  }
 
   mode: "table" | "tile" = "tile";
 
   searching: string = "";
 
+  // Computed
   get scopedSlots() {
     const scopedSlots = _.pickBy(
       this.$scopedSlots,
@@ -167,8 +160,9 @@ export default class DDraggableDataList extends Vue {
     );
   }
 
-  mounted() {
-    this.onValueChange();
+  // Methods
+  mounted(): void {
+    this.innerValue = _.cloneDeep(this.value);
 
     if (this.disableTable) {
       this.mode = "tile";
@@ -179,16 +173,26 @@ export default class DDraggableDataList extends Vue {
     }
   }
 
-  onSearchingChanged(newVal: string) {
+  onSelectionChange(value: any): void {
+    this.innerValue = value;
+    this.$emit('input', this.innerValue);
+  }
+
+  onSearchingChange(newVal: string) {
     this.searching = newVal;
     this.$emit("update:search", newVal);
   }
 
   @Watch("search")
-  onSearchChanged(newValue: string, oldValue: string) {
+  onSearchChange(newValue: string, oldValue: string) {
     if (newValue !== oldValue) {
-      this.onSearchingChanged(this.search);
+      this.onSearchingChange(this.search);
     }
+  }
+
+  @Watch("value")
+  onValueChange(): void {
+    this.innerValue = _.cloneDeep(this.value);
   }
 }
 </script>

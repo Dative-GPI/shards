@@ -48,6 +48,7 @@ const Template = (args, { argTypes }) => ({
           :canDrop="canDrop"
           :dragOverClass="dragOverClass"
           v-bind="oProps"
+          @input="onInput"
           @click:row="itemClick"
         >
           <template #table-item.icon="{ item }">
@@ -169,6 +170,9 @@ Default.args = {
   dragOverBreadcrumbs: (item) => {
     if (item.text != "") { return "f-slateblue-background" }
     return "f-";
+  },
+  onInput: (value) => {
+    console.log(value);
   }
 };
 
