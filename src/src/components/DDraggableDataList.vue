@@ -43,8 +43,6 @@
       <slot name="table" v-bind="{ items }">
         <d-draggable-data-table
           v-if="mode == 'table'"
-          v-bind="$attrs"
-          v-on="$listeners"
           :columns="columns"
           :search="searching"
           :items="items"
@@ -52,7 +50,10 @@
           :no-data-text="noDataText"
           :no-results-text="noResultsText"
           :selected-items="innerValue"
+          :footer-props="footerProps"
           @update:selection="onSelectionChange"
+          v-bind="$attrs"
+          v-on="$listeners"
         >
           <template v-for="(index, name) in scopedSlots" v-slot:[name]="data">
             <slot :name="'table-' + name" v-bind="data">{{ name }}</slot>
@@ -138,6 +139,9 @@ export default class DDraggableDataList extends Vue {
 
   @Prop({ required: false, default: "mr-2" })
   tileClass!: string;
+
+  @Prop({ required: false, default: () => ({ itemsPerPageOptions: [ 10, 30, -1 ] })})
+  footerProps!: { itemsPerPageOptions: number[] };
 
   @Prop({ required: false, default: () => [] })
   value!: any[];

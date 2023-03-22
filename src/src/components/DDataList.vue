@@ -48,15 +48,16 @@
     <div>
       <slot name="table" v-bind="{ items }">
         <d-data-table
-          v-bind="$attrs"
-          v-on="$listeners"
+          v-if="mode == 'table'"
           :columns="columns"
           :search="searching"
           :items="items"
           :item-key="itemKey"
           :no-data-text="noDataText"
           :no-results-text="noResultsText"
-          v-if="mode == 'table'"
+          :footer-props="footerProps"
+          v-bind="$attrs"
+          v-on="$listeners"
         >
           <template v-for="(index, name) in scopedSlots" v-slot:[name]="data">
             <slot :name="'table-' + name" v-bind="data">{{ name }}</slot>
@@ -144,6 +145,9 @@ export default class DDataList extends Vue {
 
   @Prop({ required: false, default: "mr-2" })
   tileClass!: string;
+
+  @Prop({ required: false, default: () => ({ itemsPerPageOptions: [ 10, 30, -1 ] })})
+  footerProps!: { itemsPerPageOptions: number[] };
 
   mode: "table" | "tile" = "tile";
 
