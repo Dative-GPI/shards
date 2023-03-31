@@ -22,8 +22,6 @@
           </template>
         </d-menu-btn>
 
-        <d-btn color="red"/>
-
         <slot name="header-action" />
         <template v-if="!disableTable && !disableTiles">
           <v-spacer />
