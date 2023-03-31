@@ -4,12 +4,13 @@
       <v-row no-gutters class="align-center mb-1">
         <d-search-input
           v-if="searchable"
+          class="mr-2"
           :value="searching"
           @input="onSearchingChange"
         />
         <d-menu-btn
           v-if="mode == 'table' && !$vuetify.breakpoint.xs"
-          class="ml-2"
+          :btn-class="'mr-2'"
           :sortable="columnSortable"
           :value="columns"
           @input="$emit('update:columns', $event)"

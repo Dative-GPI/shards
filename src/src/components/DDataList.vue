@@ -4,12 +4,13 @@
       <v-row no-gutters class="align-center mb-1">
         <d-search-input
           v-if="searchable"
+          class="mr-2"
           :value="searching"
           @input="onSearchingChanged"
         />
         <d-menu-btn
           v-if="mode == 'table' && !$vuetify.breakpoint.xs && !hideColumns"
-          class="ml-2"
+          :btn-class="'mr-2'"
           :sortable="columnSortable"
           :value="columns"
           @input="$emit('update:columns', $event)"
@@ -20,6 +21,9 @@
             </slot>
           </template>
         </d-menu-btn>
+
+        <d-btn color="red"/>
+
         <slot name="header-action" />
         <template v-if="!disableTable && !disableTiles">
           <v-spacer />

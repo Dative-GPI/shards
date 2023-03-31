@@ -1,8 +1,22 @@
 <template>
-  <d-menu offset-y bottom :close-on-content-click="false" v-model="expanded" :ripple="false" min-width="200px">
+  <d-menu
+    bottom
+    offset-y
+    min-width="200px"
+    :ripple="false"
+    :close-on-content-click="false"
+    v-model="expanded"
+  >
     <template #activator="{ on }">
       <slot name="activator" v-bind="{ on }">
-        <d-btn-latch v-bind="$attrs" v-on="on" class="d-columns-btn" icon="mdi-view-week">{{ label }}
+        <d-btn-latch
+          :class="btnClass"
+          class="d-columns-btn"
+          icon="mdi-view-week"
+          v-bind="$attrs"
+          v-on="on"
+        >
+          {{ label }}
         </d-btn-latch>
       </slot>
     </template>
@@ -11,20 +25,40 @@
         <d-search-input :label="searchLabel" v-model="search" />
       </d-list-item>
       <d-list-item>
-        <d-simple-checkbox :ripple="false" class="ma-0 pa-0" :value="allSelected"
-          :indeterminate="!noneSelected && !allSelected" @input="toggleAllColumns()" />
+        <d-simple-checkbox
+          :ripple="false"
+          class="ma-0 pa-0"
+          :value="allSelected"
+          :indeterminate="!noneSelected && !allSelected"
+          @input="toggleAllColumns()"
+        />
         <span class="ml-3">{{ showAllText }}</span>
       </d-list-item>
     </d-list>
     <d-list dense style="max-height: 250px; overflow-y: auto" class="pt-0">
-      <draggable :value="sortedColumns" @input="dropColumn" :disabled="!sortable">
+      <draggable
+        :value="sortedColumns"
+        @input="dropColumn"
+        :disabled="!sortable"
+      >
         <d-list-item v-for="(column, index) in sortedColumns" :key="index">
           <d-icon v-if="sortable" class="d-cursor-drag pr-1">mdi-drag</d-icon>
-          <d-simple-checkbox :ripple="false" class="ma-0 pa-0" :value="!column.hidden" @input="toggleColumn(column)"
-            @click.ctrl="onlyColumn(column)" />
+          <d-simple-checkbox
+            :ripple="false"
+            class="ma-0 pa-0"
+            :value="!column.hidden"
+            @input="toggleColumn(column)"
+            @click.ctrl="onlyColumn(column)"
+          />
           <span class="ml-3 clickable w-100" @click="toggleColumn(column)">
-            <slot name="item"
-              v-bind="{ defaultValue: column[itemText], item: column, on: {click: () => toggleColumn(column)} }">
+            <slot
+              name="item"
+              v-bind="{
+                defaultValue: column[itemText],
+                item: column,
+                on: { click: () => toggleColumn(column) },
+              }"
+            >
               {{ column[itemText] }}
             </slot>
           </span>
@@ -53,6 +87,9 @@ export default class DMenuBtn extends Vue {
 
   @Prop({ required: false, default: "Show all" })
   showAllText!: string;
+
+  @Prop({ required: false, default: "" })
+  btnClass!: string;
 
   @Prop({ required: true })
   value!: Column[];
