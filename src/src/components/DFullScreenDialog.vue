@@ -34,7 +34,7 @@
               {{ left }}
             </slot>
           </d-btn-cancel>
-          <d-btn
+          <d-btn-save
             text
             :icon="rightIcon"
             @click="$emit('click:right')"
@@ -42,7 +42,7 @@
             <slot name="right">
               {{ right }}
             </slot>
-          </d-btn>
+          </d-btn-save>
         </slot>
       </v-card-actions>
     </v-card>
