@@ -4,7 +4,7 @@
     :offset-x="offsetX"
     :offset-y="offsetY"
     :bordered="bordered"
-    v-on="on"
+    v-on="$listeners"
     v-bind="$attrs"
   >
     <slot></slot>
