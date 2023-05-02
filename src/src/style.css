@@ -395,8 +395,11 @@ html {
   transform: translate(-50%, 50%);
 }
 
-/* No uppercase tab */
+.d-tabs {
+  flex: 0 1 auto !important;
+}
 
+/* No uppercase tab */
 .d-tab {
   text-transform: none !important;
 }
