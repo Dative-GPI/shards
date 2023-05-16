@@ -1,0 +1,60 @@
+.d-scrollbarless {
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.d-scrollbarless::-webkit-scrollbar {
+    display: none;
+}
+
+@supports (overflow: overlay) {
+    .d-scrollbarhover {
+        overflow-y: overlay;
+    }
+}
+
+@supports (-moz-appearance:none) {
+    .d-scrollbarhover {
+        overflow-y: scroll;
+    }
+}
+
+@supports not (-moz-appearance:none) {
+    .d-scrollbarmock > * {
+        max-width: calc(100% - 14px) !important;
+    }
+
+    .d-scrollbarmock:hover > * {
+        max-width: 100% !important;
+    }
+}
+
+.d-scrollbarhover::-webkit-scrollbar, .d-scrollbarmock::-webkit-scrollbar {
+    display: block;
+    width: 0;
+}
+
+.d-scrollbarhover:hover::-webkit-scrollbar, .d-scrollbarmock:hover::-webkit-scrollbar {
+    width: 14px;
+}
+
+.d-scrollbarhover::-webkit-scrollbar-button, .d-scrollbarmock::-webkit-scrollbar-button {
+    display: none;
+}
+
+.d-scrollbarhover::-webkit-scrollbar-track, .d-scrollbarmock::-webkit-scrollbar-track,
+.d-scrollbarhover::-webkit-scrollbar-track-piece, .d-scrollbarmock::-webkit-scrollbar-track-piece {
+    background-color: #00000000;
+}
+
+.d-scrollbarhover::-webkit-scrollbar-thumb, .d-scrollbarmock::-webkit-scrollbar-thumb {
+    background-color: #00000040;
+    background-clip: content-box;
+    border: 2px solid #00000000;
+    border-radius: 24px;
+}
+
+.d-scrollbarmock {
+    overflow-y: scroll;
+}

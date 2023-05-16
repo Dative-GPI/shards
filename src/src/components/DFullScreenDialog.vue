@@ -12,7 +12,10 @@
           </slot>
         </d-title>
       </v-card-title>
-      <v-card-text class="d-scrollbarless">
+      <v-card-text
+        style="max-height: calc(100vh - 196px)"
+        class="d-scrollbarmock"
+      >
         <slot> </slot>
         <template v-for="(index, name) in $slots" v-slot:[name]>
           <slot :name="name" />
@@ -77,9 +80,5 @@ export default class DFullScreenDialog extends Vue {
 <style scoped>
 ::v-deep .v-dialog:not(.v-dialog--fullscreen) {
     max-height: calc(100vh - 100px) !important;
-}
-
-.d-scrollbarless {
-  max-height: calc(100vh - 196px) !important;
 }
 </style>

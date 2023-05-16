@@ -58,7 +58,7 @@
     </div>
 
     <v-navigation-drawer v-if="editable" :value="true" right stateless absolute hide-overlay :width="drawerWidth">
-      <div class="ma-1">
+      <div class="mx-1 h-100">
         <d-tabs v-model="tabs" v-bind="tabsProps">
           <d-tab :key="0">
             <slot name="tab-widget-templates-title">
@@ -83,7 +83,11 @@
           </d-tab>
         </d-tabs>
 
-        <d-tabs-items :value="tabs" class="ma-4">
+        <d-tabs-items
+          style="max-height: calc(100% - 46px)"
+          class="ma-2 d-scrollbarhover"
+          :value="tabs"
+        >
           <d-tab-item :value="0" eager>
             <slot name="tab-widget-templates">
               <d-search-input v-model="search" />
