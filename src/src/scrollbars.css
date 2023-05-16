@@ -1,13 +1,3 @@
-.d-scrollbarless {
-    overflow-y: scroll;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
-
-.d-scrollbarless::-webkit-scrollbar {
-    display: none;
-}
-
 @supports (overflow: overlay) {
     .d-scrollbarhover {
         overflow-y: overlay;
