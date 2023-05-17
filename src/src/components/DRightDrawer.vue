@@ -44,7 +44,12 @@ export default class DRightDrawer extends Vue {
   footerHeight: number = 0;
 
   mounted(): void {
-    this.footerHeight = (this.$refs.footer as Vue).$el.clientHeight + (this.$refs.body as HTMLElement).getBoundingClientRect().top - 8;
+    if ((this.$refs.footer as Vue) != null) {
+      this.footerHeight += (this.$refs.footer as Vue).$el.clientHeight;
+    }
+    if ((this.$refs.body as HTMLElement) != null) {
+      this.footerHeight += (this.$refs.body as HTMLElement).getBoundingClientRect().top - 8;
+    }
   }
 }
 </script>
