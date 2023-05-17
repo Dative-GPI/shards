@@ -1,7 +1,7 @@
 <template>
   <div class="d-dashboard" @dragend="dragend">
 
-    <div class="d-dashboard-grid-container" :class="{ editable }"
+    <div class="d-dashboard-grid-container d-scrollbar-fixed" :class="{ editable }"
       :style="editable ? `margin-right: ${drawerWidth}px` : ''">
       <div ref="grid" class="d-dashboard-grid" :class="{ editable }" v-resize="onResize" :style="{
         'background-size': `${backgroundSize}px ${backgroundSize}px`,
@@ -85,7 +85,7 @@
 
         <d-tabs-items
           style="max-height: calc(100% - 46px)"
-          class="ma-2 d-scrollbarhover"
+          class="ma-2 d-scrollbar-hover"
           :value="tabs"
         >
           <d-tab-item :value="0" eager>

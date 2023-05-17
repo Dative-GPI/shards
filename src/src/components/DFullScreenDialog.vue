@@ -14,7 +14,7 @@
       </v-card-title>
       <v-card-text
         style="max-height: calc(100vh - 196px)"
-        class="d-scrollbarmock"
+        class="d-scrollbar-mock"
       >
         <slot> </slot>
         <template v-for="(index, name) in $slots" v-slot:[name]>

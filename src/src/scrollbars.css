@@ -1,50 +1,66 @@
 @supports (overflow: overlay) {
-    .d-scrollbarhover {
+    .d-scrollbar-hover {
         overflow-y: overlay;
     }
 }
 
 @supports (-moz-appearance:none) {
-    .d-scrollbarhover {
+    .d-scrollbar-hover {
         overflow-y: scroll;
     }
 }
 
 @supports not (-moz-appearance:none) {
-    .d-scrollbarmock > * {
+    .d-scrollbar-mock > * {
         max-width: calc(100% - 14px) !important;
     }
 
-    .d-scrollbarmock:hover > * {
+    .d-scrollbar-mock:hover > * {
         max-width: 100% !important;
     }
 }
 
-.d-scrollbarhover::-webkit-scrollbar, .d-scrollbarmock::-webkit-scrollbar {
+.d-scrollbar-hover::-webkit-scrollbar,
+.d-scrollbar-mock::-webkit-scrollbar {
     display: block;
     width: 0;
 }
 
-.d-scrollbarhover:hover::-webkit-scrollbar, .d-scrollbarmock:hover::-webkit-scrollbar {
+.d-scrollbar-hover:hover::-webkit-scrollbar,
+.d-scrollbar-mock:hover::-webkit-scrollbar {
     width: 14px;
 }
 
-.d-scrollbarhover::-webkit-scrollbar-button, .d-scrollbarmock::-webkit-scrollbar-button {
+.d-scrollbar-fixed::-webkit-scrollbar {
+    display: block;
+    width: 14px;
+}
+
+.d-scrollbar-hover::-webkit-scrollbar-button,
+.d-scrollbar-mock::-webkit-scrollbar-button,
+.d-scrollbar-fixed::-webkit-scrollbar-button {
     display: none;
 }
 
-.d-scrollbarhover::-webkit-scrollbar-track, .d-scrollbarmock::-webkit-scrollbar-track,
-.d-scrollbarhover::-webkit-scrollbar-track-piece, .d-scrollbarmock::-webkit-scrollbar-track-piece {
+.d-scrollbar-hover::-webkit-scrollbar-track,
+.d-scrollbar-mock::-webkit-scrollbar-track,
+.d-scrollbar-fixed::-webkit-scrollbar-track,
+.d-scrollbar-hover::-webkit-scrollbar-track-piece,
+.d-scrollbar-mock::-webkit-scrollbar-track-piece,
+.d-scrollbar-fixed::-webkit-scrollbar-track-piece {
     background-color: #00000000;
 }
 
-.d-scrollbarhover::-webkit-scrollbar-thumb, .d-scrollbarmock::-webkit-scrollbar-thumb {
+.d-scrollbar-hover::-webkit-scrollbar-thumb,
+.d-scrollbar-mock::-webkit-scrollbar-thumb,
+.d-scrollbar-fixed::-webkit-scrollbar-thumb {
     background-color: #00000040;
     background-clip: content-box;
     border: 2px solid #00000000;
     border-radius: 24px;
 }
 
-.d-scrollbarmock {
+.d-scrollbar-mock,
+.d-scrollbar-fixed {
     overflow-y: scroll;
 }
