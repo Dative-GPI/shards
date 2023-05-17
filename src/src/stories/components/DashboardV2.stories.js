@@ -109,7 +109,7 @@ const Template = (args, {argTypes}) => ({
 
 export const Default = Template.bind({});
 Default.args = {
-    editable: true,
+    editable: false,
     columns: 10,
     widgetTemplates: [
         {

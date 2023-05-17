@@ -1,57 +1,96 @@
 <template>
   <div class="d-dashboard" @dragend="dragend">
-
-    <div class="d-dashboard-grid-container d-scrollbar-fixed" :class="{ editable }"
-      :style="editable ? `margin-right: ${drawerWidth}px` : ''">
-      <div ref="grid" class="d-dashboard-grid" :class="{ editable }" v-resize="onResize" :style="{
-        'background-size': `${backgroundSize}px ${backgroundSize}px`,
-        width: `${backgroundSize * realColumns}px `,
-        height: `${toPixelPosition(height)}px`,
-        '--nr': height,
-        '--nc': realColumns,
-        '--b': `${spacing}px`
-      }" @dragover.prevent="dragOver" @drop.stop="drop">
-
+    <div
+      class="d-dashboard-grid-container"
+      :class="editable ? 'editable d-scrollbar-fixed': ''"
+      :style="editable ? `margin-right: ${drawerWidth}px` : ''"
+    >
+      <div
+        ref="grid"
+        class="d-dashboard-grid"
+        :class="{ editable }"
+        :style="{
+          'background-size': `${backgroundSize}px ${backgroundSize}px`,
+          width: `${backgroundSize * realColumns}px `,
+          height: `${toPixelPosition(height)}px`,
+          '--nr': height,
+          '--nc': realColumns,
+          '--b': `${spacing}px`
+        }"
+        v-resize="onResize"
+        @dragover.prevent="dragOver"
+        @drop.stop="drop"
+      >
         <template v-if="editable">
-          <div class="d-dashboard-placeholder" v-show="dragging || resizing" :style="{
-            top: `${toPixelPosition(placeholderTop)}px`,
-            left: `${toPixelPosition(placeholderLeft)}px`,
-            width: `${toPixelSize(placeholderWidth)}px`,
-            height: `${toPixelSize(placeholderHeight)}px`
-          }">
-            <slot name="widget-placeholder" v-bind="{
-              width: toPixelSize(placeholderWidth),
-              height: toPixelSize(placeholderHeight)
-            }" />
+          <div
+            class="d-dashboard-placeholder" v-show="dragging || resizing"
+            :style="{
+              top: `${toPixelPosition(placeholderTop)}px`,
+              left: `${toPixelPosition(placeholderLeft)}px`,
+              width: `${toPixelSize(placeholderWidth)}px`,
+              height: `${toPixelSize(placeholderHeight)}px`
+            }"
+          >
+            <slot
+              name="widget-placeholder"
+              v-bind="{
+                width: toPixelSize(placeholderWidth),
+                height: toPixelSize(placeholderHeight)
+              }"
+            />
           </div>
         </template>
 
-        <div class="d-dashboard-widget" v-for="widget in widgets"
+        <div
+          v-for="widget in widgets"
+          class="d-dashboard-widget"
+          :key="widget.id"
+          :draggable="editable"
+          :style="widgetPosition(widget)"
           :class="{ hidden: deferredDragover && widget.id == draggedId && draggedType === 'widget', active: widget.id == configuredWidget }"
-          :key="widget.id" :draggable="editable" :style="widgetPosition(widget)"
-          @dragstart="dragstartWidget(widget, $event)">
-          <d-icon v-if="editable" class="clickable" :draggable="editable" @dragstart.stop="dragstartResize(widget, $event)" size="20"
-            style="position: absolute; right: 4px; bottom: 4px">mdi-resize-bottom-right</d-icon>
-          <v-lazy :width="toPixelSize(widget.width)" :height="toPixelSize(widget.height)" :options="{
-            threshold: .5
-          }">
-            <slot name="widget" v-bind="{
-              item: widget,
-              width: toPixelSize(widget.width),
-              height: toPixelSize(widget.height),
-              configure: () => configure(widget)
-            }" />
+          @dragstart="dragstartWidget(widget, $event)"
+        >
+          <d-icon
+            v-if="editable"
+            size="20"
+            class="clickable"
+            style="position: absolute; right: 4px; bottom: 4px"
+            :draggable="editable"
+            @dragstart.stop="dragstartResize(widget, $event)"
+          >
+            mdi-resize-bottom-right
+          </d-icon>
+          <v-lazy
+            :options="{ threshold: .5 }"
+            :width="toPixelSize(widget.width)"
+            :height="toPixelSize(widget.height)"
+          >
+            <slot
+              name="widget"
+              v-bind="{
+                item: widget,
+                width: toPixelSize(widget.width),
+                height: toPixelSize(widget.height),
+                configure: () => configure(widget)
+              }"
+            />
           </v-lazy>
         </div>
 
 
         <template v-if="editable">
-          <div class="d-dashboard-dragover" ref="dragover" v-show="deferredDragover">
-            <slot name="widget-dragover" v-bind="{
-              draggedId: draggedId,
-              draggedType: draggedType,
-            }">
-            </slot>
+          <div
+            v-show="deferredDragover"
+            class="d-dashboard-dragover"
+            ref="dragover"
+          >
+            <slot
+              name="widget-dragover"
+              v-bind="{
+                draggedId: draggedId,
+                draggedType: draggedType,
+              }"
+            />
           </div>
         </template>
       </div>
@@ -59,7 +98,7 @@
 
     <v-navigation-drawer v-if="editable" :value="true" right stateless absolute hide-overlay :width="drawerWidth">
       <div class="mx-1 h-100">
-        <d-tabs v-model="tabs" v-bind="tabsProps">
+        <d-tabs v-model="tabs" v-bind="tabsProps" class="mb-5">
           <d-tab :key="0">
             <slot name="tab-widget-templates-title">
               <span>
@@ -84,7 +123,7 @@
         </d-tabs>
 
         <d-tabs-items
-          style="max-height: calc(100% - 46px)"
+          style="max-height: calc(100% - 50px)"
           class="ma-2 d-scrollbar-hover"
           :value="tabs"
         >
@@ -92,10 +131,18 @@
             <slot name="tab-widget-templates">
               <d-search-input v-model="search" />
               <v-list two-line>
-                <v-list-item v-for="item in filtredWidgetTemplates" :key="item.id" :draggable="editable"
-                  @dragstart="dragstartTemplate(item, $event)" @dragend="dragend" @click="append(item)">
-                  <slot name="widget-template"
-                    v-bind="{ item, dragstart: ev => dragstartTemplate(item, ev), append: () => append(item) }">
+                <v-list-item
+                  v-for="item in filtredWidgetTemplates"
+                  :key="item.id"
+                  :draggable="editable"
+                  @dragstart="dragstartTemplate(item, $event)"
+                  @dragend="dragend"
+                  @click="append(item)"
+                >
+                  <slot
+                    name="widget-template"
+                    v-bind="{ item, dragstart: ev => dragstartTemplate(item, ev), append: () => append(item) }"
+                  >
                     <v-list-item-avatar>
                       <v-icon x-large>
                         {{ item.icon }}
@@ -324,8 +371,7 @@ export default class DDashboardV2 extends Vue {
   }
 
   dragstartWidget(item: Widget, ev: DragEvent) {
-    if(!this.editable)
-    {
+    if (!this.editable) {
       ev.preventDefault();
       return;
     }
@@ -342,8 +388,7 @@ export default class DDashboardV2 extends Vue {
   }
 
   dragstartTemplate(item: WidgetTemplate, ev: DragEvent) {
-    if(!this.editable)
-    {
+    if (!this.editable) {
       ev.preventDefault();
       return;
     }
@@ -358,8 +403,7 @@ export default class DDashboardV2 extends Vue {
   }
 
   dragstartResize(widget: Widget, ev: DragEvent) {
-    if(!this.editable)
-    {
+    if (!this.editable) {
       ev.preventDefault();
       return;
     }
