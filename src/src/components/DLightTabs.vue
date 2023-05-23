@@ -1,6 +1,6 @@
 <template>
   <div class="d-light-tabs">
-    <div class="d-light-tabs-bar">
+    <div class="d-light-tabs-bar" :class="tabsBarClasses">
       <d-tabs :value="value" v-bind="$attrs" v-on="$listeners" :key="tabNumber">
         <d-tab
           v-for="(item, index) in tabs"
@@ -50,6 +50,9 @@ export default class DLightTabs extends Vue {
 
   @Prop({ required: false, default: true })
   editable!: boolean;
+
+  @Prop({ required: false, default: "" })
+  tabsBarClasses!: string;
 
   get tabNumber() {
     return this.tabs.length;
