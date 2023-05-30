@@ -42,7 +42,10 @@ export const Icons: IconsDictionary = {
     component: () => import("./Locations.vue")
   },
   locationsWidget: {
-    component: () => import("./LocationsWidget.vue"),
+    component: () => import("./LocationsWidget.vue")
+  },
+  mapWidget: {
+    component: () => import("./MapWidget.vue")
   },
   marker: {
     component: () => import("./Marker.vue")
