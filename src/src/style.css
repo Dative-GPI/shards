@@ -69,6 +69,12 @@ html {
   min-height: 40px;
 }
 
+.d-text-wrap {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 .d-outlined-img {
   position: relative;
 }
@@ -214,41 +220,36 @@ html {
   border-right: none;
 }
 
-.d-text-field input::placeholder {
-  font-size: 14px;
-  line-height: 20px;
-}
-
-.d-text-field {
-  font-size: 1rem;
-}
-
 .d-autocomplete {
   font-size: 1rem;
+}
+
+.d-autocomplete .v-label:not(.v-label--active)  {
+  font-size: 14px;
 }
 
 .d-select {
   font-size: 1rem;
 }
 
+.d-select .v-label:not(.v-label--active)  {
+  font-size: 14px;
+}
+
 .d-textarea {
   font-size: 1rem;
 }
 
-
-.d-text-field .v-label:not(.v-label--active) {
-  top: 0px;
-  margin-top: 4px;
-  line-height: 20px;
-  padding-left: 0px;
+.d-textarea .v-label:not(.v-label--active)  {
   font-size: 14px;
 }
 
-.d-text-field .v-label--active {
-  top: 10px;
-  line-height: 20px;
-  /* font-size: 15px; */
-  left: 0px;
+.d-text-field {
+  font-size: 1rem;
+}
+
+.d-text-field .v-label:not(.v-label--active)  {
+  font-size: 14px;
 }
 
 .d-text-field .v-text-field__details {

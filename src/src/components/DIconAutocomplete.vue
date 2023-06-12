@@ -1,31 +1,30 @@
 <template>
-  <d-autocomplete
-    :value="value"
-    @change="$emit('input', $event)"
+  <v-autocomplete
     v-bind="$attrs"
     v-on="$listeners"
+    dense
+    no-filter
+    item-text="label"
+    item-value="code"
     :items="items"
-    :no-filter="true"
     :search-input.sync="search"
+    :menu-props="{ offsetY: true }"
+    :value="value"
   >
     <template #item="{ item }">
-      <d-icon :size="iconSize" style="width: 30px" class="mr-2">
-        {{ item }}
+      <d-icon :size="iconSize" class="mr-2">
+        {{ item.code }}
       </d-icon>
-      <span>{{ sanitize(item) }}</span>
+      <span class="text-body-1 ml-2">
+        {{ item.label }}
+      </span>
     </template>
-    <template #selection="{ item }">
-      <d-icon :size="iconSize" style="width: 30px" class="mr-2">
-        {{ item }}
-      </d-icon>
-      <span>{{ sanitize(item) }}</span>
-    </template>
-    <template #prepend-inner>
-      <d-icon :size="iconSize" v-if="$attrs.value" style="width: 30px" class="mr-4">
-        {{ $attrs.value }}
+    <template #append>
+      <d-icon :size="iconSize" :style="{ paddingTop: '2px' }">
+        {{ value }}
       </d-icon>
     </template>
-  </d-autocomplete>
+  </v-autocomplete>
 </template>
 
 <script lang="ts">
@@ -45,30 +44,28 @@ export default class DIconAutocomplete extends Vue {
 
   search: string = "";
 
-  items: string[] = [];
+  items: {label: string, code: string}[] = [];
 
   searchIcons(search: string) {
     search = this.sanitize(search);
-    this.items = Icons.filter(
-      (i) =>
-        this.sanitize(i.n).includes(search) ||
-        i.t.some((t) => this.sanitize(t).includes(search))
-    ).map((i) => `mdi-${i.n}`)
-    .concat(
-      Object.keys(this.$vuetify.icons.values)
-      .map(i => `$${i}`).filter(
-        i => this.sanitize(i).includes(search)
-      )
-    ).sort((a,b) => this.sanitize(a).localeCompare(this.sanitize(b)));
+    const mdiIcons = Icons
+      .filter((i) => this.sanitize(i.n).includes(search) || i.t.some((t) => this.sanitize(t).includes(search)))
+      .map(i => ({ label: this.sanitize(i.n), code: `mdi-${i.n}` }));
+
+    const shardIcons = Object.keys(this.$vuetify.icons.values)
+      .filter(i => this.sanitize(i).includes(search))
+      .map(i => ({ label: this.sanitize(i), code: `$${i}` }));
+
+    this.items = mdiIcons.concat(shardIcons).sort((a,b) => a.label.localeCompare(b.label));
   }
 
   sanitize(icon: string){
     return icon.replace("mdi-", "")
-            .replace(" ", "-")
-            .replace("$", "")
-            .replace(/([A-Z])/, (a) => "-" + a)
-            .toLowerCase()
-            .trim()
+      .replace(" ", "-")
+      .replace("$", "")
+      .replace(/([A-Z])/, (a) => "-" + a)
+      .toLowerCase()
+      .trim()
   }
 
   mounted() {

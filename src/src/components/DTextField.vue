@@ -1,15 +1,15 @@
 <template>
   <v-text-field
-    class="d-text-field"
-    :class="{nopadding: !editable && !outlined}"
     v-bind="$attrs"
     v-on="$listeners"
-    :outlined="outlined"
-    dense
     flat
-    height="28px"
-    :solo="solo || (!editable && !outlined)"
+    dense
+    class="d-text-field"
+    :outlined="outlined"
+    :height="outlined ? '40px' : '28px'"
     :readonly="!editable || $attrs.readonly"
+    :solo="solo || (!editable && !outlined)"
+    :class="{nopadding: !editable && !outlined}"
   >
     <slot></slot>
     <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">

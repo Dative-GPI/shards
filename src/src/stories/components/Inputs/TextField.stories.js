@@ -14,12 +14,20 @@ const Template = (args, { argTypes }) => ({
 });
 
 //👇 Each story then reuses that template
-export const Default = Template.bind({});
-Default.args = {
+export const SingleLineSolo = Template.bind({});
+SingleLineSolo.args = {
   label: "Text field",
   value: "Blablalb",
   editable: true,
   singleLine: true,
   outlined: false,
   solo: false
+};
+
+export const Outlined = Template.bind({});
+Outlined.args = {
+  label: "Text field",
+  value: "",
+  editable: true,
+  outlined: true
 };

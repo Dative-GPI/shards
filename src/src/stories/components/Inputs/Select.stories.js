@@ -27,3 +27,33 @@ Default.args = {
   editable: true,
   outlined: false
 };
+
+export const Clearable = Template.bind({});
+Clearable.args = { 
+  items: [
+    { key: "S", value: "Select" }, 
+    { key: "T", value: "Toto" }, 
+    { key: "H", value: "Hello" }, 
+    { key: "W", value: "World" }
+  ],
+  value: null,
+  label: "Test",
+  editable: true,
+  clearable: true,
+  outlined: false
+};
+
+export const ClearableOutlined = Template.bind({});
+ClearableOutlined.args = { 
+  items: [
+    { key: "S", value: "Select" }, 
+    { key: "T", value: "Toto" }, 
+    { key: "H", value: "Hello" }, 
+    { key: "W", value: "World" }
+  ],
+  value: null,
+  label: "Test",
+  editable: true,
+  clearable: true,
+  outlined: true
+};
