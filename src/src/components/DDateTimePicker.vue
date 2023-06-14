@@ -13,14 +13,13 @@
 <script lang="ts">
 import { format, parse } from "date-fns";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
 import { DateTimePickingMode, ISO_8601_DATE_FORMAT, ISO_8601_TIME_FORMAT } from "../models";
 
 import BaseDateTimePicker from "./common/BaseDateTimePicker.vue";
 
 @Component({
-  components: {
-    BaseDateTimePicker,
-  },
+  components: { BaseDateTimePicker }
 })
 export default class DDateTimePicker extends Vue {
   // Properties
@@ -44,7 +43,8 @@ export default class DDateTimePicker extends Vue {
   get currentValue(): Date[] {
     if (this.date && !this.time) {
       return [parse(this.date, ISO_8601_DATE_FORMAT, new Date())];
-    } else if (this.date && this.time) {
+    }
+    else if (this.date && this.time) {
       return [parse(
           `${this.date} ${this.time}`,
           `${ISO_8601_DATE_FORMAT} ${ISO_8601_TIME_FORMAT}`,
@@ -56,6 +56,10 @@ export default class DDateTimePicker extends Vue {
   }
 
   // Methods
+  mounted(): void {
+    this.reset();
+  }
+
   onMenuInput(menuValue: boolean): void {
     if (menuValue) {
       this.currentMode = DateTimePickingMode.StartDate;
@@ -81,7 +85,8 @@ export default class DDateTimePicker extends Vue {
     if (!this.value) {
       this.date = "";
       this.time = "";
-    } else {
+    }
+    else {
       this.date = format(this.value, ISO_8601_DATE_FORMAT);
       this.time = format(this.value, ISO_8601_TIME_FORMAT);
     }

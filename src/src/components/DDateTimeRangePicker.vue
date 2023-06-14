@@ -15,15 +15,14 @@
 
 <script lang="ts">
 import { format, parse } from "date-fns";
-import { Component, Prop, Ref, Vue, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
 import { DateTimePickingMode, ISO_8601_DATE_FORMAT, ISO_8601_TIME_FORMAT } from "../models";
 
 import BaseDateTimePicker from "./common/BaseDateTimePicker.vue";
 
 @Component({
-  components: {
-    BaseDateTimePicker,
-  },
+  components: { BaseDateTimePicker }
 })
 export default class DDateTimeRangePicker extends Vue {
   // Properties
@@ -46,7 +45,8 @@ export default class DDateTimeRangePicker extends Vue {
 
     if (this.startDate && !this.startTime) {
       dates.push(parse(this.startDate, ISO_8601_DATE_FORMAT, new Date()));
-    } else if (this.startDate && this.startTime) {
+    }
+    else if (this.startDate && this.startTime) {
       dates.push(
         parse(
           `${this.startDate} ${this.startTime}`,
@@ -58,7 +58,8 @@ export default class DDateTimeRangePicker extends Vue {
 
     if (this.endDate && !this.endTime) {
       dates.push(parse(this.endDate, ISO_8601_DATE_FORMAT, new Date()));
-    } else if (this.endDate && this.endTime) {
+    }
+    else if (this.endDate && this.endTime) {
       dates.push(
         parse(
           `${this.endDate} ${this.endTime}`,
@@ -118,7 +119,8 @@ export default class DDateTimeRangePicker extends Vue {
       this.startTime = "";
       this.endDate = "";
       this.endTime = "";
-    } else {
+    }
+    else {
       const start = this.value[0];
       const end = this.value[1];
 
