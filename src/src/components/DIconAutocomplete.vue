@@ -1,5 +1,6 @@
 <template>
   <v-autocomplete
+    class="d-autocomplete"
     v-bind="$attrs"
     v-on="$listeners"
     dense

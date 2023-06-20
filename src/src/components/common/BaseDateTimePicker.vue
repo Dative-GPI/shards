@@ -11,6 +11,7 @@
       <template #activator="{ on, attrs }">
         <slot name="activator" :on="on" :attrs="attrs">
           <v-text-field
+            class="d-text-field"
             v-model="displayValue"
             :label="label"
             :rules="$attrs.rules"
@@ -32,6 +33,7 @@
       >
         <v-date-picker
           v-if="selectedDates.length == 2"
+          class="d-text-field"
           range
           :value="selectedDates"
           :min="minDateString"
@@ -41,6 +43,7 @@
         />
         <v-date-picker
           v-else
+          class="d-text-field"
           :value="startDate"
           :min="minDateString"
           :max="maxDateString"
@@ -65,6 +68,7 @@
         v-if="mode == DateTimePickingMode.EndDate"
       >
         <v-date-picker
+          class="d-text-field"
           range
           :value="[startDate]"
           :min="startDate"

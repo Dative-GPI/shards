@@ -1,14 +1,36 @@
 <template>
-  <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
-    min-width="auto" :disabled="!editable">
+  <v-menu
+    transition="scale-transition"
+    min-width="auto"
+    offset-y
+    :close-on-content-click="false"
+    :disabled="!editable"
+    :nudge-right="40"
+    v-model="menu"
+  >
     <template v-slot:activator="{ on, attrs }">
-      <d-text-field :value="formattedDate" :class="contentClass" :label="label" :editable="editable"
-        prepend-icon="mdi-calendar" :readonly="true" :clearable="clearable" v-bind="attrs" v-on="on"
-        @click:clear="$emit('input', null)">
+      <d-text-field
+        prepend-icon="mdi-calendar"
+        class="d-text-field"
+        :value="formattedDate"
+        :clearable="clearable"
+        :class="contentClass"
+        :editable="editable"
+        :readonly="true"
+        :label="label"
+        v-bind="attrs"
+        v-on="on"
+        @click:clear="$emit('input', null)"
+      >
       </d-text-field>
     </template>
-    <v-date-picker :value="stringCleanDate" @change="onDateChanged" class="d-date-picker" v-bind="$attrs"
-      v-on="$listeners">
+    <v-date-picker
+      class="d-text-field"
+      :value="stringCleanDate"
+      v-on="$listeners"
+      v-bind="$attrs"
+      @change="onDateChanged"
+    >
       <slot> </slot>
       <template v-for="(index, name) in $slots" v-slot:[name]>
         <slot :name="name" />

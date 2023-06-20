@@ -4,7 +4,7 @@
     v-on="$listeners"
     :input-value="$attrs.value"
     @change="$emit('input', !!$event)"
-    class="d-switch"
+    class="d-switch d-text-field"
     inset
     dense
     hide-details
