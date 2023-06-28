@@ -1,15 +1,16 @@
 <template>
   <v-switch
+    v-if="editable"
     v-bind="$attrs"
-    v-on="$listeners"
-    :input-value="$attrs.value"
-    @change="$emit('input', !!$event)"
     class="d-switch d-text-field"
+    color="alert-green"
+    hide-details
     inset
     dense
-    hide-details
-    v-if="editable"
-    color="alert-green"
+    :ripple="false"
+    :input-value="$attrs.value"
+    @change="$emit('input', !!$event)"
+    v-on="$listeners"
   >
     <slot></slot>
     <template v-for="(index, name) in $slots" v-slot:[name]>
@@ -19,13 +20,16 @@
       <slot :name="name" v-bind="data"></slot>
     </template>
   </v-switch>
-  <div v-else style="height: 24px;">
-    <d-icon size="24" :dense="false" v-if="$attrs.value" :color="activeColor"
-      >mdi-check-circle</d-icon
-    >
-    <d-icon size="24" :dense="false" v-else :color="inactiveColor"
-      >mdi-cancel</d-icon
-    >
+  <div class="d-flex align-center d-switch-uneditable" v-else>
+    <d-icon v-if="$attrs.value" :color="activeColor">
+      mdi-check-circle
+    </d-icon>
+    <d-icon v-else :color="inactiveColor">
+      mdi-cancel
+    </d-icon>
+    <span v-if="$attrs.label != null" class="text-body-1 ml-2">
+      {{ $attrs.label }}
+    </span>
   </div>
 </template>
 
@@ -46,3 +50,9 @@ export default class DSwitch extends Vue {
   inactiveColor!: string;
 }
 </script>
+
+<style scoped>
+.d-switch-uneditable {
+  height: 28px !important;
+}
+</style>
