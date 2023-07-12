@@ -5,11 +5,17 @@
     v-on="$listeners"
     dense
     no-filter
+    height="28px"
     item-text="label"
     item-value="code"
-    :items="items"
-    :search-input.sync="search"
+    :class="{ nopadding: !editable && !outlined }"
     :menu-props="{ offsetY: true }"
+    :solo="!editable && !outlined"
+    :flat="!editable && !outlined"
+    :search-input.sync="search"
+    :readonly="!editable"
+    :outlined="outlined"
+    :items="items"
     :value="value"
   >
     <template #item="{ item }">
@@ -39,6 +45,12 @@ import { Icons } from "../icons-meta";
 export default class DIconAutocomplete extends Vue {
   @Prop({ required: false })
   value!: string;
+
+  @Prop({ required: false, default: false, type: Boolean })
+  outlined!: boolean;
+
+  @Prop({ required: false, default: true })
+  editable!: boolean;
 
   @Prop({ required: false, default: 20 })
   iconSize!: number;
