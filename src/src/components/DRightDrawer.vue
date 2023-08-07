@@ -7,25 +7,26 @@
     class="pa-2"
     v-on="$listeners"
   >
-    <div class="d-drawer-header d-flex align-start justify-start mb-5">
+    <div
+      class="d-drawer-header mb-5"
+      :style="`background-color: var(--v-${color}-base);`"
+    >
       <d-btn icon @click="$emit('input', false)">
         <d-icon large>
           mdi-chevron-right
         </d-icon>
       </d-btn>
-      <slot name="title">
-        <d-title class="ml-2">
-          {{ title }}
-        </d-title>
-      </slot>
+      <d-title class="ml-2">
+        {{ title }}
+      </d-title>
     </div>
 
-    <div
-      class="d-scrollbar"
-      :style="`height: ${height};`"
+    <d-fading-container
+      :height="height"
+      :color="color"
     >
       <slot></slot>
-    </div>
+    </d-fading-container>
   </v-navigation-drawer>
 </template>
 
@@ -39,14 +40,17 @@ export default class DRightDrawer extends Vue {
 
   @Prop({ required: false, default: "calc(100% - 56px)" })
   height!: string;
+
+  @Prop({ required: false, default: "white-1" })
+  color!: string;
 }
 </script>
 
 <style scoped>
 .d-drawer-header {
-  background-color: var(--v-white-1-base);
   position: sticky;
   display: flex;
+  align-items: center;
   top: 0;
 }
 </style>

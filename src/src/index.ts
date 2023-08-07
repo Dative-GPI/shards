@@ -50,6 +50,7 @@ import DExpansionPanel from "./components/DExpansionPanel.vue";
 import DExpansionPanelContent from "./components/DExpansionPanelContent.vue";
 import DExpansionPanelHeader from "./components/DExpansionPanelHeader.vue";
 import DExpansionPanels from "./components/DExpansionPanels.vue";
+import DFadingContainer from "./components/DFadingContainer.vue";
 import DFullScreenDialog from "./components/DFullScreenDialog.vue";
 import DGrid from "./components/DGrid.vue";
 import DIcon from "./components/DIcon.vue";
@@ -182,6 +183,7 @@ const Shards = {
     vue.component("d-expansion-panel-content", DExpansionPanelContent);
     vue.component("d-expansion-panel-header", DExpansionPanelHeader);
     vue.component("d-expansion-panels", DExpansionPanels);
+    vue.component("d-fading-container", DFadingContainer);
     vue.component("d-full-screen-dialog", DFullScreenDialog);
     vue.component("d-grid", DGrid);
     vue.component("d-icon", DIcon);
