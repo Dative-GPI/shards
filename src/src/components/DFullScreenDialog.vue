@@ -12,17 +12,16 @@
           </slot>
         </d-title>
       </v-card-title>
-      <v-card-text
-        class="d-scrollbar"
-        style="max-height: calc(100vh - 196px)"
-      >
-        <slot> </slot>
-        <template v-for="(index, name) in $slots" v-slot:[name]>
-          <slot :name="name" />
-        </template>
-        <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">
-          <slot :name="name" v-bind="data"></slot>
-        </template>
+      <v-card-text>
+        <d-fading-container height="calc(100vh - 220px)">
+          <slot> </slot>
+          <template v-for="(index, name) in $slots" v-slot:[name]>
+            <slot :name="name" />
+          </template>
+          <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">
+            <slot :name="name" v-bind="data"></slot>
+          </template>
+        </d-fading-container>
       </v-card-text>
       <v-card-actions>
         <slot name="actions">
