@@ -1,5 +1,12 @@
 <template>
-  <v-navigation-drawer app right temporary v-on="$listeners" v-bind="$attrs" class="pa-2">
+  <v-navigation-drawer
+    v-bind="$attrs"
+    app
+    right
+    temporary
+    class="pa-2"
+    v-on="$listeners"
+  >
     <div class="d-drawer-header">
       <slot name="header">
         <div class="d-flex align-start justify-start mb-5">
@@ -21,10 +28,10 @@
 
     <div
       ref="body"
-      class="d-scrollbar-mock"
+      class="d-scrollbar"
       :style="`max-height: calc(100% - ${footerHeight}px);`"
     >
-      <slot></slot>
+        <slot></slot>
     </div>
 
     <v-footer ref="footer" absolute v-if="$scopedSlots['actions']" color="white-1">
