@@ -7,36 +7,25 @@
     class="pa-2"
     v-on="$listeners"
   >
-    <div class="d-drawer-header">
-      <slot name="header">
-        <div class="d-flex align-start justify-start mb-5">
-          <d-btn icon @click="$emit('input', false)">
-            <v-icon large>
-              mdi-chevron-right
-            </v-icon>
-          </d-btn>
-          <slot name="title-outer">
-            <d-title class="ml-2">
-              <slot name="title">
-                {{ title }}
-              </slot>
-            </d-title>
-          </slot>
-        </div>
+    <div class="d-drawer-header d-flex align-start justify-start mb-5">
+      <d-btn icon @click="$emit('input', false)">
+        <d-icon large>
+          mdi-chevron-right
+        </d-icon>
+      </d-btn>
+      <slot name="title">
+        <d-title class="ml-2">
+          {{ title }}
+        </d-title>
       </slot>
     </div>
 
     <div
-      ref="body"
       class="d-scrollbar"
-      :style="`max-height: calc(100% - ${footerHeight}px);`"
+      :style="`height: ${height};`"
     >
-        <slot></slot>
+      <slot></slot>
     </div>
-
-    <v-footer ref="footer" absolute v-if="$scopedSlots['actions']" color="white-1">
-      <slot name="actions"></slot>
-    </v-footer>
   </v-navigation-drawer>
 </template>
 
@@ -48,16 +37,8 @@ export default class DRightDrawer extends Vue {
   @Prop({ required: false, default: "" })
   title!: string;
 
-  footerHeight: number = 0;
-
-  mounted(): void {
-    if ((this.$refs.footer as Vue) != null) {
-      this.footerHeight += (this.$refs.footer as Vue).$el.clientHeight;
-    }
-    if ((this.$refs.body as HTMLElement) != null) {
-      this.footerHeight += (this.$refs.body as HTMLElement).getBoundingClientRect().top - 8;
-    }
-  }
+  @Prop({ required: false, default: "calc(100% - 56px)" })
+  height!: string;
 }
 </script>
 

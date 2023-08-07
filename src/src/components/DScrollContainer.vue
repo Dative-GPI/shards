@@ -3,7 +3,7 @@
     v-bind="$attrs"
     fluid
     class="ma-0 px-0 pt-0 d-scrollbar"
-    :style="`max-height: ${height};`"
+    :style="`height: ${height};`"
   >
     <slot></slot>
   </v-container>
