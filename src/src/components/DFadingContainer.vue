@@ -2,7 +2,7 @@
   <v-container
     v-bind="$attrs"
     fluid
-    class="pa-0 ma-0 d-fading-container"
+    class="pa-0 ma-0 pr-1 d-fading-container"
     :style="`height: ${height}; background-color: var(--v-${color}-base)`"
   >
     <v-container fluid class="pa-0 ma-0 d-fading-content">

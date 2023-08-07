@@ -121,7 +121,6 @@ import { Colors } from "./colors";
 import * as Models from "./models";
 
 import "./style.css";
-import "./scrollbars.css";
 import '@fontsource/open-sans'
 import '@fontsource/montserrat'
 

@@ -17,7 +17,10 @@ const Template = (args, { argTypes }) => ({
             <d-btn @click.stop="drawer = !drawer">
                 Toggle
             </d-btn>
-            <div class="mt-4" v-for="n in 60" :key="n">Bonjour</div>
+            <div class="mt-4" v-for="n in 60" :key="n">
+            Bonjour
+            <v-divider />
+            </div>
 
             <d-right-drawer v-bind="$props" v-model="drawer" >
                 <div>

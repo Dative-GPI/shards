@@ -2,7 +2,7 @@
   <v-container
     v-bind="$attrs"
     fluid
-    class="pa-0 ma-0 d-scroll-container"
+    class="pa-0 ma-0 pr-1 d-scroll-container"
     :style="`height: ${height}; background-color: var(--v-${color}-base)`"
   >
       <slot></slot>
