@@ -1,7 +1,7 @@
 <template>
   <div class="d-dashboard" @dragend="dragend">
     <div
-      class="d-dashboard-grid-container d-dashboard-container"
+      class="d-dashboard-container"
       :class="editable ? 'editable': ''"
       :style="editable ? `margin-right: ${drawerWidth}px` : ''"
     >
@@ -767,25 +767,62 @@ interface WidgetPositions {
 </script>
 
 <style scoped>
+.d-dashboard {
+  position: relative;
+}
+
 .d-dashboard-container {
-    overflow-y: scroll;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
+.d-dashboard-container.editable {
+  overflow-y: auto !important;
+  overflow-x: auto !important;
+  height: 100%;
 }
 
 .d-dashboard-container::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+  width: 8px;
+  height: 8px;
 }
 
 .d-dashboard-container::-webkit-scrollbar-track {
-    background-color: #00000000;
+  background-color: #00000000;
 }
 
 .d-dashboard-container::-webkit-scrollbar-thumb {
-    border-radius: 5px;
-    background-color: #00000000;
+  border-radius: 5px;
+  background-color: #00000000;
 }
 
 .d-dashboard-container:hover::-webkit-scrollbar-thumb {
-    background-color: #00000022;
+  background-color: #00000022;
+}
+
+.d-dashboard-grid {
+  position: relative;
+}
+
+.d-dashboard-grid.editable {
+  background: 
+    conic-gradient(from 90deg at var(--b) var(--b),
+    var(--v-alert-grey-background-base) 90deg,#0000 0) calc(-1*var(--b)) calc(-1*var(--b))/
+      calc(100%/var(--nc)) calc(100%/var(--nr));
+}
+
+.d-dashboard-widget {
+  position: absolute;
+  background-color: white;
+}
+
+.d-dashboard-placeholder {
+  position: absolute;
+  background-color: var(--v-alert-grey-background-darken2);
+}
+
+.d-dashboard-dragover {
+  position: absolute;
+  background-color: white;
 }
 </style>

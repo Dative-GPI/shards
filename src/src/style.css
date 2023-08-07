@@ -607,42 +607,6 @@ textarea {
   caret-color: #444;
 }
 
-.d-dashboard-grid-container.editable {
-  overflow-y: auto;
-  overflow-x: auto;
-  height: 100%;
-}
-
-.d-dashboard {
-  position: relative;
-}
-
-.d-dashboard-grid {
-  position: relative;
-}
-
-.d-dashboard-grid.editable {
-  background: 
-    conic-gradient(from 90deg at var(--b) var(--b),
-    var(--v-alert-grey-background-base) 90deg,#0000 0) calc(-1*var(--b)) calc(-1*var(--b))/
-      calc(100%/var(--nc)) calc(100%/var(--nr));
-}
-
-.d-dashboard-widget {
-  position: absolute;
-  background-color: white;
-}
-
-.d-dashboard-placeholder {
-  position: absolute;
-  background-color: var(--v-alert-grey-background-darken2);
-}
-
-.d-dashboard-dragover {
-  position: absolute;
-  background-color: white;
-}
-
 .d-card-border {
   border: 2px solid var(--v-card-base);
 }
