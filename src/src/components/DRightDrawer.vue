@@ -17,7 +17,9 @@
         </d-icon>
       </d-btn>
       <d-title class="ml-2">
-        {{ title }}
+        <slot name="title">
+          {{ title }}
+        </slot>
       </d-title>
     </div>
 
