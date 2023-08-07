@@ -1,4 +1,5 @@
 import DashboardV2 from "@/components/dashboard-v2/DDashboard.vue";
+import DFadingContainer from "@/components/DFadingContainer.vue";
 
 export default {
     title: "Components/DashboardV2",
@@ -6,7 +7,7 @@ export default {
 }
 
 const Template = (args, {argTypes}) => ({
-    components: { DashboardV2 },
+    components: { DashboardV2, DFadingContainer },
     props: Object.keys(argTypes),
     data: () => ({ widgetsClone: [], columnsClone: 10, configuredWidgetClone: "" }),
     watch: {
@@ -67,44 +68,41 @@ const Template = (args, {argTypes}) => ({
     },
     template:
       `
-      <div>
-        <div style="background-color: whitesmoke; height: 50px; width: 100%; margin-bottom: 10px;">
-        </div>
-        <d-dashboard-v2
-            :widget-templates="widgetTemplates"
-            :widgets="smartWidgets" 
-            :columns.sync="columnsClone"
-            :configured-widget.sync="configuredWidgetClone"
-            v-bind="oProps"
-            @add="addWidget"
-            @update="updateWidget"
-            :style="editable ? 'height: 70vh; overflow-y: auto' : ''"
-            >
+      <d-fading-container height="calc(100vh)">
+        <v-container fluid class="ma-0 pa-0">
+            <d-dashboard-v2
+                :widget-templates="widgetTemplates"
+                :widgets="smartWidgets" 
+                :columns.sync="columnsClone"
+                :configured-widget.sync="configuredWidgetClone"
+                v-bind="oProps"
+                @add="addWidget"
+                @update="updateWidget"
+                :style="editable ? 'height: calc(100vh - 50px);' : ''"
+                >
 
-            <template #widget="{ item, configure, remove }">
-                <div class="h-100 w-100" :class="{'d-card-border': item.meta.border || item.hideBorders === false}">
-                    <d-btn v-if="editable" @click="configure">Configure</d-btn>
-                    ({{ item.x }}, {{ item.y}}) [{{ item.width }}, {{ item.height}}] 
-                </div>
-            </template>
-
-            <template #widget-dragover="props">
-                {{ props }}
-            </template>
-
-            <template #configuration="{ widgetId }">
-                <template  v-if="getWidget(widgetId)">
-                    <d-text-field class="mt-5" label="configuration" v-model="getWidget(widgetId).meta.label" />
-                    <d-text-field type="number" min="1" :max="columnsClone" class="mt-5" label="width" v-model.number="getWidget(widgetId).width" />
-                    <d-text-field type="number" min="1" :max="columnsClone" class="mt-5" label="height" v-model.number="getWidget(widgetId).height" />
-                    <d-switch class="mx-1 mt-3" label="border" v-model="getWidget(widgetId).meta.border" />
+                <template #widget="{ item, configure, remove }">
+                    <div class="h-100 w-100" :class="{'d-card-border': item.meta.border || item.hideBorders === false}">
+                        <d-btn v-if="editable" @click="configure">Configure</d-btn>
+                        ({{ item.x }}, {{ item.y}}) [{{ item.width }}, {{ item.height}}] 
+                    </div>
                 </template>
-            </template>
-        
-        </d-dashboard-v2>
-        <div style="background-color: whitesmoke; height: 50px; width: 100%; margin-top: 10px;">
-        </div>
-    </div>`,
+
+                <template #widget-dragover="props">
+                    {{ props }}
+                </template>
+
+                <template #configuration="{ widgetId }">
+                    <template  v-if="getWidget(widgetId)">
+                        <d-text-field class="mt-5" label="configuration" v-model="getWidget(widgetId).meta.label" />
+                        <d-text-field type="number" min="1" :max="columnsClone" class="mt-5" label="width" v-model.number="getWidget(widgetId).width" />
+                        <d-text-field type="number" min="1" :max="columnsClone" class="mt-5" label="height" v-model.number="getWidget(widgetId).height" />
+                        <d-switch class="mx-1 mt-3" label="border" v-model="getWidget(widgetId).meta.border" />
+                    </template>
+                </template>
+            </d-dashboard-v2>
+        </v-container>
+    </d-fading-container>`,
 })
 
 export const Default = Template.bind({});

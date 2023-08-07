@@ -1,8 +1,8 @@
 <template>
   <div class="d-dashboard" @dragend="dragend">
     <div
-      class="d-dashboard-grid-container"
-      :class="editable ? 'editable d-scrollbar-fixed': ''"
+      class="d-dashboard-grid-container d-dashboard-container"
+      :class="editable ? 'editable': ''"
       :style="editable ? `margin-right: ${drawerWidth}px` : ''"
     >
       <div
@@ -96,71 +96,74 @@
       </div>
     </div>
 
-    <v-navigation-drawer v-if="editable" :value="true" right stateless absolute hide-overlay :width="drawerWidth">
-      <div class="mx-1 h-100">
-        <d-tabs v-model="tabs" v-bind="tabsProps" class="mb-5">
-          <d-tab :key="0">
-            <slot name="tab-widget-templates-title">
-              <span>
-                Widgets
-              </span>
-            </slot>
-          </d-tab>
-          <d-tab :key="1" :disabled="!configuredWidget">
-            <slot name="tab-widget-configuration-title">
-              <span>
-                Widget configuration
-              </span>
-            </slot>
-          </d-tab>
-          <d-tab :key="2">
-            <slot name="tab-dashboard-properties-title">
-              <span>
-                Dashboard properties
-              </span>
-            </slot>
-          </d-tab>
-        </d-tabs>
-
-        <d-tabs-items
-          style="max-height: calc(100% - 50px)"
-          class="ma-2 d-scrollbar-hover"
-          :value="tabs"
-        >
+    <v-navigation-drawer
+      v-if="editable"
+      right
+      absolute
+      stateless
+      hide-overlay
+      :width="drawerWidth"
+      :value="true"
+    >
+      <d-tabs v-model="tabs" v-bind="tabsProps" class="mb-5">
+        <d-tab :key="0">
+          <slot name="tab-widget-templates-title">
+            <span>
+              Widgets
+            </span>
+          </slot>
+        </d-tab>
+        <d-tab :key="1" :disabled="!configuredWidget">
+          <slot name="tab-widget-configuration-title">
+            <span>
+              Widget configuration
+            </span>
+          </slot>
+        </d-tab>
+        <d-tab :key="2">
+          <slot name="tab-dashboard-properties-title">
+            <span>
+              Dashboard properties
+            </span>
+          </slot>
+        </d-tab>
+      </d-tabs>
+      <d-fading-container height="calc(100% - 50px)" class="px-2">
+        <d-tabs-items :value="tabs">
           <d-tab-item :value="0" eager>
-            <slot name="tab-widget-templates">
-              <d-search-input v-model="search" />
-              <v-list two-line>
-                <v-list-item
-                  v-for="item in filtredWidgetTemplates"
-                  :key="item.id"
-                  :draggable="editable"
-                  @dragstart="dragstartTemplate(item, $event)"
-                  @dragend="dragend"
-                  @click="append(item)"
-                >
-                  <slot
-                    name="widget-template"
-                    v-bind="{ item, dragstart: ev => dragstartTemplate(item, ev), append: () => append(item) }"
+              <slot name="tab-widget-templates">
+                <d-search-input v-model="search" />
+                <v-list two-line>
+                  <v-list-item
+                    v-for="item in filtredWidgetTemplates"
+                    :key="item.id"
+                    :draggable="editable"
+                    @dragstart="dragstartTemplate(item, $event)"
+                    @dragend="dragend"
+                    @click="append(item)"
                   >
-                    <v-list-item-avatar>
-                      <v-icon x-large>
-                        {{ item.icon }}
-                      </v-icon>
-                    </v-list-item-avatar>
+                    <slot
+                      name="widget-template"
+                      v-bind="{ item, dragstart: ev => dragstartTemplate(item, ev), append: () => append(item) }"
+                    >
+                      <v-list-item-avatar>
+                        <v-icon x-large>
+                          {{ item.icon }}
+                        </v-icon>
+                      </v-list-item-avatar>
 
-                    <v-list-item-content>
-                      <v-list-item-title>
-                        {{ item.label }}
-                      </v-list-item-title>
-                      <v-list-item-subtitle>
-                        {{ item.description }}
-                      </v-list-item-subtitle>
-                    </v-list-item-content>
-                  </slot>
-                </v-list-item>
-              </v-list>
-            </slot>
+                      <v-list-item-content>
+                        <v-list-item-title>
+                          {{ item.label }}
+                        </v-list-item-title>
+                        <v-list-item-subtitle>
+                          {{ item.description }}
+                        </v-list-item-subtitle>
+                      </v-list-item-content>
+                    </slot>
+                  </v-list-item>
+                </v-list>
+              </slot>
           </d-tab-item>
           <d-tab-item :value="1" eager>
             <slot name="configuration" v-bind="{ widgetId: configuredWidget }" />
@@ -171,7 +174,7 @@
             </slot>
           </d-tab-item>
         </d-tabs-items>
-      </div>
+      </d-fading-container>
     </v-navigation-drawer>
   </div>
 </template>
@@ -762,3 +765,27 @@ interface WidgetPositions {
   }
 }
 </script>
+
+<style scoped>
+.d-dashboard-container {
+    overflow-y: scroll;
+}
+
+.d-dashboard-container::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.d-dashboard-container::-webkit-scrollbar-track {
+    background-color: #00000000;
+}
+
+.d-dashboard-container::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: #00000000;
+}
+
+.d-dashboard-container:hover::-webkit-scrollbar-thumb {
+    background-color: #00000022;
+}
+</style>
