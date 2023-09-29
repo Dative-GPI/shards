@@ -21,7 +21,7 @@
         @dragover.prevent="dragOver"
         @drop.stop="drop"
       >
-        <template v-if="editable">
+        <template v-if="(editable && !shallow)">
           <div
             class="d-dashboard-placeholder" v-show="dragging || resizing"
             :style="{
@@ -45,17 +45,17 @@
           v-for="widget in widgets"
           class="d-dashboard-widget"
           :key="widget.id"
-          :draggable="editable"
+          :draggable="(editable && !shallow)"
           :style="widgetPosition(widget)"
           :class="{ hidden: deferredDragover && widget.id == draggedId && draggedType === 'widget', active: widget.id == configuredWidget }"
           @dragstart="dragstartWidget(widget, $event)"
         >
           <d-icon
-            v-if="editable"
+            v-if="(editable && !shallow)"
             size="20"
             class="clickable"
             style="position: absolute; right: 4px; bottom: 4px"
-            :draggable="editable"
+            :draggable="(editable && !shallow)"
             @dragstart.stop="dragstartResize(widget, $event)"
           >
             mdi-resize-bottom-right
@@ -78,7 +78,7 @@
         </div>
 
 
-        <template v-if="editable">
+        <template v-if="(editable && !shallow)">
           <div
             v-show="deferredDragover"
             class="d-dashboard-dragover"
@@ -106,14 +106,14 @@
       :value="true"
     >
       <d-tabs v-model="tabs" v-bind="tabsProps" class="mb-5">
-        <d-tab :key="0">
+        <d-tab :key="0" v-if="!shallow">
           <slot name="tab-widget-templates-title">
             <span>
               Widgets
             </span>
           </slot>
         </d-tab>
-        <d-tab :key="1" :disabled="!configuredWidget">
+        <d-tab :key="1" v-if="!shallow" :disabled="!configuredWidget">
           <slot name="tab-widget-configuration-title">
             <span>
               Widget configuration
@@ -130,7 +130,7 @@
       </d-tabs>
       <d-fading-container height="calc(100% - 50px)" class="px-2">
         <d-tabs-items :value="tabs">
-          <d-tab-item :value="0" eager>
+          <d-tab-item :key="0" v-if="!shallow" eager>
               <slot name="tab-widget-templates">
                 <d-search-input v-model="search" />
                 <v-list two-line>
@@ -165,10 +165,10 @@
                 </v-list>
               </slot>
           </d-tab-item>
-          <d-tab-item :value="1" eager>
+          <d-tab-item :key="1" v-if="!shallow" eager>
             <slot name="configuration" v-bind="{ widgetId: configuredWidget }" />
           </d-tab-item>
-          <d-tab-item :value="2" eager>
+          <d-tab-item :key="2" eager>
             <slot name="tab-dashboard-properties" v-bind="{ computeLayout }">
               <d-btn @click="computeLayout">Compute Layout</d-btn>
             </slot>
@@ -203,12 +203,12 @@ function createMatrix(m: number, n: number): (Widget | null)[][] {
   inheritAttrs: false,
 })
 export default class DDashboardV2 extends Vue {
-  tabs: number = 0;
-
-  search = "";
 
   @Prop({ required: false, default: false })
   editable!: boolean;
+
+  @Prop({ required: false, default: false })
+  shallow!: boolean;
 
   @Prop({ required: false, default: false, type: Boolean })
   autoColumn!: boolean;
@@ -251,6 +251,10 @@ export default class DDashboardV2 extends Vue {
 
   @Prop({ required: false, default: false, type: Boolean })
   half!: boolean
+
+  tabs: number = 0;
+
+  search = "";
 
   backgroundSize = 0;
   backgroundPosition = 0;
@@ -332,9 +336,13 @@ export default class DDashboardV2 extends Vue {
     return Math.max(Math.max(...this.widgets.map(w => w.y + w.height)) + (this.editable ? 3 : 0), this.minRows)
   }
 
-  mounted() {
+  mounted(): void {
     this.onResize();
     this.loadWidgets();
+
+    if (this.shallow) {
+      this.tabs = 2;
+    }
   }
 
   append(item: WidgetTemplate) {
@@ -374,7 +382,7 @@ export default class DDashboardV2 extends Vue {
   }
 
   dragstartWidget(item: Widget, ev: DragEvent) {
-    if (!this.editable) {
+    if (!this.editable || this.shallow) {
       ev.preventDefault();
       return;
     }
@@ -391,7 +399,7 @@ export default class DDashboardV2 extends Vue {
   }
 
   dragstartTemplate(item: WidgetTemplate, ev: DragEvent) {
-    if (!this.editable) {
+    if (!this.editable || this.shallow) {
       ev.preventDefault();
       return;
     }
@@ -406,7 +414,7 @@ export default class DDashboardV2 extends Vue {
   }
 
   dragstartResize(widget: Widget, ev: DragEvent) {
-    if (!this.editable) {
+    if (!this.editable || this.shallow) {
       ev.preventDefault();
       return;
     }
@@ -584,7 +592,7 @@ export default class DDashboardV2 extends Vue {
     let width = item.width;
     let height = item.height;
 
-    if (!this.editable) {
+    if (!this.editable || this.shallow) {
       let position = this.widgetPositions[item.id];
 
       if (position) {
@@ -700,7 +708,7 @@ export default class DDashboardV2 extends Vue {
         offsetY = yMax
       }
 
-      if (this.editable)
+      if (this.editable && !this.shallow)
         this.updateWidget(widget.id, x, y, widget.width, widget.height);
       else
         newLayout[widget.id] = { x, y };
