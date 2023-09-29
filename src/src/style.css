@@ -423,6 +423,10 @@ textarea {
   margin: 0;
 }
 
+.d-application.v-application .text-underline{
+  text-decoration: underline;
+}
+
 .d-application.v-application .d-application.v-application .text-h1 {
   font-size: 2.488rem !important;
   line-height: 2.488rem !important;
