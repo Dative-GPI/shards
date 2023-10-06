@@ -3,5 +3,5 @@ export interface FilterValue {
     text: string;
     value: string;
 
-    filter?: (value: any, item: any) => boolean;
+    filter?: (value: any, property: any, item: any) => boolean;
 }

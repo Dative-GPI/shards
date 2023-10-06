@@ -245,7 +245,7 @@ export default class DDraggableDataTable extends Vue {
 
   get filteredItems() {
     return this.items.filter((i) => _(this.filters).reduce<boolean>(
-      (include, filterValues, key) => include && this.filterItem(filterValues, i[key]),
+      (include, filterValues, key) => include && this.filterItem(filterValues, i[key], i),
       true
     ));
   }
@@ -296,10 +296,10 @@ export default class DDraggableDataTable extends Vue {
               text: (ff.text && ff.text.toString()) || "—",
               value: ff.value || null,
 
-              filter: col.methodFilter != null ? col.methodFilter : (value, item) => {
-                item = [item].flat();
-                return Array.isArray(item) ?
-                  item.includes(value) || (!value && item.length == 0) : (!value && !item) || value == item;
+              filter: col.methodFilter != null ? col.methodFilter : (value, property) => {
+                property = [property].flat();
+                return Array.isArray(property) ?
+                  property.includes(value) || (!value && property.length == 0) : (!value && !property) || value == property;
               }
           })
         );
@@ -325,10 +325,10 @@ export default class DDraggableDataTable extends Vue {
               text: (v && v.toString()) || "—",
               value: v || null,
 
-              filter: col.methodFilter != null ? col.methodFilter : (value, item) => {
-                item = [item].flat().map(mapToInnerValue);
-                return Array.isArray(item) ?
-                  item.includes(v) || (!v && item.length == 0) : (!v && !item) || v == item;
+              filter: col.methodFilter != null ? col.methodFilter : (value, property) => {
+                property = [property].flat().map(mapToInnerValue);
+                return Array.isArray(property) ?
+                  property.includes(v) || (!v && property.length == 0) : (!v && !property) || v == property;
               }
             })
         );
@@ -343,8 +343,8 @@ export default class DDraggableDataTable extends Vue {
     this.filters = filterDict;
   }
 
-  filterItem(values: FilterValue[], item: any): boolean {
-    return values.filter((v) => !v.hidden).some((v) => !!v.filter && v.filter(v.value, item));
+  filterItem(values: FilterValue[], property: any, item: any): boolean {
+    return values.filter((v) => !v.hidden).some((v) => !!v.filter && v.filter(v.value, property, item));
   }
 
   @Watch("items")
