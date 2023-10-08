@@ -177,7 +177,7 @@ export default class DDraggableDataTableVariant extends Vue {
     return this.items.filter((i) =>
       _(this.filters).reduce<boolean>(
         (include, filterValues, key) =>
-          include && this.filterItem(filterValues, i[key]),
+          include && this.filterItem(filterValues, i[key], i),
         true
       )
     );
@@ -261,10 +261,10 @@ export default class DDraggableDataTableVariant extends Vue {
     this.filters = filterDict;
   }
 
-  filterItem(values: FilterValue[], item: any): boolean {
+  filterItem(values: FilterValue[], property: any, item: any): boolean {
     return values
       .filter((v) => !v.hidden)
-      .some((v) => !!v.filter && v.filter(v.value, item));
+      .some((v) => !!v.filter && v.filter(v.value, property, item));
   }
 
   // Watchers
