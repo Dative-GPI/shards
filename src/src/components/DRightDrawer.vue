@@ -28,6 +28,10 @@
       :color="color"
     >
       <slot></slot>
+
+      <v-footer ref="footer" absolute v-if="$scopedSlots['actions']" color="white-1">
+        <slot name="actions"></slot>
+      </v-footer>
     </d-fading-container>
   </v-navigation-drawer>
 </template>
