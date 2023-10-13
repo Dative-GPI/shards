@@ -61,7 +61,7 @@
             mdi-resize-bottom-right
           </d-icon>
           <v-lazy
-            :options="{ threshold: .5 }"
+            :options="{ threshold: .1 }"
             :width="toPixelSize(widget.width)"
             :height="toPixelSize(widget.height)"
           >
