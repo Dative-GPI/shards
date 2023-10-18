@@ -16,8 +16,8 @@
     </d-btn>
     <form>
       <input
-        type="file"
         v-show="false"
+        type="file"
         ref="input"
         :accept="accept"
         @input="onInput"
@@ -30,7 +30,7 @@
 import { Component, Prop, Ref, Vue } from "vue-property-decorator";
 
 @Component({
-  inheritAttrs: false,
+  inheritAttrs: false
 })
 export default class DBtnFile extends Vue {
   @Ref("input")
@@ -39,26 +39,35 @@ export default class DBtnFile extends Vue {
   @Prop({ required: false, default: "" })
   accept!: string;
 
-  onClick() {
+  @Prop({ required: false, default: true })
+  readFile!: boolean;
+
+  onClick(): void {
     this.input.click();
   }
 
-  onInput(ev: InputEvent) {
-    let file = this.input.files && this.input.files[0];
+  onInput(): void {
+    const file = this.input.files && this.input.files[0];
 
-    if (!file) return;
+    if (!file) {
+      return;
+    }
 
+    if (!this.readFile) {
+      this.$emit("input", file);
+      this.clear();
+      return;
+    }
+    
     const reader = new FileReader();
-
     reader.addEventListener("load", (fileEv) => {
       this.$emit("input", fileEv.target && fileEv.target.result);
       this.clear();
     });
-
     reader.readAsDataURL(file);
   }
 
-  clear() {
+  clear(): void {
     this.input.form && this.input.form.reset();
   }
 }
