@@ -112,16 +112,7 @@ interface TabItem {
   min-height: 36px;
 }
 
-.d-modulable-tabs .d-modulable-tabs-bar .d-tabs {
-  width: 150px;
-  flex: 1 1 auto;
-}
-
 .d-modulable-tabs .d-modulable-tabs-bar .d-tabs * {
   background-color: transparent;
-}
-
-.d-modulable-tabs .d-modulable-tabs-bar .action-btn {
-  flex: 1 0 auto;
 }
 </style>

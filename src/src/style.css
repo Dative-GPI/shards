@@ -398,6 +398,7 @@ html {
 
 .d-tabs {
   flex: 0 1 auto !important;
+  width: max-content !important;
 }
 
 /* No uppercase tab */

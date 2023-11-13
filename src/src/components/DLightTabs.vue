@@ -66,17 +66,8 @@ interface TabItem {
 </script>
 
 <style scoped>
-.d-light-tabs {
-  width: 100%;
-}
-
 .d-light-tabs .d-light-tabs-bar {
   display: flex;
   min-height: 36px;
-}
-
-.v-tabs::v-deep {
-  flex: 0 0 auto !important;
-  width: auto !important;
 }
 </style>
