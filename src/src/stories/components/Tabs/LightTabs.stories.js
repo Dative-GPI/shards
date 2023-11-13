@@ -68,6 +68,5 @@ Default.args = {
   maxItems: 5,
   minItems: 0,
   tabs: [],
-  editable: true,
-  tabsBarClasses: "mb-5"
+  editable: true
 };
