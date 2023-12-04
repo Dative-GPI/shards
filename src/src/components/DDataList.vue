@@ -175,15 +175,22 @@ export default class DDataList extends Vue {
     }
   }
 
-  onSearchingChanged(newVal: string) {
-    this.searching = newVal;
-    this.$emit("update:search", newVal);
+  onSearchingChanged(newValue: string) {
+    this.searching = newValue;
+    this.$emit("update:search", newValue);
   }
 
   @Watch("search")
   onSearchChanged(newValue: string, oldValue: string) {
     if (newValue !== oldValue) {
       this.onSearchingChanged(this.search);
+    }
+  }
+
+  @Watch("mode")
+  onModeChanged(newValue: "table" | "tile", oldValue: "table" | "tile") {
+    if (newValue !== oldValue) {
+      this.$emit("update:mode", newValue);
     }
   }
 }
