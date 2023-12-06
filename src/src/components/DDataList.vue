@@ -69,14 +69,14 @@
 
       <slot name="tile" v-bind="{ items }">
         <v-data-iterator
-          :items="items"
+          v-if="mode == 'tile'"
+          :items="items.slice(0, size)"
           :search="searching"
           :no-data-text="noDataText"
           :no-results-text="noResultsText"
           disable-pagination
           hide-default-footer
           style="width: 100%"
-          v-if="mode == 'tile'"
         >
           <template v-slot:default="props">
             <v-row no-gutters align="center">
@@ -151,9 +151,11 @@ export default class DDataList extends Vue {
   @Prop({ required: false, default: () => ({ itemsPerPageOptions: [ 10, 30, -1 ] })})
   footerProps!: { itemsPerPageOptions: number[] };
 
-  mode: "table" | "tile" = "tile";
-
   searching: string = "";
+  mode: "table" | "tile" = "tile";
+  size: number = 20;
+  intersectionObserver: IntersectionObserver | null = null;
+  resizeObserver: ResizeObserver | null = null;
 
   get scopedSlots() {
     const scopedSlots = _.pickBy(
@@ -165,13 +167,71 @@ export default class DDataList extends Vue {
     );
   }
 
-  mounted() {
+  mounted(): void {
     if (this.disableTable) {
       this.mode = "tile";
-    } else if (this.disableTiles) {
+    }
+    else if (this.disableTiles) {
       this.mode = "table";
-    } else {
+    }
+    else {
       this.mode = this.initialMode;
+    }
+
+    this.buildIntersection();
+    this.buildResize();
+  }
+
+  beforeDestroy(): void {
+    if (this.intersectionObserver != null) {
+      this.intersectionObserver.unobserve(this.$el);
+    }
+    if (this.resizeObserver != null) {
+      this.resizeObserver.unobserve(this.$el);
+    }
+  }
+
+  buildIntersection(): void {
+    if (this.intersectionObserver != null) {
+      return;
+    }
+
+    const thresholds = [];
+
+    for (let i = 1.0; i <= 20; i++) {
+      thresholds.push(i / 20);
+    }
+    thresholds.push(0);
+
+    this.intersectionObserver = new IntersectionObserver(entries => {
+      entries.forEach((entry) => {
+        if (entry.boundingClientRect.bottom < window.innerHeight * 1.25) {
+          this.size += 20;
+        }
+      });
+    }, {
+      root: null,
+      rootMargin: "0px",
+      threshold: thresholds
+    });
+    if (this.intersectionObserver != null) {
+      this.intersectionObserver.observe(this.$el);
+    }
+  }
+
+  buildResize(): void {
+    if (this.resizeObserver != null) {
+      return;
+    }
+
+    this.resizeObserver = new ResizeObserver(() => {
+      if (this.intersectionObserver != null) {
+        this.intersectionObserver.unobserve(this.$el);
+        this.intersectionObserver.observe(this.$el);
+      }
+    });
+    if (this.resizeObserver != null) {
+      this.resizeObserver.observe(this.$el);
     }
   }
 

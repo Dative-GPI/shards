@@ -1,6 +1,6 @@
 {
   "name": "@dative-gpi/shards",
-  "version": "0.1.107",
+  "version": "0.1.108",
   "private": false,
   "main": "src/index.ts",
   "scripts": {
@@ -82,6 +82,7 @@
   },
   "dependencies": {
     "@types/date-fns": "^2.6.0",
+    "@types/resize-observer-browser": "^0.1.11",
     "date-fns": "^2.29.2"
   }
 }
