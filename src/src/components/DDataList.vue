@@ -5,8 +5,7 @@
         <d-search-input
           v-if="searchable"
           class="mr-2"
-          :value="searching"
-          @input="onSearchingChanged"
+          v-model="searching"
         />
         <d-menu-btn
           v-if="mode == 'table' && !$vuetify.breakpoint.xs && !hideColumns"
@@ -52,8 +51,7 @@
         <d-data-table
           v-if="mode == 'table'"
           :columns="columns"
-          :search="searching"
-          :items="items"
+          :items="searchItems(items, searching)"
           :item-key="itemKey"
           :no-data-text="noDataText"
           :no-results-text="noResultsText"
@@ -70,8 +68,7 @@
       <slot name="tile" v-bind="{ items }">
         <v-data-iterator
           v-if="mode == 'tile'"
-          :items="items.slice(0, size)"
-          :search="searching"
+          :items="searchItems(items, searching).slice(0, size)"
           :no-data-text="noDataText"
           :no-results-text="noResultsText"
           disable-pagination
@@ -92,18 +89,23 @@
         </v-data-iterator>
       </slot>
     </div>
+    <div
+      :style="lastChildStyle"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import _ from "lodash";
+import { NormalizedScopedSlot } from "vue/types/vnode";
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 
+import { searchItems } from "../tools";
 import { Column } from "../models";
-import { NormalizedScopedSlot } from "vue/types/vnode";
 
 @Component({
-  inheritAttrs: false,
+  data: () => ({ searchItems }),
+  inheritAttrs: false
 })
 export default class DDataList extends Vue {
   @Prop({ required: true })
@@ -139,9 +141,6 @@ export default class DDataList extends Vue {
   @Prop({ required: false, default: true, type: Boolean })
   searchable!: boolean;
 
-  @Prop({ required: false, default: "" })
-  search!: string;
-
   @Prop({ required: false, default: true, type: Boolean })
   columnSortable!: boolean;
 
@@ -152,10 +151,9 @@ export default class DDataList extends Vue {
   footerProps!: { itemsPerPageOptions: number[] };
 
   searching: string = "";
-  mode: "table" | "tile" = "tile";
+  mode: "table" | "tile" = "table";
   size: number = 20;
   intersectionObserver: IntersectionObserver | null = null;
-  resizeObserver: ResizeObserver | null = null;
 
   get scopedSlots() {
     const scopedSlots = _.pickBy(
@@ -165,6 +163,13 @@ export default class DDataList extends Vue {
     return _.mapKeys(scopedSlots, (value: NormalizedScopedSlot, key: string) =>
       key.replace("table-", "")
     );
+  }
+
+  get lastChildStyle(): { [key: string]: any } {
+    return {
+      height: this.mode === "tile" ? "10px" : "0px",
+      width: "100%"
+    };
   }
 
   mounted(): void {
@@ -179,78 +184,56 @@ export default class DDataList extends Vue {
     }
 
     this.buildIntersection();
-    this.buildResize();
   }
 
   beforeDestroy(): void {
-    if (this.intersectionObserver != null) {
-      this.intersectionObserver.unobserve(this.$el);
-    }
-    if (this.resizeObserver != null) {
-      this.resizeObserver.unobserve(this.$el);
+    if (this.intersectionObserver && this.$el.lastChild) {
+      this.intersectionObserver.unobserve((this.$el.lastChild as any));
     }
   }
 
   buildIntersection(): void {
-    if (this.intersectionObserver != null) {
+    if (this.intersectionObserver) {
       return;
     }
-
-    const thresholds = [];
-
-    for (let i = 1.0; i <= 20; i++) {
-      thresholds.push(i / 20);
-    }
-    thresholds.push(0);
-
+    let formerRatio = 0;
     this.intersectionObserver = new IntersectionObserver(entries => {
       entries.forEach((entry) => {
-        if (entry.boundingClientRect.bottom < window.innerHeight * 1.25) {
-          this.size += 20;
+        if (formerRatio < entry.intersectionRatio) {
+          if (this.mode === "tile" && entry.boundingClientRect.bottom < window.innerHeight * 1.25) {
+            if (searchItems(this.items, this.searching).length > this.size) {
+              this.size = Math.min(this.size + 20, this.items.length);
+            }
+          }
         }
+        formerRatio = entry.intersectionRatio;
       });
     }, {
-      root: null,
-      rootMargin: "0px",
-      threshold: thresholds
+      threshold: [0.9]
     });
-    if (this.intersectionObserver != null) {
-      this.intersectionObserver.observe(this.$el);
-    }
+    this.toggleIntersection();
   }
 
-  buildResize(): void {
-    if (this.resizeObserver != null) {
+  toggleIntersection(): void {
+    if (!this.intersectionObserver || !this.$el.lastChild) {
       return;
     }
-
-    this.resizeObserver = new ResizeObserver(() => {
-      if (this.intersectionObserver != null) {
-        this.intersectionObserver.unobserve(this.$el);
-        this.intersectionObserver.observe(this.$el);
+    switch (this.mode) {
+      case "tile": {
+        this.intersectionObserver.observe(this.$el.lastChild as any);
+        break;
       }
-    });
-    if (this.resizeObserver != null) {
-      this.resizeObserver.observe(this.$el);
-    }
-  }
-
-  onSearchingChanged(newValue: string) {
-    this.searching = newValue;
-    this.$emit("update:search", newValue);
-  }
-
-  @Watch("search")
-  onSearchChanged(newValue: string, oldValue: string) {
-    if (newValue !== oldValue) {
-      this.onSearchingChanged(this.search);
+      default: {
+        this.intersectionObserver.unobserve(this.$el.lastChild as any);
+        break;
+      }
     }
   }
 
   @Watch("mode")
   onModeChanged(newValue: "table" | "tile", oldValue: "table" | "tile") {
     if (newValue !== oldValue) {
-      this.$emit("update:mode", newValue);
+      this.toggleIntersection();
     }
   }
 }
