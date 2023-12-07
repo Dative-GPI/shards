@@ -144,7 +144,6 @@ export default class DDataList extends Vue {
   footerProps!: { itemsPerPageOptions: number[] };
 
   searching: string = "";
-  // Initialize to tile in order to mount d-data-table only when asked
   mode: "table" | "tile" = "tile";
   size: number = 20;
   intersectionObserver: IntersectionObserver | null = null;
@@ -228,6 +227,14 @@ export default class DDataList extends Vue {
   onModeChanged(newValue: "table" | "tile", oldValue: "table" | "tile") {
     if (newValue !== oldValue) {
       this.toggleIntersection();
+      this.$emit("update:mode", this.mode);
+    }
+  }
+
+  @Watch("size")
+  onSizeChanged(newValue: number, oldValue: number) {
+    if (newValue !== oldValue) {
+      this.$emit("update:size", this.size);
     }
   }
 }
