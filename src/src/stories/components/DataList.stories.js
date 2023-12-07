@@ -148,6 +148,7 @@ Default.args = {
 export const WithScroll = Template.bind({});
 WithScroll.args = {
   multiSort: true,
+  initialMode: "tile",
   columnText: "text",
   columnValue: "value",
   columnPosition: "index",

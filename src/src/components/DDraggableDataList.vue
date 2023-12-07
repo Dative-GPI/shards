@@ -151,7 +151,8 @@ export default class DDraggableDataList extends Vue {
   innerValue: any[] = [];
 
   searching: string = "";
-  mode: "table" | "tile" = "table";
+  // Initialize to tile in order to mount d-draggable-data-table only when asked
+  mode: "table" | "tile" = "tile";
   size: number = 20;
   intersectionObserver: IntersectionObserver | null = null;
 

@@ -243,8 +243,6 @@ export default class DDataTable extends Vue {
   }
 
   computeFilters(): void {
-    console.log("computeFilters");
-    
     const filterableHeaders = this.headers.filter((h) => h.canBeFiltered);
     const filterDict: { [key: string]: FilterValue[] } = {};
 

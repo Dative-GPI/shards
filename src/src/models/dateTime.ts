@@ -8,4 +8,4 @@ export enum DateTimePickingMode {
     StartTime,
     EndDate,
     EndTime
-};
+}

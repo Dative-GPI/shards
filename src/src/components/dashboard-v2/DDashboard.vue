@@ -247,12 +247,12 @@ export default class DDashboardV2 extends Vue {
   minRows!: number;
 
   @Prop({ required: false, default: () => null })
-  tabsProps!: Object;
+  tabsProps!: any;
 
   @Prop({ required: false, default: false, type: Boolean })
   half!: boolean
 
-  tabs: number = 0;
+  tabs = 0;
 
   search = "";
 
@@ -260,7 +260,7 @@ export default class DDashboardV2 extends Vue {
   backgroundPosition = 0;
   cellSize = 0;
 
-  get dragging() {
+  get dragging(): boolean {
     return this.mode === "dragging";
   }
 
@@ -269,7 +269,7 @@ export default class DDashboardV2 extends Vue {
     setTimeout(() => this.deferredDragover = v, 10);
   }
 
-  get resizing() {
+  get resizing(): boolean {
     return this.mode === "resizing";
   }
 
@@ -311,7 +311,7 @@ export default class DDashboardV2 extends Vue {
 
   computedColumns = 0;
 
-  get realColumns() {
+  get realColumns(): number {
     let result = this.columns;
     if (this.autoColumn) {
       result = this.computedColumns;
@@ -319,20 +319,22 @@ export default class DDashboardV2 extends Vue {
     return Math.max(this.minColumns, this.half ? Math.floor(result / 2) : result);
   }
 
-  get filtredWidgetTemplates() {
-    if (!this.search) return this.widgetTemplates;
+  get filtredWidgetTemplates(): WidgetTemplate[] {
+    if (!this.search) {
+      return this.widgetTemplates;
+    }
     return this.widgetTemplates.filter(w => (w.label && w.label.toLowerCase().includes(this.search.toLowerCase()))
       || (w.description && w.description.toLowerCase().includes(this.search.toLowerCase())))
   }
 
-  get notDraggedWidgets() {
+  get notDraggedWidgets(): Widget[] {
     if (this.dragging && this.draggedType == "widget") {
       return this.widgets.filter(w => w.id != this.draggedId);
     }
     return this.widgets;
   }
 
-  get height() {
+  get height(): number {
     return Math.max(Math.max(...this.widgets.map(w => w.y + w.height)) + (this.editable ? 3 : 0), this.minRows)
   }
 
@@ -345,20 +347,20 @@ export default class DDashboardV2 extends Vue {
     }
   }
 
-  append(item: WidgetTemplate) {
+  append(item: WidgetTemplate): void {
     let maxY = Math.max(...this.widgets.map(w => w.y + w.height), 0);
     this.addWidget(item.id, 0, maxY, item.defaultWidth, item.defaultHeight);
   }
 
-  toPixelPosition(position: number) {
+  toPixelPosition(position: number): number {
     return position * (this.cellSize + this.spacing);
   }
 
-  toPixelSize(size: number) {
+  toPixelSize(size: number): number {
     return size * this.cellSize + (size - 1) * this.spacing;
   }
 
-  basedragStart(width: number, height: number, x: number, y: number, ev: DragEvent) {
+  basedragStart(width: number, height: number, x: number, y: number, ev: DragEvent): void {
     this.draggedWidth = width;
     this.draggedHeight = height;
 
@@ -375,13 +377,13 @@ export default class DDashboardV2 extends Vue {
     this.mouseOffsetX = Math.min(ev.offsetX, this.toPixelSize(this.dragoverWidth));
     this.mouseOffsetY = Math.min(ev.offsetY, this.toPixelSize(this.dragoverHeight));
 
-    // le bon gros hack, image invisible
+    // Le bon gros hack, image invisible
     let img = new Image();
     img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
     ev.dataTransfer!.setDragImage(img, 0, 0);
   }
 
-  dragstartWidget(item: Widget, ev: DragEvent) {
+  dragstartWidget(item: Widget, ev: DragEvent): void {
     if (!this.editable || this.shallow) {
       ev.preventDefault();
       return;
@@ -398,7 +400,7 @@ export default class DDashboardV2 extends Vue {
     this.dragOver(ev);
   }
 
-  dragstartTemplate(item: WidgetTemplate, ev: DragEvent) {
+  dragstartTemplate(item: WidgetTemplate, ev: DragEvent): void {
     if (!this.editable || this.shallow) {
       ev.preventDefault();
       return;
@@ -413,7 +415,7 @@ export default class DDashboardV2 extends Vue {
     this.dragOver(ev);
   }
 
-  dragstartResize(widget: Widget, ev: DragEvent) {
+  dragstartResize(widget: Widget, ev: DragEvent): void {
     if (!this.editable || this.shallow) {
       ev.preventDefault();
       return;
@@ -431,7 +433,7 @@ export default class DDashboardV2 extends Vue {
     this.dragOver(ev);
   }
 
-  setDragOverPosition(x: number, y: number, width: number, height: number) {
+  setDragOverPosition(x: number, y: number, width: number, height: number): void {
     let dragover = this.$refs.dragover as HTMLElement;
     if (!dragover) return;
     dragover.style.top = `${y}px`;
@@ -440,7 +442,7 @@ export default class DDashboardV2 extends Vue {
     dragover.style.height = `${height}px`;
   }
 
-  dragOver(ev: DragEvent) {
+  dragOver(ev: DragEvent): void {
     switch (this.mode) {
       case "dragging":
         this.dragOverDragging(ev);
@@ -451,7 +453,7 @@ export default class DDashboardV2 extends Vue {
     }
   }
 
-  dragOverDragging(ev: DragEvent) {
+  dragOverDragging(ev: DragEvent): void {
     let rect = (this.$refs.grid as HTMLElement).getBoundingClientRect()
     let x = ev.clientX - rect.left - this.mouseOffsetX;
     let y = ev.clientY - rect.top - this.mouseOffsetY;
@@ -466,7 +468,7 @@ export default class DDashboardV2 extends Vue {
     this.setDragOverPosition(x, y, this.dragoverWidth * this.backgroundSize, this.dragoverHeight * this.backgroundSize);
   }
 
-  dragOverResize(ev: DragEvent) {
+  dragOverResize(ev: DragEvent): void {
     let rect = (this.$refs.grid as HTMLElement).getBoundingClientRect()
 
     let x = ev.clientX - rect.left - this.mouseOffsetX;
@@ -489,7 +491,7 @@ export default class DDashboardV2 extends Vue {
     this.setDragOverPosition(this.dragoverLeft * this.backgroundSize, this.dragoverTop * this.backgroundSize, dragoverWidth, dragoverHeight);
   }
 
-  drop(ev: DragEvent) {
+  drop(ev: DragEvent): void {
     switch (this.mode) {
       case "dragging":
         this.dropDragging(ev);
@@ -502,7 +504,7 @@ export default class DDashboardV2 extends Vue {
     }
   }
 
-  dropDragging(ev: DragEvent) {
+  dropDragging(ev: DragEvent): void {
     let rect = (this.$refs.grid as HTMLElement).getBoundingClientRect()
     let x = ev.clientX - rect.left - this.mouseOffsetX;
     let y = ev.clientY - rect.top - this.mouseOffsetY;
@@ -532,7 +534,7 @@ export default class DDashboardV2 extends Vue {
     this.dragging = false;
   }
 
-  dropResizing(ev: DragEvent) {
+  dropResizing(ev: DragEvent): void {
     let rect = (this.$refs.grid as HTMLElement).getBoundingClientRect()
 
     let x = ev.clientX - rect.left - this.mouseOffsetX;
@@ -557,14 +559,14 @@ export default class DDashboardV2 extends Vue {
     this.resizing = false;
   }
 
-  dragend() {
+  dragend(): void {
     this.dragging = false;
     this.resizing = false;
     this.movedWidgets = [];
     this.draggingOffsetY = 0;
   }
 
-  computeMovedWidgets(x: number, y: number, width: number, height: number, ignoreWidgetId: string) {
+  computeMovedWidgets(x: number, y: number, width: number, height: number, ignoreWidgetId: string): void {
     let tmp: string[] = []
     this.draggingOffsetY = 0;
 
@@ -586,7 +588,7 @@ export default class DDashboardV2 extends Vue {
 
   computeMovedWidgetsThrottled = _.throttle(this.computeMovedWidgets, 100);
 
-  widgetPosition(item: Widget) {
+  widgetPosition(item: Widget): { top: string, left: string, width: string, height: string } {
     let x = item.x;
     let y = item.y;
     let width = item.width;
@@ -612,7 +614,7 @@ export default class DDashboardV2 extends Vue {
     }
   }
 
-  onResize() {
+  onResize(): void {
     this.computeColumns();
 
     this.backgroundSize = Math.floor(this.$el.clientWidth / this.realColumns);
@@ -626,7 +628,7 @@ export default class DDashboardV2 extends Vue {
     this.cellSize = this.backgroundSize - this.spacing
   }
 
-  computeColumns() {
+  computeColumns(): void {
     if (this.autoColumn) {
       let nbSizecolumns = Math.max(this.minColumns, Math.floor(this.$el.clientWidth / this.minColumnSize));
       let nbStepColumns = Math.round(nbSizecolumns / this.minColumnStep) * this.minColumnStep;
@@ -635,7 +637,7 @@ export default class DDashboardV2 extends Vue {
     }
   }
 
-  loadWidgets() {
+  loadWidgets(): void {
     this.sortedWidgets = _.sortBy(this.widgets, ['y', 'x']);
 
     let xMax = Math.max(...this.widgets.map(w => w.x + w.width))
@@ -644,16 +646,15 @@ export default class DDashboardV2 extends Vue {
     let maxWidth = Math.max(...this.widgets.map(w => w.width))
 
     if (maxWidth > this.realColumns) {
-      console.warn("Widget are too large for this dashboards");
       // TODO : soit on notifie le parent que le widget doit changer de taille
       // soit le parent est assez intelligent pour donner des widgets qui ont au max le nombre de colonne
+      console.warn("Widget are too large for this dashboards");
       return
     }
 
     this.computeLayout();
 
     // on créé une map du dashboard avec que des false
-
     let map = createMatrix(xMax, yMax);
 
     for (let widget of this.sortedWidgets) {
@@ -682,7 +683,7 @@ export default class DDashboardV2 extends Vue {
     }
   }
 
-  computeLayout() {
+  computeLayout(): void {
     let offsetX = 0;
     let offsetY = 0;
     let yMax = 0;
@@ -720,16 +721,15 @@ export default class DDashboardV2 extends Vue {
     this.widgetPositions = newLayout;
   }
 
-  addWidget(templateId: string, x: number, y: number, width: number, height: number)
-  {
+  addWidget(templateId: string, x: number, y: number, width: number, height: number): void {
     this.$emit("add", { templateId, x, y, width, height })
   }
 
-  updateWidget(widgetId: string, x: number, y: number, width: number, height: number) {
+  updateWidget(widgetId: string, x: number, y: number, width: number, height: number): void {
     this.$emit("update", { widgetId, x, y, width, height });
   }
 
-  configure(item: Widget) {
+  configure(item: Widget): void {
     this.$emit("update:configured-widget", item.id);
   }
 
@@ -744,7 +744,7 @@ export default class DDashboardV2 extends Vue {
   onWidgetsChanged = this.loadWidgets
 
   @Watch("configuredWidget")
-  onConfiguredWidgetChanged() {
+  onConfiguredWidgetChanged(): void {
     this.tabs = 1;
   }
 }
