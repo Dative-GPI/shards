@@ -5,11 +5,10 @@
         <d-search-input
           v-if="searchable"
           class="mr-2"
-          :value="searching"
-          @input="onSearchingChange"
+          v-model="searching"
         />
         <d-menu-btn
-          v-if="mode == 'table' && !$vuetify.breakpoint.xs"
+          v-if="mode == 'table' && !$vuetify.breakpoint.xs && !hideColumns"
           :btn-class="'mr-2'"
           :sortable="columnSortable"
           :value="columns"
@@ -45,8 +44,7 @@
         <d-draggable-data-table
           v-if="mode == 'table'"
           :columns="columns"
-          :search="searching"
-          :items="items"
+          :items="searchItems(items, searching)"
           :item-key="itemKey"
           :no-data-text="noDataText"
           :no-results-text="noResultsText"
@@ -64,14 +62,13 @@
 
       <slot name="tile" v-bind="{ items }">
         <v-data-iterator
-          :items="items"
-          :search="searching"
+          v-if="mode == 'tile'"
+          :items="searchItems(items, searching).slice(0, size)"
           :no-data-text="noDataText"
           :no-results-text="noResultsText"
           disable-pagination
           hide-default-footer
           style="width: 100%"
-          v-if="mode == 'tile'"
         >
           <template v-slot:default="props">
             <v-row no-gutters align="center">
@@ -87,21 +84,25 @@
         </v-data-iterator>
       </slot>
     </div>
+    <div
+      :style="lastChildStyle"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import _ from "lodash";
+import { NormalizedScopedSlot } from "vue/types/vnode";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
+import { searchItems } from "../tools";
 import { Column } from "../models";
-import { NormalizedScopedSlot } from "vue/types/vnode";
 
 @Component({
-  inheritAttrs: false,
+  data: () => ({ searchItems }),
+  inheritAttrs: false
 })
 export default class DDraggableDataList extends Vue {
-  // Properties
   @Prop({ required: true })
   items!: any[];
 
@@ -120,6 +121,9 @@ export default class DDraggableDataList extends Vue {
   @Prop({ required: false, default: "table" })
   initialMode!: "table" | "tile";
 
+  @Prop({ required: false, default: false, type: Boolean })
+  hideColumns!: boolean;
+
   @Prop({ required: false, default: "" })
   noResultsText!: string;
 
@@ -131,9 +135,6 @@ export default class DDraggableDataList extends Vue {
 
   @Prop({ required: false, default: true, type: Boolean })
   searchable!: boolean;
-
-  @Prop({ required: false, default: "" })
-  search!: string;
 
   @Prop({ required: false, default: true, type: Boolean })
   columnSortable!: boolean;
@@ -147,14 +148,13 @@ export default class DDraggableDataList extends Vue {
   @Prop({ required: false, default: () => [] })
   value!: any[];
 
-  // Data
   innerValue: any[] = [];
 
-  mode: "table" | "tile" = "tile";
-
   searching: string = "";
+  mode: "table" | "tile" = "table";
+  size: number = 20;
+  intersectionObserver: IntersectionObserver | null = null;
 
-  // Computed
   get scopedSlots() {
     const scopedSlots = _.pickBy(
       this.$scopedSlots,
@@ -165,16 +165,69 @@ export default class DDraggableDataList extends Vue {
     );
   }
 
-  // Methods
+  get lastChildStyle(): { [key: string]: any } {
+    return {
+      height: this.mode === "tile" ? "10px" : "0px",
+      width: "100%"
+    };
+  }
+
   mounted(): void {
     this.innerValue = _.cloneDeep(this.value);
-
     if (this.disableTable) {
       this.mode = "tile";
-    } else if (this.disableTiles) {
+    }
+    else if (this.disableTiles) {
       this.mode = "table";
-    } else {
+    }
+    else {
       this.mode = this.initialMode;
+    }
+
+    this.buildIntersection();
+  }
+
+  beforeDestroy(): void {
+    if (this.intersectionObserver && this.$el.lastChild) {
+      this.intersectionObserver.unobserve((this.$el.lastChild as any));
+    }
+  }
+
+  buildIntersection(): void {
+    if (this.intersectionObserver) {
+      return;
+    }
+    let formerRatio = 0;
+    this.intersectionObserver = new IntersectionObserver(entries => {
+      entries.forEach((entry) => {
+        if (formerRatio < entry.intersectionRatio) {
+          if (this.mode === "tile" && entry.boundingClientRect.bottom < window.innerHeight * 1.25) {
+            if (searchItems(this.items, this.searching).length > this.size) {
+              this.size = Math.min(this.size + 20, this.items.length);
+            }
+          }
+        }
+        formerRatio = entry.intersectionRatio;
+      });
+    }, {
+      threshold: [0.9]
+    });
+    this.toggleIntersection();
+  }
+
+  toggleIntersection(): void {
+    if (!this.intersectionObserver || !this.$el.lastChild) {
+      return;
+    }
+    switch (this.mode) {
+      case "tile": {
+        this.intersectionObserver.observe(this.$el.lastChild as any);
+        break;
+      }
+      default: {
+        this.intersectionObserver.unobserve(this.$el.lastChild as any);
+        break;
+      }
     }
   }
 
@@ -183,21 +236,16 @@ export default class DDraggableDataList extends Vue {
     this.$emit('input', this.innerValue);
   }
 
-  onSearchingChange(newVal: string) {
-    this.searching = newVal;
-    this.$emit("update:search", newVal);
-  }
-
-  @Watch("search")
-  onSearchChange(newValue: string, oldValue: string) {
-    if (newValue !== oldValue) {
-      this.onSearchingChange(this.search);
-    }
-  }
-
   @Watch("value")
   onValueChange(): void {
     this.innerValue = _.cloneDeep(this.value);
+  }
+
+  @Watch("mode")
+  onModeChanged(newValue: "table" | "tile", oldValue: "table" | "tile") {
+    if (newValue !== oldValue) {
+      this.toggleIntersection();
+    }
   }
 }
 </script>

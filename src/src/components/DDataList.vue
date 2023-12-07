@@ -13,14 +13,7 @@
           :sortable="columnSortable"
           :value="columns"
           @input="$emit('update:columns', $event)"
-        >
-          <template #item="{ defaultValue, item }">
-            <slot name="column.item" v-bind="item">
-              {{ defaultValue }}
-            </slot>
-          </template>
-        </d-menu-btn>
-
+        />
         <slot name="header-action" />
         <template v-if="!disableTable && !disableTiles">
           <v-spacer />
